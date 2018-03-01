@@ -10,7 +10,7 @@ An important point is to be able to quickly identify an animal.
 
 ## Authors
 
-* **Billie Thompson** - [GitHub](https://github.com/raqssr) - [LinkedIn](https://www.linkedin.com/in/raquel-ramos-939059151/)
+* **Raquel Ramos** - [GitHub](https://github.com/raqssr) - [LinkedIn](https://www.linkedin.com/in/raquel-ramos-939059151/)
 * **Ana Rita Santiago** - [GitHub](https://github.com/ritaSantiago) - [LinkedIn](https://www.linkedin.com/in/ana-rita-santiago-b4b720150/)
 
 
