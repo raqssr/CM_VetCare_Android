@@ -1,0 +1,198 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "d3e53653964192c1de315d5333e3788a",
+    "entities": [
+      {
+        "tableName": "animal_general",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`animal_name` TEXT, `sex` TEXT, `animal_picture` INTEGER, `weight` REAL, `specie` TEXT, `dateOfBirth` TEXT, `breed` TEXT, `coat` TEXT, PRIMARY KEY(`animal_name`))",
+        "fields": [
+          {
+            "fieldPath": "animal_name",
+            "columnName": "animal_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "sex",
+            "columnName": "sex",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "animal_picture_id",
+            "columnName": "animal_picture",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "weight",
+            "columnName": "weight",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "specie",
+            "columnName": "specie",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "dateOfBirth",
+            "columnName": "dateOfBirth",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "breed",
+            "columnName": "breed",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "coat",
+            "columnName": "coat",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "animal_name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "animal_internment",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`animal_name` TEXT, `comments` TEXT, `reason_internment` TEXT, `doctor` TEXT, `procedures_id` TEXT, `medicines_id` INTEGER, `dateIn` TEXT, PRIMARY KEY(`animal_name`))",
+        "fields": [
+          {
+            "fieldPath": "animal_name",
+            "columnName": "animal_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "comments",
+            "columnName": "comments",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "reason_internment",
+            "columnName": "reason_internment",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "doctor",
+            "columnName": "doctor",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "procedures_id",
+            "columnName": "procedures_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "medicines_id",
+            "columnName": "medicines_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "dateIn",
+            "columnName": "dateIn",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "animal_name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "animal_historic",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`animal_name` TEXT, `procedures_id` TEXT, PRIMARY KEY(`animal_name`))",
+        "fields": [
+          {
+            "fieldPath": "animal_name",
+            "columnName": "animal_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "procedures_id",
+            "columnName": "procedures_id",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "animal_name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "procedure",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`proc_id` INTEGER PRIMARY KEY AUTOINCREMENT, `dateProcedure` TEXT, `procedure_picture` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "proc_id",
+            "columnName": "proc_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "dateProcedure",
+            "columnName": "dateProcedure",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "procedure_pic_id",
+            "columnName": "procedure_picture",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "proc_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "medicine",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`m_id` INTEGER PRIMARY KEY AUTOINCREMENT, `med_name` TEXT, `dosage` REAL)",
+        "fields": [
+          {
+            "fieldPath": "m_id",
+            "columnName": "m_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "med_name",
+            "columnName": "med_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "dosage",
+            "columnName": "dosage",
+            "affinity": "REAL"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "m_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d3e53653964192c1de315d5333e3788a\")"
+    ]
+  }
+}
