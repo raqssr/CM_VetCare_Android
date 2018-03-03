@@ -9,7 +9,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity(tableName = "animal_general")
-public class Animal_general {
+public class Animal {
     @PrimaryKey
     private String animal_name;
 
@@ -96,6 +96,17 @@ public class Animal_general {
 
     public void setCoat(String coat){
         this.coat = coat;
+    }
+
+    @ColumnInfo(name = "owner_name")
+    private String owner_name;
+
+    public String getOwner_name(){
+        return owner_name;
+    }
+
+    public void setOwner_name(String owner_name){
+        this.owner_name = owner_name;
     }
 
 

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d3e53653964192c1de315d5333e3788a",
+    "identityHash": "0b75b8d09c9acc8793f7cbe376ab90a5",
     "entities": [
       {
         "tableName": "animal_general",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`animal_name` TEXT, `sex` TEXT, `animal_picture` INTEGER, `weight` REAL, `specie` TEXT, `dateOfBirth` TEXT, `breed` TEXT, `coat` TEXT, PRIMARY KEY(`animal_name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`animal_name` TEXT, `sex` TEXT, `animal_picture` INTEGER, `weight` REAL, `specie` TEXT, `dateOfBirth` TEXT, `breed` TEXT, `coat` TEXT, `owner_name` TEXT, PRIMARY KEY(`animal_name`))",
         "fields": [
           {
             "fieldPath": "animal_name",
@@ -46,6 +46,11 @@
           {
             "fieldPath": "coat",
             "columnName": "coat",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "owner_name",
+            "columnName": "owner_name",
             "affinity": "TEXT"
           }
         ],
@@ -192,7 +197,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d3e53653964192c1de315d5333e3788a\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0b75b8d09c9acc8793f7cbe376ab90a5\")"
     ]
   }
 }

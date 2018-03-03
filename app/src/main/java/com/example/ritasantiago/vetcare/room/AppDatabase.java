@@ -9,7 +9,7 @@ import android.content.Context;
  * Created by ritasantiago on 01-03-2018.
  */
 
-@Database(entities = {Animal_general.class, Animal_internment.class, Animal_historic.class, Procedure.class, Medicine.class}, version = 1)
+@Database(entities = {Animal.class, Internment.class, Historic.class, Procedure.class, Medicine.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase INSTANCE;
     public abstract Animal_dao animalDao();
