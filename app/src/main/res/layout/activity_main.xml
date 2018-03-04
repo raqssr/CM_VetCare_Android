@@ -6,22 +6,19 @@
     android:layout_height="match_parent"
     tools:context="com.example.ritasantiago.vetcare.MainActivity">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+
+    <Button
+        android:id="@+id/button_add_teste"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="@dimen/cast_libraries_material_featurehighlight_text_horizontal_margin">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello to VetCare!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
-
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:onClick="clickAddTestButton"
+        android:text="AddAnimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="160dp" />
 </android.support.constraint.ConstraintLayout>

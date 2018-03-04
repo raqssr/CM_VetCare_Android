@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity{
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnLogin;
+    public Button btnTeste;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +44,19 @@ public class LoginActivity extends AppCompatActivity{
         // set the view now
         setContentView(R.layout.activity_login);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnLogin = (Button) findViewById(R.id.btn_login);
+        btnTeste = (Button) findViewById(R.id.button2);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        /*btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = inputEmail.getText().toString();
@@ -96,6 +98,11 @@ public class LoginActivity extends AppCompatActivity{
                             }
                         });
             }
-        });
+        });*/
+    }
+
+    public void clickTestButton(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
