@@ -7,179 +7,93 @@
     android:orientation="vertical"
     tools:context=".AddAnimalActivity">
 
-    <TextView
-        android:id="@+id/animal_txt"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:textSize="12sp" />
-
-    <LinearLayout
+    <EditText
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:textColor="#000"
+        android:hint="Name"/>
 
-        <android.support.v7.widget.ContentFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/sex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:hint="Sex" />
 
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:labelFor="@+id/name"
-                android:maxLines="1"
-                android:text="animal name" />
+    <EditText
+        android:id="@+id/weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:inputType="numberDecimal"
+        android:hint="Weight" />
 
-        </android.support.v7.widget.ContentFrameLayout>
+    <EditText
+        android:id="@+id/specie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:hint="Specie" />
 
-        <android.support.v7.widget.ContentFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/dateOfBirth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:hint="Date of Birth" />
 
-            <EditText
-                android:id="@+id/sex"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textShortMessage"
-                android:labelFor="@+id/sex"
-                android:maxLines="1"
-                android:text="sex" />
+    <EditText
+        android:id="@+id/breed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:hint="breed" />
 
-        </android.support.v7.widget.ContentFrameLayout>
+    <EditText
+        android:id="@+id/coat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:hint="coat" />
 
-        <android.support.v7.widget.ContentFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/owner_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:hint="Owner Name" />
 
-            <EditText
-                android:id="@+id/weight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberSigned"
-                android:labelFor="@+id/weight"
-                android:maxLines="1"
-                android:text="weight" />
+    <EditText
+        android:id="@+id/owner_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:hint="Owner Phone" />
 
-        </android.support.v7.widget.ContentFrameLayout>
-
-        <android.support.v7.widget.ContentFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/specie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textLongMessage"
-                android:labelFor="@+id/specie"
-                android:maxLines="1"
-                android:text="specie" />
-
-        </android.support.v7.widget.ContentFrameLayout>
-
-        <android.support.v7.widget.ContentFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/dateOfBirth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="date"
-                android:labelFor="@+id/dateOfBirth"
-                android:maxLines="1"
-                android:text="Date of Birth" />
-
-        </android.support.v7.widget.ContentFrameLayout>
-
-        <android.support.v7.widget.ContentFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/breed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textLongMessage"
-                android:labelFor="@+id/breed"
-                android:maxLines="1"
-                android:text="breed" />
-
-        </android.support.v7.widget.ContentFrameLayout>
-
-        <android.support.v7.widget.ContentFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/coat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textLongMessage"
-                android:labelFor="@+id/coat"
-                android:maxLines="1"
-                android:text="coat" />
-
-        </android.support.v7.widget.ContentFrameLayout>
-
-        <android.support.v7.widget.ContentFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/owner_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:labelFor="@+id/owner_name"
-                android:maxLines="1"
-                android:text="Owner Name" />
-
-        </android.support.v7.widget.ContentFrameLayout>
-
-        <android.support.v7.widget.ContentFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/owner_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:labelFor="@+id/owner_phone"
-                android:maxLines="1"
-                android:text="Owner Phone" />
-
-        </android.support.v7.widget.ContentFrameLayout>
-
-        <android.support.v7.widget.ContentFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/owner_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:labelFor="@+id/owner_address"
-                android:maxLines="1"
-                android:text="Owner Address" />
-
-        </android.support.v7.widget.ContentFrameLayout>
-
-    </LinearLayout>
+    <EditText
+        android:id="@+id/owner_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:labelFor="@+id/owner_address"
+        android:maxLines="1"
+        android:hint="Owner Address" />
 
     <Button
-        android:id="@+id/btn_save"
-        style="?android:textAppearanceSmall"
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/displayMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorPrimary"
-        android:text="SAVE"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+        android:fontFamily="serif"
+        android:textColor="#000"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"/>
 
 </LinearLayout>

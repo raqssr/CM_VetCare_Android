@@ -1,11 +1,8 @@
 package com.example.ritasantiago.vetcare;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,16 +10,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ritasantiago.vetcare.firebase.Animal;
-import com.example.ritasantiago.vetcare.firebase.Owner;
+import com.example.ritasantiago.vetcare.firebase.DatabaseActions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,131 +28,116 @@ import java.util.Map;
 
 public class AddAnimalActivity extends AppCompatActivity {
 
-    private static final String TAG = AddAnimalActivity.class.getSimpleName();
-    private TextView txtDetails;
-    private EditText inputName, inputSex, inputWeight, inputSpecie, inputDateOfBirth, inputBreed,
-            inputCoat, inputOwnerName, inputOwnerPhone, inputOwnerAddress; //missing picture
-    private Button btnSave;
+    DatabaseActions database;
     FirebaseFirestore db;
-    private String animalId, ownerId;
+    TextView txtDisplay;
+    TextView message;
+    Button save;
+
+    //animal's doc keys
+    public static final String NAME_KEY = "Name";
+    public static final String SEX_KEY = "Sex";
+    public static final String SPECIE_KEY = "Specie";
+    public static final String WEIGHT_KEY = "Weight";
+    public static final String DATE_KEY = "Date of Birth";
+    public static final String BREED_KEY = "Breed";
+    public static final String COAT_KEY = "Coat";
+    public static final String OWNER_NAME = "Owner's Name";
+
+    //owner's doc keys
+    public static final String PHONE_KEY = "Phone";
+    public static final String ADDRESS_KEY = "Address";
+
 
     @Override
-    protected void onCreate(final Bundle saveInstanceState) {
-        super.onCreate(saveInstanceState);
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_animal);
 
-        txtDetails = (TextView) findViewById(R.id.animal_txt);
-        inputName = (EditText) findViewById(R.id.name);
-        inputSex = (EditText) findViewById(R.id.sex);
-        inputWeight = (EditText) findViewById(R.id.weight);
-        inputSpecie = (EditText) findViewById(R.id.specie);
-        inputDateOfBirth = (EditText) findViewById(R.id.dateOfBirth);
-        inputBreed = (EditText) findViewById(R.id.breed);
-        inputCoat = (EditText) findViewById(R.id.coat);
-        inputOwnerName = (EditText) findViewById(R.id.owner_name);
-        //aqui temos de ver como fazemos: se drop down ou assim, para já fica tudo seguido
-        inputOwnerPhone = (EditText) findViewById(R.id.owner_phone);
-        inputOwnerAddress = (EditText) findViewById(R.id.owner_address);
-        btnSave = (Button) findViewById(R.id.btn_save);
-
         db = FirebaseFirestore.getInstance();
+        //txtDisplay = (TextView) findViewById(R.id.textDisplay);
 
-        //save animal
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        save = (Button) findViewById(R.id.save);
+
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = inputName.getText().toString();
-                String sex = inputSex.getText().toString();
-                Double weight = Double.parseDouble(inputWeight.getText().toString());
-                String specie = inputSpecie.getText().toString();
-                String dateOfBirth = inputDateOfBirth.getText().toString();
-                String breed = inputBreed.getText().toString();
-                String coat = inputCoat.getText().toString();
-                String ownerName = inputOwnerName.getText().toString();
-                int ownerPhone = Integer.parseInt(inputOwnerPhone.getText().toString());
-                String ownerAddress = inputOwnerAddress.getText().toString();
-
-                createAnimal(name,sex,weight,specie,dateOfBirth,breed,coat,ownerName);
-                createOwner(ownerName,ownerPhone,ownerAddress);
+                createAnimal(v);
             }
         });
 
-        toggleButton();
     }
 
-    private void toggleButton(){
-        if(TextUtils.isEmpty(animalId)){
-            btnSave.setText("Save");
-        }
-        else{
-            btnSave.setText("Update");
-        }
+    private void createAnimal(View view){
+        EditText nameView = (EditText) findViewById(R.id.name);
+        EditText sexView = (EditText) findViewById(R.id.sex);
+        EditText weightView = (EditText) findViewById(R.id.weight);
+        EditText specieView = (EditText) findViewById(R.id.specie);
+        EditText dateView = (EditText) findViewById(R.id.dateOfBirth);
+        EditText breedView = (EditText) findViewById(R.id.breed);
+        EditText coatView = (EditText) findViewById(R.id.coat);
+        EditText ownerView = (EditText) findViewById(R.id.owner_name);
+
+        String nameText = nameView.getText().toString();
+        String sexText = sexView.getText().toString();
+        Double weightText = Double.parseDouble(weightView.getText().toString());
+        String specieText = specieView.getText().toString();
+        String dateText = dateView.getText().toString();
+        String breedText = breedView.getText().toString();
+        String coatText = coatView.getText().toString();
+        String ownerText = ownerView.getText().toString();
+
+        Map<String, Object> newAnimal = new HashMap<>();
+        newAnimal.put(NAME_KEY, nameText);
+        newAnimal.put(SEX_KEY, sexText);
+        newAnimal.put(WEIGHT_KEY, weightText);
+        newAnimal.put(SPECIE_KEY, specieText);
+        newAnimal.put(DATE_KEY, dateText);
+        newAnimal.put(BREED_KEY, breedText);
+        newAnimal.put(COAT_KEY, coatText);
+        newAnimal.put(OWNER_NAME, ownerText);
+
+        db.collection("Animals").document("Animal").set(newAnimal)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("TAG", "Animal Registered");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("TAG", e.toString());
+                    }
+                });
+
+        //createOwner();
 
     }
 
-    private void createAnimal(String name, String sex, double weight, String specie, String dateOfBirth, String breed, String coat, String ownerName){
-        final Map<Object, Object> newAnimal = new HashMap<>();
-        newAnimal.put(name,name);
-        newAnimal.put(sex,sex);
-        newAnimal.put(weight,weight);
-        newAnimal.put(specie,specie);
-        newAnimal.put(dateOfBirth,dateOfBirth);
-        newAnimal.put(breed,breed);
-        newAnimal.put(coat,coat);
-        newAnimal.put(ownerName,ownerName);
+    private void createOwner(){
+        EditText ownerView = (EditText) findViewById(R.id.owner_name);
+        EditText ownerPhoneView = (EditText) findViewById(R.id.owner_phone);
+        EditText ownerAddrView = (EditText) findViewById(R.id.owner_address);
 
-        db.collection("Animals").document("Animal").set(newAnimal).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(AddAnimalActivity.this, "Animal Registered",
-                        Toast.LENGTH_SHORT).show();
+        String ownerText = ownerView.getText().toString();
+        int ownerPhoneText = Integer.parseInt(ownerPhoneView.getText().toString());
+        String ownerAddrText = ownerAddrView.getText().toString();
 
-                txtDetails.setText(newAnimal.toString());
-                //clear edit text
-                inputName.setText("");
-                inputSex.setText("");
-                inputBreed.setText("");
-                inputCoat.setText("");
-                inputDateOfBirth.setText("");
-                inputOwnerName.setText("");
-                inputSpecie.setText("");
-                inputWeight.setText("");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddAnimalActivity.this, "ERROR" + e.toString(),
-                        Toast.LENGTH_SHORT).show();
-                Log.e(TAG, e.toString());
-            }
-        });
-    }
-
-    private void createOwner(final String name, int phone, String address){
-        final Map<Object, Object> newOwner = new HashMap<>();
-        newOwner.put(name,name);
-        newOwner.put(phone,phone);
-        newOwner.put(address,address);
+        Map<String, Object> newOwner = new HashMap<>();
+        newOwner.put(NAME_KEY, ownerText);
+        newOwner.put(PHONE_KEY, ownerPhoneText);
+        newOwner.put(ADDRESS_KEY, ownerAddrText);
 
         db.collection("Animals").document("Owner").set(newOwner).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(AddAnimalActivity.this, "Owner Registered",
-                        Toast.LENGTH_SHORT).show();
-
-                txtDetails.setText(newOwner.toString());
-
-                //clear edit text
-                inputOwnerAddress.setText("");
-                inputOwnerName.setText("");
-                inputOwnerPhone.setText("");
+                Log.d("TAG", "Owner Registered");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddAnimalActivity.this, "ERROR" + e.toString(),
-                        Toast.LENGTH_SHORT).show();
-                Log.e(TAG, e.toString());
+                Log.d("TAG", e.toString());
             }
         });
     }
