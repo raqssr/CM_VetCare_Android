@@ -30,7 +30,7 @@ task clean(type: Delete) {
 }
 
 ext {
-    buildToolsVersion = "25.0.2"
-    supportLibVersion = "25.3.1"
+    buildToolsVersion = "25.4.0"
+    supportLibVersion = "25.4.0"
     archRoomVersion = "1.0.0-alpha1"
 }
