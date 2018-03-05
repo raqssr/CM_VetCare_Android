@@ -8,4 +8,16 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
     <string name="hello">Hello World!</string>
+    <string name="name">Name</string>
+    <string name="sex">Sex</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="weight">Weight (Kg)</string>
+    <string name="specie">Specie</string>
+    <string name="dob">DD/MM/YYYY</string>
+    <string name="breed">Breed</string>
+    <string name="coat">Coat</string>
+    <string name="ownerName">Owner Name</string>
+    <string name="ownerAddress">Owner Address</string>
+    <string name="ownerPhone">Owner Phone</string>
 </resources>

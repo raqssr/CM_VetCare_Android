@@ -1,10 +1,13 @@
 package com.example.ritasantiago.vetcare;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ritasantiago.vetcare.firebase.DatabaseActions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,6 +38,10 @@ public class AddPetFragment extends Fragment {
     TextView txtDisplay;
     TextView message;
     Button save;
+    RadioGroup sexOption;
+    View radioButtonSelected;
+    RadioButton rb;
+    EditText nameView, weightView, specieView, dateView, breedView, coatView, ownerView;
 
     //animal's doc keys
     public static final String NAME_KEY = "Name";
@@ -49,54 +57,54 @@ public class AddPetFragment extends Fragment {
     public static final String PHONE_KEY = "Phone";
     public static final String ADDRESS_KEY = "Address";
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //returning our layout file
-        //change R.layout.yourlayoutfilename for each of your fragments
-        View rootView = inflater.inflate(R.layout.fragment_pets, container, false);
+    String sexOptionChosen = "";
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //returning our layout file
+        View rootView = inflater.inflate(R.layout.fragment_add_pet, container, false);
         db = FirebaseFirestore.getInstance();
-        save = (Button) rootView.findViewById(R.id.btn_saveAnimal);
-        save.setOnClickListener(new View.OnClickListener() {
+        sexOption = (RadioGroup) rootView.findViewById(R.id.radio_group);
+        nameView = (EditText) rootView.findViewById(R.id.animal_name);
+        weightView = (EditText) rootView.findViewById(R.id.animal_weight);
+        specieView = (EditText) rootView.findViewById(R.id.animal_specie);
+        dateView = (EditText) rootView.findViewById(R.id.animal_dob);
+        breedView = (EditText) rootView.findViewById(R.id.animal_breed);
+        coatView = (EditText) rootView.findViewById(R.id.animal_coat);
+        ownerView = (EditText) rootView.findViewById(R.id.animal_ownerName);
+
+        FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.btn_saveAnimal);
+        button.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 createAnimal(v);
             }
         });
-
         return rootView;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Add Pet");
+
     }
 
     private void createAnimal(View view) {
-        EditText nameView = (EditText) view.findViewById(R.id.animal_name);
-        //EditText sexView = (EditText) view.findViewById(R.id.animal_sex);
-        //RadioGroup sexOption = (RadioGroup) view.findViewById(R.id.radio_group);
-        RadioButton maleOption = (RadioButton) view.findViewById(R.id.male);
-        RadioButton femaleOption = (RadioButton) view.findViewById(R.id.female);
-        String sexOptionChosen;
-        if (maleOption.isChecked())
-        {
-            sexOptionChosen = "Male";
-        }
-        else
-        {
-            sexOptionChosen = "Female";
-        }
-        EditText weightView = (EditText) view.findViewById(R.id.animal_weight);
-        EditText specieView = (EditText) view.findViewById(R.id.animal_specie);
-        EditText dateView = (EditText) view.findViewById(R.id.animal_dob);
-        EditText breedView = (EditText) view.findViewById(R.id.animal_breed);
-        EditText coatView = (EditText) view.findViewById(R.id.animal_coat);
-        EditText ownerView = (EditText) view.findViewById(R.id.animal_ownerName);
+        Log.i("CreateAnimal", "entrei no create");
 
+        int selectedId = sexOption.getCheckedRadioButtonId();
+        // find the radiobutton by returned id
+        radioButtonSelected = sexOption.findViewById(selectedId);
+        int radioId = sexOption.indexOfChild(radioButtonSelected);
+        rb = (RadioButton) sexOption.getChildAt(radioId);
+        sexOptionChosen = (String) rb.getText();
+
+
+        Log.i("CreateAnimal", "vou pôr as cenas nas variaveis");
         String nameText = nameView.getText().toString();
         String sexText = sexOptionChosen;
         Double weightText = Double.parseDouble(weightView.getText().toString());
@@ -106,6 +114,7 @@ public class AddPetFragment extends Fragment {
         String coatText = coatView.getText().toString();
         String ownerText = ownerView.getText().toString();
 
+        Log.i("CreateAnimal", "vou para o hashmap");
         Map<String, Object> newAnimal = new HashMap<>();
         newAnimal.put(NAME_KEY, nameText);
         newAnimal.put(SEX_KEY, sexText);
@@ -131,6 +140,12 @@ public class AddPetFragment extends Fragment {
                 });
 
         //createOwner(view);
+
+        Context context = getActivity().getApplicationContext();
+
+        Toast.makeText(context,"Pet added with sucess!", Toast.LENGTH_SHORT).show();
+
+        getFragmentManager().popBackStackImmediate();
     }
 
     private void createOwner(View view){
@@ -159,4 +174,5 @@ public class AddPetFragment extends Fragment {
             }
         });
     }
+
 }

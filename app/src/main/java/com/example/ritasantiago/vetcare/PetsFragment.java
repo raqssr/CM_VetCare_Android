@@ -3,6 +3,7 @@ package com.example.ritasantiago.vetcare;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -56,6 +57,20 @@ public class PetsFragment extends Fragment {
         initializeData();
         RVPetAdapter adapter = new RVPetAdapter(persons);
         rv.setAdapter(adapter);
+
+        FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.button_addPet);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Fragment fragment = new AddPetFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
         //AppDatabase appDatabase = AppDatabase.getAppDatabase(getContext());
         //List<Animal> animals = appDatabase.animalDao().getAnimals();
