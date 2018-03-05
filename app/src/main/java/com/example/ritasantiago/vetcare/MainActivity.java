@@ -1,9 +1,8 @@
 package com.example.ritasantiago.vetcare;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -124,16 +123,16 @@ public class MainActivity extends AppCompatActivity
         //initializing the fragment object which is selected
         switch (itemId) {
             case R.id.tasks:
-                fragment = new TaskList();
+                fragment = new TaskListFragment();
                 break;
             case R.id.pets:
-                fragment = new Pets();
+                fragment = new PetsFragment();
                 break;
             case R.id.calendar:
-                fragment = new Calendar();
+                fragment = new CalendarFragment();
                 break;
             case R.id.documents:
-                fragment = new Docs();
+                fragment = new DocsFragment();
                 break;
         }
 
@@ -146,11 +145,6 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-    }
-
-    public void clickAddTestButton(View view){
-        Intent intent = new Intent(this, AddAnimalActivity.class);
-        startActivity(intent);
     }
 
     public void addAnimalButton(View view)

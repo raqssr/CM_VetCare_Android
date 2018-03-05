@@ -15,8 +15,8 @@ import java.util.List;
 
 public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.PersonViewHolder>
 {
-    List<Pets.Person> persons;
-    RVPetAdapter(List<Pets.Person> persons){
+    List<PetsFragment.Person> persons;
+    RVPetAdapter(List<PetsFragment.Person> persons){
         this.persons = persons;
     }
 
