@@ -152,4 +152,13 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, AddAnimalActivity.class);
         startActivity(intent);
     }
+
+    public void addAnimalButton(View view)
+    {
+        Fragment fragment = new AddPetFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 }

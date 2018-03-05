@@ -4,11 +4,16 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.example.ritasantiago.vetcare.room.Animal;
+import com.example.ritasantiago.vetcare.room.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +22,7 @@ import java.util.List;
  * Created by raquelramos on 04-03-2018.
  */
 
-public class Pets extends Fragment {
+public class PetsFragment extends Fragment {
 
     private List<Person> persons;
 
@@ -51,6 +56,12 @@ public class Pets extends Fragment {
         initializeData();
         RVPetAdapter adapter = new RVPetAdapter(persons);
         rv.setAdapter(adapter);
+
+
+
+        //AppDatabase appDatabase = AppDatabase.getAppDatabase(getContext());
+        //List<Animal> animals = appDatabase.animalDao().getAnimals();
+
         return rootView;
     }
 
@@ -58,6 +69,6 @@ public class Pets extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Pets");
+        getActivity().setTitle("PetsFragment");
     }
 }

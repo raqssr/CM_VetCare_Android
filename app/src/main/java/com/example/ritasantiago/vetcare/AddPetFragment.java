@@ -7,19 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 /**
  * Created by raquelramos on 04-03-2018.
  */
 
-public class Docs extends Fragment {
-
+public class AddPetFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
-        return inflater.inflate(R.layout.fragment_docs, container, false);
+        return inflater.inflate(R.layout.fragment_add_pet, container, false);
     }
 
 
@@ -27,6 +25,6 @@ public class Docs extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Documents");
+        getActivity().setTitle("Add Pet");
     }
 }

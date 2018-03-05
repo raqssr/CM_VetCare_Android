@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  * Created by raquelramos on 04-03-2018.
  */
 
-public class TaskList extends Fragment {
+public class TaskListFragment extends Fragment {
 
     @Nullable
     @Override

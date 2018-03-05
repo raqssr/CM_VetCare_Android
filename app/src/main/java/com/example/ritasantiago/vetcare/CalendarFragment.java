@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  * Created by raquelramos on 04-03-2018.
  */
 
-public class Calendar extends Fragment {
+public class CalendarFragment extends Fragment {
 
     @Nullable
     @Override
@@ -26,6 +26,6 @@ public class Calendar extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Calendar");
+        getActivity().setTitle("CalendarFragment");
     }
 }
