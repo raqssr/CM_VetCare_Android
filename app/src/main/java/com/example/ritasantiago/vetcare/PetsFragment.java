@@ -57,8 +57,6 @@ public class PetsFragment extends Fragment {
         RVPetAdapter adapter = new RVPetAdapter(persons);
         rv.setAdapter(adapter);
 
-
-
         //AppDatabase appDatabase = AppDatabase.getAppDatabase(getContext());
         //List<Animal> animals = appDatabase.animalDao().getAnimals();
 
