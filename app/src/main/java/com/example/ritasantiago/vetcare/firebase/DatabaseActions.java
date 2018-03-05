@@ -1,11 +1,8 @@
 package com.example.ritasantiago.vetcare.firebase;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.ritasantiago.vetcare.AddAnimalActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
