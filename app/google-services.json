@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "276763595454",
+    "firebase_url": "https://cmvetcareandroid.firebaseio.com",
+    "project_id": "cmvetcareandroid",
+    "storage_bucket": "cmvetcareandroid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276763595454:android:a08a22a46f4efc74",
+        "android_client_info": {
+          "package_name": "com.example.ritasantiago.vetcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276763595454-20s4ceels5ui3t3o7nnl71fnp40dtj58.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ritasantiago.vetcare",
+            "certificate_hash": "a284ca56b04987435fec079fccaadbfa1f8cc6e7"
+          }
+        },
+        {
+          "client_id": "276763595454-lpb9rc3p2er7mnvj4tm3n283nf9k3oi5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBJ_GHLoV-uXkIXwZNQKMj2OyWfZKkD-o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276763595454-lpb9rc3p2er7mnvj4tm3n283nf9k3oi5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
