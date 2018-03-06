@@ -25,7 +25,7 @@ public class Animal {
 
     }
 
-    public Animal(String name, String sex, int picture_id, String weight, String specie, String dateOfBirth, String breed, String coat, String owner_name ){
+    /*public Animal(String name, String sex, int picture_id, String weight, String specie, String dateOfBirth, String breed, String coat, String owner_name ){
         this.name = name;
         this.sex = sex;
         this.picture_id = picture_id;
@@ -35,7 +35,7 @@ public class Animal {
         this.breed = breed;
         this.coat = coat;
         this.owner_name = owner_name;
-    }
+    }*/
 
     public Animal(String name, String sex, String weight, String specie, String dateOfBirth, String breed, String coat, String owner_name ){
         this.name = name;
@@ -48,7 +48,7 @@ public class Animal {
         this.owner_name = owner_name;
     }
 
-    public Animal(String name, String weight, String dateOfBirth, String owner_name ){
+    /*public Animal(String name, String weight, String dateOfBirth, String owner_name ){
         this.name = name;
         this.weight = weight;
         this.dateOfBirth = dateOfBirth;
@@ -57,5 +57,5 @@ public class Animal {
 
     public Animal(String fields){
         this.fields = fields;
-    }
+    }*/
 }

@@ -2,12 +2,14 @@ package com.example.ritasantiago.vetcare;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,32 +17,53 @@ import android.widget.Button;
 
 import com.example.ritasantiago.vetcare.firebase.Animal;
 import com.example.ritasantiago.vetcare.room.AppDatabase;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.BREED;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.COAT;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.DOB;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.NAME;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.OWNER_NAME;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.SEX;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.SPECIE;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.WEIGHT;
 
 /**
  * Created by raquelramos on 04-03-2018.
  */
 
 public class PetsFragment extends Fragment {
-
-    private List<Animal> persons;
-
-
+    private RVPetAdapter adapter;
+    private List<Animal> pets;
+    FirebaseFirestore db;
 
     private void initializeData(){
-        persons = new ArrayList<>();
-
-        /*
-        * final List<String> infos = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
         db.collection("Animals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     QuerySnapshot query = task.getResult();
                     List<DocumentSnapshot> data = query.getDocuments();
-                    infos.add(data.toString());
+                    for (int i = 0; i < data.size(); i++)
+                    {
+                        adapter.addAnimal(new Animal(data.get(i).get(NAME).toString(),
+                                                     data.get(i).get(SEX).toString(),
+                                                     data.get(i).get(WEIGHT).toString(),
+                                                     data.get(i).get(SPECIE).toString(),
+                                                     data.get(i).get(DOB).toString(),
+                                                     data.get(i).get(BREED).toString(),
+                                                     data.get(i).get(COAT).toString(),
+                                                     data.get(i).get(OWNER_NAME).toString()));
+                    }
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -49,12 +72,6 @@ public class PetsFragment extends Fragment {
                 Log.d("TAG", e.toString());
             }
         });
-
-        persons.add(new Animal(infos.toString());
-        * */
-        persons.add(new Animal("Emma Wilson", "23 years old", "ss","s"));
-        persons.add(new Animal("Lavery Maiss", "25 years old", "ss", "ss"));
-        persons.add(new Animal("Lillie Watts", "35 years old", "ss", "ss"));
     }
 
     @Override
@@ -65,9 +82,10 @@ public class PetsFragment extends Fragment {
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
-        initializeData();
-        RVPetAdapter adapter = new RVPetAdapter(persons);
+        adapter = new RVPetAdapter();
         rv.setAdapter(adapter);
+
+        initializeData();
 
         FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.button_addPet);
         button.setOnClickListener(new View.OnClickListener()
