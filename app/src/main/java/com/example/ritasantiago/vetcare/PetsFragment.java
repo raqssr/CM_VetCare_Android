@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.ritasantiago.vetcare.room.Animal;
+import com.example.ritasantiago.vetcare.firebase.Animal;
 import com.example.ritasantiago.vetcare.room.AppDatabase;
 
 import java.util.ArrayList;
@@ -25,25 +25,36 @@ import java.util.List;
 
 public class PetsFragment extends Fragment {
 
-    private List<Person> persons;
+    private List<Animal> persons;
 
-    class Person {
-        String name;
-        String age;
-        int photoId;
 
-        Person(String name, String age, int photoId) {
-            this.name = name;
-            this.age = age;
-            this.photoId = photoId;
-        }
-    }
 
     private void initializeData(){
         persons = new ArrayList<>();
-        persons.add(new Person("Emma Wilson", "23 years old", R.drawable.emma));
-        persons.add(new Person("Lavery Maiss", "25 years old", R.drawable.lavery));
-        persons.add(new Person("Lillie Watts", "35 years old", R.drawable.lillie));
+
+        /*
+        * final List<String> infos = new ArrayList<>();
+        db.collection("Animals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    QuerySnapshot query = task.getResult();
+                    List<DocumentSnapshot> data = query.getDocuments();
+                    infos.add(data.toString());
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("TAG", e.toString());
+            }
+        });
+
+        persons.add(new Animal(infos.toString());
+        * */
+        persons.add(new Animal("Emma Wilson", "23 years old", "ss","s"));
+        persons.add(new Animal("Lavery Maiss", "25 years old", "ss", "ss"));
+        persons.add(new Animal("Lillie Watts", "35 years old", "ss", "ss"));
     }
 
     @Override
@@ -71,9 +82,6 @@ public class PetsFragment extends Fragment {
                 ft.commit();
             }
         });
-
-        //AppDatabase appDatabase = AppDatabase.getAppDatabase(getContext());
-        //List<Animal> animals = appDatabase.animalDao().getAnimals();
 
         return rootView;
     }

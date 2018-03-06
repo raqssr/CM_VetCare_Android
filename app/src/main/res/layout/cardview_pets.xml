@@ -19,7 +19,7 @@
             android:padding="10dp">
 
             <ImageView
-                android:id="@+id/person_photo"
+                android:id="@+id/animal_photo"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_alignParentLeft="true"
@@ -27,19 +27,33 @@
                 android:layout_marginRight="16dp" />
 
             <TextView
-                android:id="@+id/person_name"
+                android:id="@+id/animal_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/person_photo"
+                android:layout_toRightOf="@+id/animal_photo"
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/person_age"
+                android:id="@+id/animal_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/person_name"
-                android:layout_toRightOf="@+id/person_photo" />
+                android:layout_below="@+id/animal_name"
+                android:layout_toRightOf="@+id/animal_photo" />
+
+            <TextView
+                android:id="@+id/animal_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/animal_name"
+                android:layout_toRightOf="@+id/animal_photo" />
+
+            <TextView
+                android:id="@+id/animal_owner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/animal_name"
+                android:layout_toRightOf="@+id/animal_photo" />
 
         </RelativeLayout>
 

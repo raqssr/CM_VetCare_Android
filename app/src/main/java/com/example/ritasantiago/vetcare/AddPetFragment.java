@@ -41,7 +41,7 @@ public class AddPetFragment extends Fragment {
     RadioGroup sexOption;
     View radioButtonSelected;
     RadioButton rb;
-    EditText nameView, weightView, specieView, dateView, breedView, coatView, ownerView;
+    EditText nameView, weightView, specieView, dateView, breedView, coatView, ownerView, ownerPhoneView, ownerAddrView;
 
     //animal's doc keys
     public static final String NAME_KEY = "Name";
@@ -72,6 +72,8 @@ public class AddPetFragment extends Fragment {
         breedView = (EditText) rootView.findViewById(R.id.animal_breed);
         coatView = (EditText) rootView.findViewById(R.id.animal_coat);
         ownerView = (EditText) rootView.findViewById(R.id.animal_ownerName);
+        ownerPhoneView = (EditText) rootView.findViewById(R.id.animal_ownerPhone);
+        ownerAddrView = (EditText) rootView.findViewById(R.id.animal_ownerAddress);
 
         FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.btn_saveAnimal);
         button.setOnClickListener(new View.OnClickListener()
@@ -114,6 +116,10 @@ public class AddPetFragment extends Fragment {
         String coatText = coatView.getText().toString();
         String ownerText = ownerView.getText().toString();
 
+        //owners info
+        int ownerPhoneText = Integer.parseInt(ownerPhoneView.getText().toString());
+        String ownerAddrText = ownerAddrView.getText().toString();
+
         Log.i("CreateAnimal", "vou para o hashmap");
         Map<String, Object> newAnimal = new HashMap<>();
         newAnimal.put(NAME_KEY, nameText);
@@ -125,7 +131,12 @@ public class AddPetFragment extends Fragment {
         newAnimal.put(COAT_KEY, coatText);
         newAnimal.put(OWNER_NAME, ownerText);
 
-        db.collection("Animals").document("Animal").set(newAnimal)
+        Map<String, Object> newOwner = new HashMap<>();
+        newOwner.put(NAME_KEY, ownerText);
+        newOwner.put(PHONE_KEY, ownerPhoneText);
+        newOwner.put(ADDRESS_KEY, ownerAddrText);
+
+        db.collection("Animals").document(nameText).set(newAnimal)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -139,30 +150,7 @@ public class AddPetFragment extends Fragment {
                     }
                 });
 
-        //createOwner(view);
-
-        Context context = getActivity().getApplicationContext();
-
-        Toast.makeText(context,"Pet added with sucess!", Toast.LENGTH_SHORT).show();
-
-        getFragmentManager().popBackStackImmediate();
-    }
-
-    private void createOwner(View view){
-        EditText ownerView = (EditText) view.findViewById(R.id.animal_ownerName);
-        EditText ownerPhoneView = (EditText) view.findViewById(R.id.animal_ownerPhone);
-        EditText ownerAddrView = (EditText) view.findViewById(R.id.animal_ownerAddress);
-
-        String ownerText = ownerView.getText().toString();
-        int ownerPhoneText = Integer.parseInt(ownerPhoneView.getText().toString());
-        String ownerAddrText = ownerAddrView.getText().toString();
-
-        Map<String, Object> newOwner = new HashMap<>();
-        newOwner.put(NAME_KEY, ownerText);
-        newOwner.put(PHONE_KEY, ownerPhoneText);
-        newOwner.put(ADDRESS_KEY, ownerAddrText);
-
-        db.collection("Animals").document("Owner").set(newOwner).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Owners").document(ownerText).set(newOwner).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Owner Registered");
@@ -173,6 +161,14 @@ public class AddPetFragment extends Fragment {
                 Log.d("TAG", e.toString());
             }
         });
+
+        //createOwner(view);
+
+        Context context = getActivity().getApplicationContext();
+
+        Toast.makeText(context,"Pet added with sucess!", Toast.LENGTH_SHORT).show();
+
+        getFragmentManager().popBackStackImmediate();
     }
 
 }

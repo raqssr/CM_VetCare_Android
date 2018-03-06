@@ -7,6 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.ritasantiago.vetcare.firebase.Animal;
+
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
@@ -15,9 +20,9 @@ import java.util.List;
 
 public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.PersonViewHolder>
 {
-    List<PetsFragment.Person> persons;
-    RVPetAdapter(List<PetsFragment.Person> persons){
-        this.persons = persons;
+    List<Animal> animals;
+    RVPetAdapter(List<Animal> animals){
+        this.animals = animals;
     }
 
     @Override
@@ -29,14 +34,20 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.PersonViewHo
 
     @Override
     public void onBindViewHolder(PersonViewHolder holder, int position) {
-        holder.personName.setText(persons.get(position).name);
-        holder.personAge.setText(persons.get(position).age);
-        holder.personPhoto.setImageResource(persons.get(position).photoId);
+        holder.animalName.setText(animals.get(position).name);
+        //holder.animalSex.setText(animals.get(position).sex);
+        holder.animalWeight.setText(animals.get(position).weight);
+        //holder.animalSpecie.setText(animals.get(position).specie);
+        holder.animalDateOfBirth.setText(animals.get(position).dateOfBirth);
+        //holder.animalBreed.setText(animals.get(position).breed);
+        //holder.animalCoat.setText(animals.get(position).coat);
+        holder.animalOwner.setText(animals.get(position).owner_name);
+        holder.animalPhoto.setImageResource(animals.get(position).picture_id);
     }
 
     @Override
     public int getItemCount() {
-        return persons.size();
+        return animals.size();
     }
 
     @Override
@@ -46,16 +57,29 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.PersonViewHo
 
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
-        TextView personName;
-        TextView personAge;
-        ImageView personPhoto;
+        TextView animalName;
+        TextView animalSex;
+        TextView animalWeight;
+        TextView animalSpecie;
+        TextView animalDateOfBirth;
+        TextView animalBreed;
+        TextView animalCoat;
+        TextView animalOwner;
+
+        ImageView animalPhoto;
 
         PersonViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
-            personName = (TextView)itemView.findViewById(R.id.person_name);
-            personAge = (TextView)itemView.findViewById(R.id.person_age);
-            personPhoto = (ImageView)itemView.findViewById(R.id.person_photo);
+            animalName = (TextView)itemView.findViewById(R.id.animal_name);
+            //animalSex = (TextView) itemView.findViewById(R.id.animal_sex);
+            animalWeight = (TextView) itemView.findViewById(R.id.animal_weight);
+            //animalSpecie = (TextView) itemView.findViewById(R.id.animal_specie);
+            animalDateOfBirth = (TextView) itemView.findViewById(R.id.animal_date);
+            //animalBreed = (TextView) itemView.findViewById(R.id.animal_breed);
+            //animalCoat = (TextView) itemView.findViewById(R.id.animal_coat);
+            animalOwner = (TextView) itemView.findViewById(R.id.animal_owner);
+            animalPhoto = (ImageView)itemView.findViewById(R.id.animal_photo);
         }
     }
 }

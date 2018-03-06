@@ -1,8 +1,9 @@
 package com.example.ritasantiago.vetcare.firebase;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
-
+import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -10,8 +11,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,15 +55,6 @@ public class DatabaseActions {
     public static final String DOSAGE_KEY = "Dosage";
 
 
-    //reference for documents
-    private DocumentReference animalDoc = db.getInstance().document("Animals/Animal");
-    private DocumentReference ownerDoc = db.getInstance().document("Animals/Owner");
-    private DocumentReference internmentDoc = db.getInstance().document("Animals/Internment");
-    private DocumentReference historicDoc = db.getInstance().document("Animals/Historic");
-    private DocumentReference medicineDoc = db.getInstance().document("Animals/Medicine");
-    private DocumentReference procedureDoc = db.getInstance().document("Animals/Procedure");
-
-
     //add functions
     public void createAnimal(String nameText, String sexText, double weightText, String specieText, String dateText, String breedText, String coatText, String ownerText){
         Map<String, Object> newAnimal = new HashMap<>();
@@ -72,7 +67,7 @@ public class DatabaseActions {
         newAnimal.put(COAT_KEY, coatText);
         newAnimal.put(OWNER_NAME, ownerText);
 
-        db.collection("Animals").document("Animal").set(newAnimal)
+        db.collection("Animals").document(nameText).set(newAnimal)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -94,7 +89,7 @@ public class DatabaseActions {
         newOwner.put(PHONE_KEY, ownerPhoneText);
         newOwner.put(ADDRESS_KEY, ownerAddrText);
 
-        db.collection("Animals").document("Owner").set(newOwner).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Owners").document(ownerText).set(newOwner).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Owner Registered");
@@ -117,7 +112,7 @@ public class DatabaseActions {
         newInter.put(MEDICINE_KEY,medicine);
         newInter.put(DATE_IN_KEY,dateIn);
 
-        internmentDoc.set(newInter).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Internments").document(name).set(newInter).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Internment Created!");
@@ -135,7 +130,7 @@ public class DatabaseActions {
         newHist.put(NAME_KEY,name);
         newHist.put(PROCEDURE_KEY,procedure);
 
-        historicDoc.set(newHist).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Historic").document(name).set(newHist).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Internment Created!");
@@ -153,7 +148,7 @@ public class DatabaseActions {
         newProc.put(PROCEDURE_KEY,procedure);
         newProc.put(PROCEDURE_DATE_KEY,date);
 
-        procedureDoc.set(newProc).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Procedures").document(procedure).set(newProc).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Internment Created!");
@@ -171,7 +166,7 @@ public class DatabaseActions {
         newMed.put(MEDICINE_KEY,medicine);
         newMed.put(DOSAGE_KEY,dosage);
 
-        medicineDoc.set(newMed).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Medicines").document(medicine).set(newMed).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Internment Created!");
@@ -185,9 +180,28 @@ public class DatabaseActions {
     }
 
     //read functions
-    public String readSingleAnimal(){
+    public List<String> readAllAnimals(){
+        final List<String> infos = new ArrayList<>();
+        db.collection("Animals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    QuerySnapshot query = task.getResult();
+                    List<DocumentSnapshot> data = query.getDocuments();
+                    infos.add(data.toString());
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("TAG", e.toString());
+            }
+        });
+        return infos;
+    }
+    public String readSingleAnimal(String name){
         final StringBuilder fields = new StringBuilder("");
-        animalDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Animals").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -202,18 +216,18 @@ public class DatabaseActions {
                     fields.append("\nOwner's Name: ").append(doc.get(OWNER_NAME));
                 }
             }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("TAG", e.toString());
-                }
-             });
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("TAG", e.toString());
+            }
+        });
         return fields.toString();
     }
 
-    public String readSingleOwner(){
+    public String readSingleOwner(String name){
         final StringBuilder fields = new StringBuilder("");
-        ownerDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Owners").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -232,9 +246,9 @@ public class DatabaseActions {
         return fields.toString();
     }
 
-    public String readInternment(){
+    public String readInternment(String name){
         final StringBuilder fields = new StringBuilder("");
-        internmentDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Internments").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -257,9 +271,9 @@ public class DatabaseActions {
         return fields.toString();
     }
 
-    public String readHistoric(){
+    public String readHistoric(String name){
         final StringBuilder fields = new StringBuilder("");
-        historicDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Historic").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -277,9 +291,9 @@ public class DatabaseActions {
         return fields.toString();
     }
 
-    public String readProcedure(){
+    public String readProcedure(String name){
         final StringBuilder fields = new StringBuilder("");
-        procedureDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Procedures").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -297,9 +311,9 @@ public class DatabaseActions {
         return fields.toString();
     }
 
-    public String readMedicine(){
+    public String readMedicine(String name){
         final StringBuilder fields = new StringBuilder("");
-        medicineDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Medicines").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -318,8 +332,8 @@ public class DatabaseActions {
     }
 
     //update functions
-    public void updateAnimalWeight(double weight){
-        animalDoc.update(WEIGHT_KEY, weight).addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void updateAnimalWeight(String name, double weight){
+        db.collection("Animals").document(name).update(WEIGHT_KEY, weight).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Animal Updated!");
@@ -327,9 +341,9 @@ public class DatabaseActions {
         });
     }
 
-    public void updateOwnersInfo(int phone, String address){
-        ownerDoc.update(PHONE_KEY,phone);
-        ownerDoc.update(ADDRESS_KEY,address).addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void updateOwnersInfo(String name, int phone, String address){
+        db.collection("Owners").document(name).update(PHONE_KEY,phone);
+        db.collection("Owners").document(name).update(ADDRESS_KEY,address).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Owner Updated!");
@@ -337,9 +351,9 @@ public class DatabaseActions {
         });
     }
 
-    public void updateInternment(String procedure, String medicine){
-        internmentDoc.update(PROCEDURE_KEY,procedure);
-        internmentDoc.update(MEDICINE_KEY,medicine).addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void updateInternment(String name, String procedure, String medicine){
+        db.collection("Internments").document(name).update(PROCEDURE_KEY,procedure);
+        db.collection("Internments").document(name).update(MEDICINE_KEY,medicine).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG","Internment Updated");
@@ -347,8 +361,8 @@ public class DatabaseActions {
         });
     }
 
-    public void updateMedicine(double dosage){
-        historicDoc.update(DOCTOR_KEY,dosage).addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void updateMedicine(String name, double dosage){
+        db.collection("Medicines").document(name).update(DOCTOR_KEY,dosage).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Dosage Updated!");
@@ -357,8 +371,8 @@ public class DatabaseActions {
     }
 
     //delete functions
-    public void deleteAnimal(){
-        animalDoc.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void deleteAnimal(String name){
+        db.collection("Animals").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Animal deleted!");
@@ -366,8 +380,8 @@ public class DatabaseActions {
         });
     }
 
-    public void deleteInternment(){
-        internmentDoc.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void deleteInternment(String name){
+        db.collection("Animals").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Animal deleted!");
