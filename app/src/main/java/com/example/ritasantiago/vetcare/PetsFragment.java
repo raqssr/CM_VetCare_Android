@@ -1,6 +1,8 @@
 package com.example.ritasantiago.vetcare;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import com.example.ritasantiago.vetcare.room.AppDatabase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -30,6 +34,7 @@ import java.util.List;
 import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.BREED;
 import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.COAT;
 import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.DOB;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.IMAGE_ID;
 import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.NAME;
 import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.OWNER_NAME;
 import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.SEX;
@@ -42,7 +47,6 @@ import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.WEIGHT;
 
 public class PetsFragment extends Fragment {
     private RVPetAdapter adapter;
-    private List<Animal> pets;
     FirebaseFirestore db;
 
     private void initializeData(){
@@ -50,21 +54,26 @@ public class PetsFragment extends Fragment {
         db.collection("Animals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    QuerySnapshot query = task.getResult();
-                    List<DocumentSnapshot> data = query.getDocuments();
-                    for (int i = 0; i < data.size(); i++)
-                    {
-                        adapter.addAnimal(new Animal(data.get(i).get(NAME).toString(),
-                                                     data.get(i).get(SEX).toString(),
-                                                     data.get(i).get(WEIGHT).toString(),
-                                                     data.get(i).get(SPECIE).toString(),
-                                                     data.get(i).get(DOB).toString(),
-                                                     data.get(i).get(BREED).toString(),
-                                                     data.get(i).get(COAT).toString(),
-                                                     data.get(i).get(OWNER_NAME).toString()));
-                    }
+            if(task.isSuccessful()){
+                QuerySnapshot query = task.getResult();
+                List<DocumentSnapshot> data = query.getDocuments();
+                for (int i = 0; i < data.size(); i++)
+                {
+                    Log.i("PetsFragment", data.get(i).get(IMAGE_ID).toString());
+                    byte imagem[] = Base64.decode(data.get(i).get(IMAGE_ID).toString(),Base64.NO_WRAP | Base64.URL_SAFE);
+                    Bitmap bmp = BitmapFactory.decodeByteArray(imagem, 0, imagem.length);
+                    adapter.addAnimal(new Animal(data.get(i).get(NAME).toString(),
+                                                 data.get(i).get(SEX).toString(),
+                                                 bmp,
+                                                 data.get(i).get(WEIGHT).toString(),
+                                                 data.get(i).get(SPECIE).toString(),
+                                                 data.get(i).get(DOB).toString(),
+                                                 data.get(i).get(BREED).toString(),
+                                                 data.get(i).get(COAT).toString(),
+                                                 data.get(i).get(OWNER_NAME).toString()));
+
                 }
+            }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

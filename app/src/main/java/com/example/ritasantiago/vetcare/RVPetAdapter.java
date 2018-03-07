@@ -17,19 +17,19 @@ import java.util.List;
  * Created by raquelramos on 04-03-2018.
  */
 
-public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AninalViewHolder>
+public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHolder>
 {
     private List<Animal> animals = new ArrayList<>();
 
     @Override
-    public AninalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AnimalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_pets, parent, false);
-        AninalViewHolder pvh = new AninalViewHolder(v);
+        AnimalViewHolder pvh = new AnimalViewHolder(v);
         return pvh;
     }
 
     @Override
-    public void onBindViewHolder(AninalViewHolder holder, int position) {
+    public void onBindViewHolder(AnimalViewHolder holder, int position) {
         holder.animalName.setText(animals.get(position).name);
         //holder.animalSex.setText(animals.get(position).sex);
         //holder.animalWeight.setText(animals.get(position).weight);
@@ -38,7 +38,7 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AninalViewHo
         //holder.animalBreed.setText(animals.get(position).breed);
         //holder.animalCoat.setText(animals.get(position).coat);
         holder.animalOwner.setText(animals.get(position).owner_name);
-        //holder.animalPhoto.setImageResource(animals.get(position).picture_id);
+        holder.animalPhoto.setImageBitmap(animals.get(position).picture_id);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AninalViewHo
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public static class AninalViewHolder extends RecyclerView.ViewHolder {
+    public static class AnimalViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView animalName;
         TextView animalSex;
@@ -61,10 +61,9 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AninalViewHo
         TextView animalBreed;
         TextView animalCoat;
         TextView animalOwner;
-
         ImageView animalPhoto;
 
-        AninalViewHolder(View itemView) {
+        AnimalViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
             animalName = (TextView)itemView.findViewById(R.id.animal_name);
@@ -75,7 +74,7 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AninalViewHo
             //animalBreed = (TextView) itemView.findViewById(R.id.animal_breed);
             //animalCoat = (TextView) itemView.findViewById(R.id.animal_coat);
             animalOwner = (TextView) itemView.findViewById(R.id.animal_ownerName);
-            //animalPhoto = (ImageView)itemView.findViewById(R.id.animal_photo);
+            animalPhoto = (ImageView)itemView.findViewById(R.id.animal_photo);
         }
     }
 

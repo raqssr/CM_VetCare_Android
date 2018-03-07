@@ -20,4 +20,5 @@
     <string name="ownerName">Owner Name</string>
     <string name="ownerAddress">Owner Address</string>
     <string name="ownerPhone">Owner Phone</string>
+    <string name="upload_photo">Take Photo</string>
 </resources>

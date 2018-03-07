@@ -13,4 +13,5 @@ public class FirebaseFields {
     public static final String BREED = "Breed";
     public static final String COAT = "Coat";
     public static final String OWNER_NAME = "Owner's Name";
+    public static final String IMAGE_ID = "image";
 }

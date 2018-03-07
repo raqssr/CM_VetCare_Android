@@ -19,7 +19,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/person_photo"
+                android:id="@+id/animal_photo"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginBottom="8dp"
@@ -37,7 +37,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/person_photo"
+                app:layout_constraintStart_toEndOf="@+id/animal_photo"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Nome do Benjo" />
 
@@ -49,7 +49,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/person_photo"
+                app:layout_constraintStart_toEndOf="@+id/animal_photo"
                 app:layout_constraintTop_toBottomOf="@+id/animal_name"
                 tools:text="DAta" />
 
@@ -61,7 +61,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/person_photo"
+                app:layout_constraintStart_toEndOf="@+id/animal_photo"
                 app:layout_constraintTop_toBottomOf="@+id/animal_date"
                 tools:text="OWnerName" />
 
