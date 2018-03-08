@@ -113,7 +113,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:ems="10"
-                android:inputType="numberSigned"
+                android:inputType="numberDecimal"
                 android:hint="@string/weight"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
