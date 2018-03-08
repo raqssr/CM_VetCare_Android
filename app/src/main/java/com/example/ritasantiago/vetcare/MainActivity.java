@@ -16,8 +16,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.ritasantiago.vetcare.firebase.FirebaseFields;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +101,7 @@ public class MainActivity extends AppCompatActivity
 
         //creating fragment object
         Fragment fragment = null;
+        Intent intent = null;
 
         //initializing the fragment object which is selected
         switch (itemId) {
@@ -111,6 +117,15 @@ public class MainActivity extends AppCompatActivity
             case R.id.documents:
                 fragment = new DocsFragment();
                 break;
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                intent = new Intent(this, LoginActivity.class);
+        }
+
+        if (intent != null)
+        {
+            startActivity(intent);
+            finish();
         }
 
         //replacing the fragment

@@ -21,4 +21,10 @@
     <string name="ownerAddress">Owner Address</string>
     <string name="ownerPhone">Owner Phone</string>
     <string name="upload_photo">Take Photo</string>
+    <string name="taskList">Task List</string>
+    <string name="animals">Animals</string>
+    <string name="calendar">Calendar</string>
+    <string name="docs">Documents</string>
+    <string name="others">Others</string>
+    <string name="logout">Log Out</string>
 </resources>

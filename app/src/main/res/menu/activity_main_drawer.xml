@@ -7,31 +7,31 @@
         <item
             android:id="@+id/tasks"
             android:icon="@drawable/ic_menu_tasks"
-            android:title="Task List" />
+            android:title="@string/taskList" />
         <item
             android:id="@+id/pets"
             android:icon="@drawable/ic_menu_pets"
-            android:title="Animals" />
+            android:title="@string/animals" />
         <item
             android:id="@+id/calendar"
             android:icon="@drawable/ic_menu_calendar"
-            android:title="Calendar" />
+            android:title="@string/calendar" />
         <item
             android:id="@+id/documents"
             android:icon="@drawable/ic_menu_doc"
-            android:title="Documents" />
+            android:title="@string/docs" />
     </group>
 
-    <item android:title="Others">
+    <item android:title="@string/others">
         <menu>
             <item
                 android:id="@+id/settings"
                 android:icon="@drawable/ic_menu_settings"
-                android:title="Settings" />
+                android:title="@string/action_settings" />
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_menu_logout"
-                android:title="Log Out" />
+                android:title="@string/logout" />
         </menu>
     </item>
 
