@@ -9,17 +9,19 @@ import com.google.firebase.database.IgnoreExtraProperties;
  */
 @IgnoreExtraProperties
 public class Medicine {
-    public int uid;
     public String name;
     public double dosage;
+    public int frequency;
+    public int totalDays;
 
     public Medicine(){
 
     }
 
-    public Medicine(int uid, String name, double dosage){
-        this.uid = uid;
+    public Medicine(String name, double dosage, int frequency, int totalDays){
         this.name = name;
         this.dosage = dosage;
+        this.frequency = frequency;
+        this.totalDays = totalDays;
     }
 }

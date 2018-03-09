@@ -9,21 +9,21 @@ public class Internment {
     public String comments;
     public String reason_internment;
     public String doctor;
-    public int procedure_id;
-    public int medicine_id;
+    public String procedure;
+    public String medicine;
     public String dateIn;
 
     public Internment(){
 
     }
 
-    public Internment(String name, String comments, String reason_internment, String doctor, int procedure_id, int medicine_id, String dateIn){
+    public Internment(String name, String comments, String reason_internment, String doctor, String procedure, String medicine, String dateIn){
         this.name = name;
         this.comments = comments;
         this.reason_internment = reason_internment;
         this.doctor = doctor;
-        this.procedure_id = procedure_id;
-        this.medicine_id = medicine_id;
+        this.procedure = procedure;
+        this.medicine = medicine;
         this.dateIn = dateIn;
     }
 }

@@ -14,6 +14,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,8 @@ public class DatabaseActions {
 
     //medicine's doc keys
     public static final String DOSAGE_KEY = "Dosage";
+    public static final String FREQUENCY_KEY = "Frequency";
+    public static final String TOTALDAYS_KEY = "Total Days";
 
 
     //add functions
@@ -89,7 +93,8 @@ public class DatabaseActions {
         newOwner.put(PHONE_KEY, ownerPhoneText);
         newOwner.put(ADDRESS_KEY, ownerAddrText);
 
-        db.collection("Owners").document(ownerText).set(newOwner).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Owners").document(ownerText).set(newOwner)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Owner Registered");
@@ -102,20 +107,24 @@ public class DatabaseActions {
         });
     }
 
-    public void createInternment(String name, String comments, String reason, String doctor, String procedure, String medicine, String dateIn){
-        Map<String, String> newInter = new HashMap<>();
+    public void createInternment(String name, String comments, String reason, String doctor, String procedure, String medicine){
+        Map<String, Object> newInter = new HashMap<>();
         newInter.put(NAME_KEY,name);
         newInter.put(COMMENTS_KEY,comments);
         newInter.put(REASON_KEY,reason);
         newInter.put(DOCTOR_KEY,doctor);
         newInter.put(PROCEDURE_KEY,procedure);
         newInter.put(MEDICINE_KEY,medicine);
+
+        Date dateIn = Calendar.getInstance().getTime();
+
         newInter.put(DATE_IN_KEY,dateIn);
 
-        db.collection("Internments").document(name).set(newInter).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Internments").document(name).set(newInter)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Internment Created!");
+                    Log.d("TAG", "Internment Created!");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -125,10 +134,10 @@ public class DatabaseActions {
         });
     }
 
-    public void createHistoric(String name, String procedure){
-        Map<String, String> newHist = new HashMap<>();
+    public void createHistoric(String name, List<String> procedures){
+        Map<String, Object> newHist = new HashMap<>();
         newHist.put(NAME_KEY,name);
-        newHist.put(PROCEDURE_KEY,procedure);
+        newHist.put(PROCEDURE_KEY,procedures);
 
         db.collection("Historic").document(name).set(newHist).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -161,10 +170,12 @@ public class DatabaseActions {
         });
     }
 
-    public void createMedicine(String medicine, double dosage){
+    public void createMedicine(String medicine, double dosage, int frequency, int totalDays){
         Map<String, Object> newMed = new HashMap<>();
         newMed.put(MEDICINE_KEY,medicine);
         newMed.put(DOSAGE_KEY,dosage);
+        newMed.put(FREQUENCY_KEY,frequency);
+        newMed.put(TOTALDAYS_KEY,totalDays);
 
         db.collection("Medicines").document(medicine).set(newMed).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -361,8 +372,9 @@ public class DatabaseActions {
         });
     }
 
-    public void updateMedicine(String name, double dosage){
-        db.collection("Medicines").document(name).update(DOCTOR_KEY,dosage).addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void updateMedicine(String name, int frequency, int totalDays){
+        db.collection("Medicines").document(name).update(FREQUENCY_KEY, frequency);
+        db.collection("Medicines").document(name).update(TOTALDAYS_KEY, totalDays).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Dosage Updated!");

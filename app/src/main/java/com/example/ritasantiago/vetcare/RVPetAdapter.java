@@ -1,5 +1,9 @@
 package com.example.ritasantiago.vetcare;
 
+import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +24,11 @@ import java.util.List;
 public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHolder>
 {
     private List<Animal> animals = new ArrayList<>();
+    public FragmentActivity fa;
+
+    public RVPetAdapter(FragmentActivity fa){
+        this.fa = fa;
+    }
 
     @Override
     public AnimalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,14 +40,21 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
     @Override
     public void onBindViewHolder(AnimalViewHolder holder, int position) {
         holder.animalName.setText(animals.get(position).name);
-        //holder.animalSex.setText(animals.get(position).sex);
-        //holder.animalWeight.setText(animals.get(position).weight);
-        //holder.animalSpecie.setText(animals.get(position).specie);
         holder.animalDateOfBirth.setText(animals.get(position).dateOfBirth);
-        //holder.animalBreed.setText(animals.get(position).breed);
-        //holder.animalCoat.setText(animals.get(position).coat);
         holder.animalOwner.setText(animals.get(position).owner_name);
-        holder.animalPhoto.setImageBitmap(animals.get(position).picture_id);
+        holder.animalPhoto.setImageBitmap(animals.get(position).image);
+        holder.cv.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view)
+            {
+                Fragment fragment = new InfoPetFragment();
+                FragmentTransaction ft = fa.getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
     }
 
     @Override
@@ -54,12 +70,7 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
     public static class AnimalViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView animalName;
-        TextView animalSex;
-        TextView animalWeight;
-        TextView animalSpecie;
         TextView animalDateOfBirth;
-        TextView animalBreed;
-        TextView animalCoat;
         TextView animalOwner;
         ImageView animalPhoto;
 
@@ -67,12 +78,7 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
             animalName = (TextView)itemView.findViewById(R.id.animal_name);
-            //animalSex = (TextView) itemView.findViewById(R.id.animal_sex);
-            //animalWeight = (TextView) itemView.findViewById(R.id.animal_weight);
-            //animalSpecie = (TextView) itemView.findViewById(R.id.animal_specie);
             animalDateOfBirth = (TextView) itemView.findViewById(R.id.animal_date);
-            //animalBreed = (TextView) itemView.findViewById(R.id.animal_breed);
-            //animalCoat = (TextView) itemView.findViewById(R.id.animal_coat);
             animalOwner = (TextView) itemView.findViewById(R.id.animal_ownerName);
             animalPhoto = (ImageView)itemView.findViewById(R.id.animal_photo);
         }

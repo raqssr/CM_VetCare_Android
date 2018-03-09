@@ -5,17 +5,15 @@ package com.example.ritasantiago.vetcare.firebase;
  */
 
 public class Procedure {
-    public int uid;
+    public String name;
     public String date;
-    public int picture_id;
 
     public Procedure(){
 
     }
 
-    public Procedure(int uid, String date, int picture_id){
-        this.uid = uid;
+    public Procedure(String name, String date){
+        this.name = name;
         this.date = date;
-        this.picture_id = picture_id;
     }
 }

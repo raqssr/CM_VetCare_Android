@@ -41,6 +41,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -196,6 +198,8 @@ public class AddPetFragment extends Fragment {
         newOwner.put(PHONE_KEY, ownerPhoneText);
         newOwner.put(ADDRESS_KEY, ownerAddrText);
 
+        Date dateIn = Calendar.getInstance().getTime(); //dateIn for internment
+
         db.collection("Animals").document(nameText).set(newAnimal)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -221,8 +225,6 @@ public class AddPetFragment extends Fragment {
                 Log.d("TAG", e.toString());
             }
         });
-
-        //createOwner(view);
 
         Context context = getActivity().getApplicationContext();
 

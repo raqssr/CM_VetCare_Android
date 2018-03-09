@@ -12,7 +12,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class Animal {
     public String name;
     public String sex;
-    public Bitmap picture_id;
+    public Bitmap image;
     public String weight;
     public String specie;
     public String dateOfBirth;
@@ -27,10 +27,10 @@ public class Animal {
 
     }
 
-    public Animal(String name, String sex, Bitmap picture_id, String weight, String specie, String dateOfBirth, String breed, String coat, String owner_name ){
+    public Animal(String name, String sex, Bitmap image, String weight, String specie, String dateOfBirth, String breed, String coat, String owner_name ){
         this.name = name;
         this.sex = sex;
-        this.picture_id = picture_id;
+        this.image = image;
         this.weight = weight;
         this.specie = specie;
         this.dateOfBirth = dateOfBirth;
@@ -38,26 +38,4 @@ public class Animal {
         this.coat = coat;
         this.owner_name = owner_name;
     }
-
-    /*public Animal(String name, String sex, String weight, String specie, String dateOfBirth, String breed, String coat, String owner_name ){
-        this.name = name;
-        this.sex = sex;
-        this.weight = weight;
-        this.specie = specie;
-        this.dateOfBirth = dateOfBirth;
-        this.breed = breed;
-        this.coat = coat;
-        this.owner_name = owner_name;
-    }*/
-
-    /*public Animal(String name, String weight, String dateOfBirth, String owner_name ){
-        this.name = name;
-        this.weight = weight;
-        this.dateOfBirth = dateOfBirth;
-        this.owner_name = owner_name;
-    }
-
-    public Animal(String fields){
-        this.fields = fields;
-    }*/
 }

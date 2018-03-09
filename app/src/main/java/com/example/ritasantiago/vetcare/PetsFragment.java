@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.ritasantiago.vetcare.firebase.Animal;
-import com.example.ritasantiago.vetcare.room.AppDatabase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -91,7 +90,7 @@ public class PetsFragment extends Fragment {
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
-        adapter = new RVPetAdapter();
+        adapter = new RVPetAdapter(getActivity());
         rv.setAdapter(adapter);
 
         initializeData();

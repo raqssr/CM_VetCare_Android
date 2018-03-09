@@ -2,6 +2,8 @@ package com.example.ritasantiago.vetcare.firebase;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.List;
+
 /**
  * Created by ritasantiago on 03-03-2018.
  */
@@ -9,13 +11,13 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class Historic {
     public String name;
-    public int procedure_id;
+    public List<String> procedures;
 
     public Historic(){
 
     }
-    public Historic(String name, int procedure_id){
+    public Historic(String name, List<String> procedures){
         this.name = name;
-        this.procedure_id = procedure_id;
+        this.procedures = procedures;
     }
 }

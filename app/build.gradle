@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.android.support:support-v4:25.4.0'
     implementation 'com.android.support:recyclerview-v7:25.4.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation ('com.android.support.test.espresso:espresso-core:3.0.1', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
@@ -59,6 +59,7 @@ dependencies {
     compile "com.android.support:support-annotations:${supportLibVersion}"
     compile 'com.google.android.gms:play-services-tagmanager:11.8.0'
 }
+
 
 
 
