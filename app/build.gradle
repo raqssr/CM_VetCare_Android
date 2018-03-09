@@ -58,6 +58,8 @@ dependencies {
     compile "com.android.support:transition:${supportLibVersion}"
     compile "com.android.support:support-annotations:${supportLibVersion}"
     compile 'com.google.android.gms:play-services-tagmanager:11.8.0'
+    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
+    implementation 'com.tapadoo.android:alerter:2.0.4'
 }
 
 

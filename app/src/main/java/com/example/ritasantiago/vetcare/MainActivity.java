@@ -19,10 +19,15 @@ import android.view.MenuItem;
 import com.example.ritasantiago.vetcare.firebase.FirebaseFields;
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.tapadoo.alerter.Alerter;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FirebaseAuth mAuth;
+    //qr code scanner object
+    private IntentIntegrator qrScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +37,10 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle("VetCare");
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -52,6 +49,38 @@ public class MainActivity extends AppCompatActivity
 
         //add this line to display menu1 when the activity is loaded
         displaySelectedScreen(R.id.tasks);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            //if qrcode has nothing in it
+            if (result.getContents() == null) {
+                Alerter.create(this).setTitle("Sorry, the QR Code is not attributed to any animal.").
+                                                setBackgroundColorRes(R.color.colorError).show();
+            } else {
+                //if qr contains data
+                try {
+                    //converting the data
+                    String obj = result.getContents();
+                    Log.i("Main Activity", String.valueOf(obj));
+                    Alerter.create(this).setTitle("This animal is: ").setText(String.valueOf(obj)).
+                            setBackgroundColorRes(R.color.colorSucess).show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //if control comes here
+                    //that means the encoded format not matches
+                    //in this case you can display whatever data is available on the qrcode
+                    //to a toast
+                    Alerter.create(this).setTitle("Sorry, the QR Code result is invalid.").
+                            setBackgroundColorRes(R.color.colorError).show();
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -85,6 +114,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void readQrCode(MenuItem item)
+    {
+        qrScan = new IntentIntegrator(this);
+        qrScan.initiateScan();
+        //Toast.makeText(this, "QRCode selected", Toast.LENGTH_SHORT).show();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
