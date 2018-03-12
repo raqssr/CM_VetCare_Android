@@ -4,12 +4,14 @@ import android.graphics.Bitmap;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
+
 /**
  * Created by ritasantiago on 03-03-2018.
  */
 
 @IgnoreExtraProperties
-public class Animal {
+public class Animal implements Serializable {
     public String name;
     public String sex;
     public Bitmap image;

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ritasantiago.vetcare.firebase.Animal;
+import com.example.ritasantiago.vetcare.interfaces.PetClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +24,10 @@ import java.util.List;
 public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHolder>
 {
     private List<Animal> animals = new ArrayList<>();
-    public FragmentActivity fa;
+    private PetClickListener clickListener;
 
-    public RVPetAdapter(FragmentActivity fa){
-        this.fa = fa;
+    public RVPetAdapter(PetClickListener clickListener){
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -37,23 +38,17 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
     }
 
     @Override
-    public void onBindViewHolder(AnimalViewHolder holder, int position) {
+    public void onBindViewHolder(AnimalViewHolder holder, final int position) {
         holder.animalName.setText(animals.get(position).name);
         holder.animalDateOfBirth.setText(animals.get(position).dateOfBirth);
         holder.animalOwner.setText(animals.get(position).owner_name);
         holder.animalPhoto.setImageBitmap(animals.get(position).image);
-        holder.cv.setOnClickListener(new View.OnClickListener(){
+        holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                Fragment fragment = new ProfilePetFragment();
-                FragmentTransaction ft = fa.getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
+            public void onClick(View view) {
+                clickListener.onPetClick(animals.get(position));
             }
         });
-
     }
 
     @Override

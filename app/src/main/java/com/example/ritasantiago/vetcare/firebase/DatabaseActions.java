@@ -287,11 +287,11 @@ public class DatabaseActions {
         db.collection("Historic").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    fields.append("\nName: ").append(doc.get(NAME_KEY));
-                    fields.append("\nProcedure: ").append(doc.get(PROCEDURE_KEY));
-                }
+            if(task.isSuccessful()){
+                DocumentSnapshot doc = task.getResult();
+                fields.append("\nName: ").append(doc.get(NAME_KEY));
+                fields.append("\nProcedure: ").append(doc.get(PROCEDURE_KEY));
+            }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -1,27 +1,53 @@
 package com.example.ritasantiago.vetcare;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.ritasantiago.vetcare.firebase.Animal;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.example.ritasantiago.vetcare.PetsFragment.ANIMAL_BUNDLE_KEY;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.IMAGE_ID;
 
 public class ProfilePetFragment extends Fragment {
 
-    FirebaseFirestore db;
-    TextView generalInfo;
-    TextView hosp;
+    private FirebaseFirestore db;
+    private TextView generalInfo;
+    private TextView hosp;
+    private Animal animal;
+    private CircleImageView photo;
+    private TextView name, dob, owner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
-        return inflater.inflate(R.layout.fragment_profile_pet, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_profile_pet, container, false);
+        Bundle args = getArguments();
+        this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
+        photo = (CircleImageView) rootView.findViewById(R.id.profile_photo);
+        name = (TextView) rootView.findViewById(R.id.animal_name);
+        dob = (TextView) rootView.findViewById(R.id.animal_dob);
+        owner = (TextView) rootView.findViewById(R.id.animal_owner);
+
+        name.setText(animal.name);
+        dob.setText(animal.dateOfBirth);
+        owner.setText(animal.owner_name);
+        photo.setImageBitmap(animal.image);
+
+        return rootView;
     }
 
 

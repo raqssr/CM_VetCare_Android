@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.ritasantiago.vetcare.firebase.Animal;
+import com.example.ritasantiago.vetcare.interfaces.PetClickListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -44,9 +45,11 @@ import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.WEIGHT;
  * Created by raquelramos on 04-03-2018.
  */
 
-public class PetsFragment extends Fragment {
+public class PetsFragment extends Fragment implements PetClickListener {
+
+    public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
     private RVPetAdapter adapter;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     private void initializeData(){
         db = FirebaseFirestore.getInstance();
@@ -90,7 +93,7 @@ public class PetsFragment extends Fragment {
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
-        adapter = new RVPetAdapter(getActivity());
+        adapter = new RVPetAdapter(this);
         rv.setAdapter(adapter);
 
         initializeData();
@@ -117,5 +120,17 @@ public class PetsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("PetsFragment");
+    }
+
+    @Override
+    public void onPetClick(Animal animal) {
+        Fragment fragment = new ProfilePetFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+        fragment.setArguments(bundle);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }
