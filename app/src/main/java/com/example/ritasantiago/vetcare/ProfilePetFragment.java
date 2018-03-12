@@ -15,6 +15,7 @@ public class ProfilePetFragment extends Fragment {
 
     FirebaseFirestore db;
     TextView generalInfo;
+    TextView hosp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,6 +37,20 @@ public class ProfilePetFragment extends Fragment {
             public void onClick(View v)
             {
                 Fragment fragment = new GeneralInfoPetFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
+        hosp = (TextView) getActivity().findViewById(R.id.tv_hospitalisation);
+        hosp.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Fragment fragment = new HospitalisationFragment();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.addToBackStack(null);
