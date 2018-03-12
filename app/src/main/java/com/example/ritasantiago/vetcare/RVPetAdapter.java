@@ -1,6 +1,5 @@
 package com.example.ritasantiago.vetcare;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -47,7 +46,7 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
             @Override
             public void onClick(View view)
             {
-                Fragment fragment = new InfoPetFragment();
+                Fragment fragment = new ProfilePetFragment();
                 FragmentTransaction ft = fa.getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.addToBackStack(null);
