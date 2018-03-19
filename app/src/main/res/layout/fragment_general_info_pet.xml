@@ -31,13 +31,12 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_admissionDay"
+                android:id="@+id/g_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="nome do cao"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -52,16 +51,15 @@
                 android:layout_marginTop="16dp"
                 android:text="Date of Birth"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_admissionDay" />
+                app:layout_constraintTop_toBottomOf="@+id/g_name" />
 
             <TextView
-                android:id="@+id/tv_motive"
+                android:id="@+id/g_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="data aqui"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -76,16 +74,15 @@
                 android:layout_marginTop="16dp"
                 android:text="Sex"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_motive" />
+                app:layout_constraintTop_toBottomOf="@+id/g_date" />
 
             <TextView
-                android:id="@+id/tv_veterinarian"
+                android:id="@+id/g_sex"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="masculino"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -100,16 +97,15 @@
                 android:layout_marginTop="16dp"
                 android:text="Specie"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_veterinarian" />
+                app:layout_constraintTop_toBottomOf="@+id/g_sex" />
 
             <TextView
-                android:id="@+id/tv_notes"
+                android:id="@+id/g_specie"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="caozito"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -124,16 +120,15 @@
                 android:layout_marginTop="16dp"
                 android:text="Breed"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_notes" />
+                app:layout_constraintTop_toBottomOf="@+id/g_specie" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/g_breed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="Desconhecido"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -148,16 +143,15 @@
                 android:layout_marginTop="16dp"
                 android:text="Coat"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
+                app:layout_constraintTop_toBottomOf="@+id/g_breed" />
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/g_coat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="corzinhas"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -172,16 +166,15 @@
                 android:layout_marginTop="16dp"
                 android:text="Weight"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+                app:layout_constraintTop_toBottomOf="@+id/g_coat" />
 
             <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/g_weight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="pesadinho"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -196,16 +189,15 @@
                 android:layout_marginTop="16dp"
                 android:text="Owner's Name"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                app:layout_constraintTop_toBottomOf="@+id/g_weight" />
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/g_owner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="raqs maria"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -220,7 +212,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Owner's Phone"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                app:layout_constraintTop_toBottomOf="@+id/g_owner" />
 
             <TextView
                 android:id="@+id/textView25"

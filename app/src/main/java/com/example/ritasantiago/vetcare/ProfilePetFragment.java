@@ -1,13 +1,9 @@
 package com.example.ritasantiago.vetcare;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +12,9 @@ import android.widget.TextView;
 import com.example.ritasantiago.vetcare.firebase.Animal;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.ritasantiago.vetcare.PetsFragment.ANIMAL_BUNDLE_KEY;
-import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.IMAGE_ID;
 
 public class ProfilePetFragment extends Fragment {
 
@@ -41,7 +34,7 @@ public class ProfilePetFragment extends Fragment {
         Bundle args = getArguments();
         this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
         photo = (CircleImageView) rootView.findViewById(R.id.profile_photo);
-        name = (TextView) rootView.findViewById(R.id.animal_name);
+        name = (TextView) rootView.findViewById(R.id.g_name);
         dob = (TextView) rootView.findViewById(R.id.animal_dob);
         owner = (TextView) rootView.findViewById(R.id.animal_owner);
 
@@ -66,6 +59,9 @@ public class ProfilePetFragment extends Fragment {
             public void onClick(View v)
             {
                 Fragment fragment = new GeneralInfoPetFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+                fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.addToBackStack(null);
@@ -80,6 +76,9 @@ public class ProfilePetFragment extends Fragment {
             public void onClick(View v)
             {
                 Fragment fragment = new HospitalisationFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+                fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.addToBackStack(null);
@@ -94,6 +93,9 @@ public class ProfilePetFragment extends Fragment {
             public void onClick(View v)
             {
                 Fragment fragment = new PetRecordFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+                fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.addToBackStack(null);

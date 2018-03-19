@@ -9,21 +9,48 @@ public class Internment {
     public String comments;
     public String reason_internment;
     public String doctor;
-    public String procedure;
-    public String medicine;
     public String dateIn;
 
     public Internment(){
 
     }
 
-    public Internment(String name, String comments, String reason_internment, String doctor, String procedure, String medicine, String dateIn){
-        this.name = name;
+    public Internment(String dateIn, String motive, String comments, String doctor){
         this.comments = comments;
-        this.reason_internment = reason_internment;
+        this.reason_internment = motive;
         this.doctor = doctor;
-        this.procedure = procedure;
-        this.medicine = medicine;
+        this.dateIn = dateIn;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getReason_internment() {
+        return reason_internment;
+    }
+
+    public void setReason_internment(String reason_internment) {
+        this.reason_internment = reason_internment;
+    }
+
+    public String getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(String doctor) {
+        this.doctor = doctor;
+    }
+
+    public String getDateIn() {
+        return dateIn;
+    }
+
+    public void setDateIn(String dateIn) {
         this.dateIn = dateIn;
     }
 }

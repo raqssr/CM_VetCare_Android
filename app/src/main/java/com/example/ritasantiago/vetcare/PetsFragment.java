@@ -1,6 +1,5 @@
 package com.example.ritasantiago.vetcare;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -16,30 +15,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.ritasantiago.vetcare.firebase.Animal;
 import com.example.ritasantiago.vetcare.interfaces.PetClickListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.BREED;
-import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.COAT;
-import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.DOB;
-import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.IMAGE_ID;
-import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.NAME;
-import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.OWNER_NAME;
-import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.SEX;
-import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.SPECIE;
-import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.WEIGHT;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.*;
 
 /**
  * Created by raquelramos on 04-03-2018.

@@ -43,12 +43,11 @@ public class DatabaseActions {
     public static final String ADDRESS_KEY = "Address";
 
     //internment's doc keys
-    public static final String COMMENTS_KEY = "Comments";
-    public static final String REASON_KEY = "Reason of Internment";
-    public static final String DOCTOR_KEY = "Doctor";
+    public static final String REASON_KEY = "Motive";
+    public static final String DOCTOR_KEY = "Veterinarian";
+    public static final String COMMENTS_KEY = "Observations";
+    public static final String DATE_IN_KEY = "Entry date";
     public static final String PROCEDURE_KEY = "Procedure";
-    public static final String MEDICINE_KEY = "Medicine";
-    public static final String DATE_IN_KEY = "Date In";
 
     //procedure's doc keys
     public static final String PROCEDURE_DATE_KEY = "Procedure Date";
@@ -57,6 +56,7 @@ public class DatabaseActions {
     public static final String DOSAGE_KEY = "Dosage";
     public static final String FREQUENCY_KEY = "Frequency";
     public static final String TOTALDAYS_KEY = "Total Days";
+    public static final String MEDICINE_KEY = "Medicine";
 
 
     //add functions
@@ -113,8 +113,6 @@ public class DatabaseActions {
         newInter.put(COMMENTS_KEY,comments);
         newInter.put(REASON_KEY,reason);
         newInter.put(DOCTOR_KEY,doctor);
-        newInter.put(PROCEDURE_KEY,procedure);
-        newInter.put(MEDICINE_KEY,medicine);
 
         Date dateIn = Calendar.getInstance().getTime();
 

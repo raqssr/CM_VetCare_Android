@@ -9,16 +9,13 @@ import com.google.firebase.database.IgnoreExtraProperties;
  */
 @IgnoreExtraProperties
 public class Medicine {
-    public String name;
-    public double dosage;
-    public int frequency;
-    public int totalDays;
+    public String name, dosage, frequency, totalDays;
 
     public Medicine(){
 
     }
 
-    public Medicine(String name, double dosage, int frequency, int totalDays){
+    public Medicine(String name, String dosage, String frequency, String totalDays){
         this.name = name;
         this.dosage = dosage;
         this.frequency = frequency;

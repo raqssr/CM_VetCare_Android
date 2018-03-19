@@ -4,17 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.SurfaceTexture;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,21 +25,20 @@ import android.widget.Toast;
 import com.example.ritasantiago.vetcare.firebase.DatabaseActions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import static com.example.ritasantiago.vetcare.firebase.FirebaseFields.*;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -64,21 +58,6 @@ public class AddPetFragment extends Fragment {
     RadioButton rb;
     EditText nameView, weightView, specieView, dateView, breedView, coatView, ownerView, ownerPhoneView, ownerAddrView;
 
-    //animal's doc keys
-    public static final String NAME_KEY = "Name";
-    public static final String SEX_KEY = "Sex";
-    public static final String IMAGE_KEY = "image";
-    public static final String SPECIE_KEY = "Specie";
-    public static final String WEIGHT_KEY = "Weight";
-    public static final String DATE_KEY = "Date of Birth";
-    public static final String BREED_KEY = "Breed";
-    public static final String COAT_KEY = "Coat";
-    public static final String OWNER_NAME = "Owner's Name";
-
-    //owner's doc keys
-    public static final String PHONE_KEY = "Phone";
-    public static final String ADDRESS_KEY = "Address";
-
     String sexOptionChosen = "";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private FirebaseDatabase mDatabase;
@@ -93,7 +72,7 @@ public class AddPetFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_add_pet, container, false);
         db = FirebaseFirestore.getInstance();
         sexOption = (RadioGroup) rootView.findViewById(R.id.radio_group);
-        nameView = (EditText) rootView.findViewById(R.id.animal_name);
+        nameView = (EditText) rootView.findViewById(R.id.g_name);
         weightView = (EditText) rootView.findViewById(R.id.animal_weight);
         specieView = (EditText) rootView.findViewById(R.id.animal_specie);
         dateView = (EditText) rootView.findViewById(R.id.animal_dob);
@@ -169,14 +148,14 @@ public class AddPetFragment extends Fragment {
         String ownerAddrText = ownerAddrView.getText().toString();
 
         Map<String, Object> newAnimal = new HashMap<>();
-        newAnimal.put(NAME_KEY, nameText);
-        newAnimal.put(SEX_KEY, sexText);
-        newAnimal.put(WEIGHT_KEY, weightText);
-        newAnimal.put(SPECIE_KEY, specieText);
-        newAnimal.put(DATE_KEY, dateText);
-        newAnimal.put(BREED_KEY, breedText);
-        newAnimal.put(COAT_KEY, coatText);
-        newAnimal.put(OWNER_NAME, ownerText);
+        newAnimal.put(NAME, nameText);
+        newAnimal.put(SEX, sexText);
+        newAnimal.put(WEIGHT, weightText);
+        newAnimal.put(SPECIE,specieText);
+        newAnimal.put(DOB, dateText);
+        newAnimal.put(BREED, breedText);
+        newAnimal.put(COAT, coatText);
+
 
         if (imageBitmap != null)
         {
@@ -191,14 +170,28 @@ public class AddPetFragment extends Fragment {
             Toast.makeText(getActivity().getApplicationContext(),"Photo uploaded with success.", Toast.LENGTH_SHORT).show();
         }
 
-        newAnimal.put(IMAGE_KEY, imageStr);
+        newAnimal.put(IMAGE_ID, imageStr);
 
         Map<String, Object> newOwner = new HashMap<>();
-        newOwner.put(NAME_KEY, ownerText);
+        newOwner.put(OWNER_NAME, ownerText);
         newOwner.put(PHONE_KEY, ownerPhoneText);
         newOwner.put(ADDRESS_KEY, ownerAddrText);
 
-        Date dateIn = Calendar.getInstance().getTime(); //dateIn for internment
+        db.collection("Owners").document(ownerText).set(newOwner).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("TAG", "Owner Registered");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("TAG", e.toString());
+            }
+        });
+
+        DocumentReference ownerReference = db.collection("Owners").document(ownerText);
+        newAnimal.put(OWNER_NAME, ownerReference.getId());
+
 
         db.collection("Animals").document(nameText).set(newAnimal)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -214,17 +207,78 @@ public class AddPetFragment extends Fragment {
                     }
                 });
 
-        db.collection("Owners").document(ownerText).set(newOwner).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DocumentReference animalReference = db.collection("Animals").document(nameText);
+
+        Map<String, Object> newInter = new HashMap<>();
+        Date dateIn = Calendar.getInstance().getTime();
+        newInter.put(DATE_IN_KEY,dateIn);
+        String motive = randomMotive();
+        newInter.put(REASON_KEY, motive);
+        String doctor = randomDoctor();
+        newInter.put(DOCTOR_KEY, doctor);
+        String observation = randomObservation();
+        newInter.put(COMMENTS_KEY, observation);
+
+        db.collection("Internments").document(animalReference.getId()).set(newInter)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Owner Registered");
+                Log.d("TAG", "Internment Registered");
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("TAG", e.toString());
+                    }
+                });
+
+        Map<String, Object> newMed = new HashMap<>();
+        newMed.put("Animal Associated", animalReference.getId());
+        Double dosage = roundDoubles(randomDosage());
+        newMed.put(DOSAGE_KEY, dosage);
+        int frequency = randomFrequency();
+        newMed.put(FREQUENCY_KEY, frequency);
+        int totalDays = randomDays();
+        newMed.put(TOTALDAYS_KEY, totalDays);
+
+        String medicine = randomMedicine();
+
+        db.collection("Medicines").document(medicine).set(newMed)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("TAG", "Medicine Registered");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("TAG", e.toString());
+                    }
+                });
+
+        Map<String, Object> newProc = new HashMap<>();
+        newProc.put("Animal Associated", animalReference.getId());
+        String date = randomDate();
+        newProc.put(PROCEDURE_DATE_KEY, date);
+
+        String procedure = randomProcedure();
+        db.collection("Procedures").document(procedure).set(newProc)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("TAG", "Procedure Registered");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("TAG", e.toString());
+                    }
+                });
+
+
 
         Context context = getActivity().getApplicationContext();
 
@@ -239,6 +293,72 @@ public class AddPetFragment extends Fragment {
             Log.i("dispatch", "fez o dispatch");
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
+    }
+
+    private String randomMotive(){
+        String [] motives = {"Cólicas", "Falta de Apetite", "Urina", "Emagrecimento", "Vómitos", "Diarreia", "Perda de Pêlo"};
+        Random r = new Random();
+        int idx = r.nextInt(motives.length);
+        return motives[idx];
+
+    }
+
+    private String randomDoctor(){
+        String [] doctors = {"Rita Santiago", "Raquel Ramos"};
+        Random r = new Random();
+        int idx = r.nextInt(doctors.length);
+        return doctors[idx];
+
+    }
+
+    private String randomObservation(){
+        String [] observations = {"Morde", "Brincalhão", "Lambidelas"};
+        Random r = new Random();
+        int idx = r.nextInt(observations.length);
+        return observations[idx];
+    }
+
+    private Double randomDosage(){
+        Random r = new Random();
+        int tmp = 100 + (100-2);
+        return tmp * r.nextDouble();
+    }
+
+    private Double roundDoubles(Double value){
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    private int randomFrequency(){
+        Random r = new Random();
+        return r.nextInt(7-1)+1;
+    }
+
+    private int randomDays(){
+        Random r = new Random();
+        return r.nextInt(60-7)+7;
+    }
+
+    private String randomMedicine(){
+        String [] medicines = {"Banacep", "Dermocanis Alercaps", "Fortekor", "Ecuphar", "Omnipharm", "Intervet International", "Sogeval"};
+        Random r = new Random();
+        int idx = r.nextInt(medicines.length);
+        return medicines[idx];
+    }
+
+    private String randomDate(){
+        String [] dates = {"23/03/2018", "24/03/2018", "30/03/2018", "02/04/2018", "05/04/2018", "04/04/2018"};
+        Random r = new Random();
+        int idx = r.nextInt(dates.length);
+        return dates[idx];
+    }
+
+    private String randomProcedure(){
+        String [] procedures = {"Desparasitação", "Ecografia Abdominal", "Microchip", "Raio-x", "Vacina Parvovirose", "Vacina Raiva", "Vacina Tosse"};
+        Random r = new Random();
+        int idx = r.nextInt(procedures.length);
+        return procedures[idx];
     }
 
 }
