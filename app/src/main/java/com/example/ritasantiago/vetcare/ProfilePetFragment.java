@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.example.ritasantiago.vetcare.firebase.Animal;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Text;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.ritasantiago.vetcare.PetsFragment.ANIMAL_BUNDLE_KEY;
@@ -26,6 +28,7 @@ public class ProfilePetFragment extends Fragment {
     private FirebaseFirestore db;
     private TextView generalInfo;
     private TextView hosp;
+    private TextView recordInfo;
     private Animal animal;
     private CircleImageView photo;
     private TextView name, dob, owner;
@@ -77,6 +80,20 @@ public class ProfilePetFragment extends Fragment {
             public void onClick(View v)
             {
                 Fragment fragment = new HospitalisationFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
+        recordInfo = (TextView) getActivity().findViewById(R.id.tv_animalrecords);
+        recordInfo.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Fragment fragment = new PetRecordFragment();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.addToBackStack(null);

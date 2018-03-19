@@ -136,12 +136,15 @@ public class CalendarFragment extends Fragment implements EasyPermissions.Permis
         mProgress = new ProgressDialog(getActivity());
         mProgress.setMessage("Calling Google Calendar API ...");
 
-        // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
-                getActivity().getApplicationContext(), Arrays.asList(SCOPES))
+                getContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
 
-        return rootView;
+
+        return activityLayout;
+
+        // Initialize credentials and service object.
+        //return rootView;
     }
 
     @Override
@@ -216,11 +219,8 @@ public class CalendarFragment extends Fragment implements EasyPermissions.Permis
      *     activity result.
      */
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("Calendar Fragment", "Entrou no on activity result");
-        Log.d("Calendar Fragment", String.valueOf(requestCode));
-        Log.d("Calendar Fragment", String.valueOf(resultCode));
-        Log.d("Calendar Fragment", String.valueOf(data));
+    public void onActivityResult(
+            int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
