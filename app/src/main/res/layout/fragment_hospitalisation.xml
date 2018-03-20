@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ritasantiago.vetcare.HospitalisationFragment">
+    tools:context="com.example.ritasantiago.vetcare.petlist.hospitalisation.HospitalisationFragment">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"

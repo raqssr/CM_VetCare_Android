@@ -72,6 +72,9 @@ dependencies {
     compile('com.google.apis:google-api-services-calendar:v3-rev300-1.23.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+    dependencies {
+        compile 'com.github.sundeepk:compact-calendar-view:2.0.2.3'
+    }
 }
 
 

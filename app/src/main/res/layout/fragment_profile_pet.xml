@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:layout_gravity="bottom"
-    tools:context="com.example.ritasantiago.vetcare.ProfilePetFragment">
+    tools:context="com.example.ritasantiago.vetcare.petlist.profile.ProfilePetFragment">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
