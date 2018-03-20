@@ -30,15 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.BREED;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.COAT;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.DOB;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.IMAGE_ID;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.NAME;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.OWNER_NAME;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.SEX;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.SPECIE;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.WEIGHT;
+import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.*;
 
 /**
  * Created by raquelramos on 04-03-2018.

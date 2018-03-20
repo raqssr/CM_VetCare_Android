@@ -38,7 +38,7 @@ public class ProfilePetFragment extends Fragment {
         Bundle args = getArguments();
         this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
         photo = (CircleImageView) rootView.findViewById(R.id.profile_photo);
-        name = (TextView) rootView.findViewById(R.id.animal_name);
+        name = (TextView) rootView.findViewById(R.id.g_name);
         dob = (TextView) rootView.findViewById(R.id.animal_dob);
         owner = (TextView) rootView.findViewById(R.id.animal_owner);
 
@@ -63,6 +63,9 @@ public class ProfilePetFragment extends Fragment {
             public void onClick(View v)
             {
                 Fragment fragment = new GeneralInfoPetFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+                fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.addToBackStack(null);
@@ -77,6 +80,9 @@ public class ProfilePetFragment extends Fragment {
             public void onClick(View v)
             {
                 Fragment fragment = new HospitalisationFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+                fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.addToBackStack(null);
@@ -91,6 +97,9 @@ public class ProfilePetFragment extends Fragment {
             public void onClick(View v)
             {
                 Fragment fragment = new PetRecordFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+                fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.addToBackStack(null);

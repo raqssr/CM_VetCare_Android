@@ -30,7 +30,7 @@
                 tools:layout_editor_absoluteY="62dp" />
 
             <EditText
-                android:id="@+id/animal_name"
+                android:id="@+id/g_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -54,7 +54,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/animal_name" />
+                app:layout_constraintTop_toBottomOf="@+id/g_name" />
 
             <View
                 android:id="@+id/first_separator_view"

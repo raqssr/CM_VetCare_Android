@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.petlist.hospitalisation.adapters.PagerAdapter;
+import com.example.ritasantiago.vetcare.db.entity.Animal;
 
 /**
  * Created by raquelramos on 04-03-2018.
@@ -19,6 +20,8 @@ import com.example.ritasantiago.vetcare.petlist.hospitalisation.adapters.PagerAd
 public class HospitalisationFragment extends Fragment {
 
     TabLayout tabLayout;
+    public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
+    private Animal animal;
 
     @Nullable
     @Override
@@ -26,6 +29,9 @@ public class HospitalisationFragment extends Fragment {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
         View rootView = inflater.inflate(R.layout.fragment_hospitalisation, container, false);
+        Bundle args = getArguments();
+        this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
+
         tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("General"));
         tabLayout.addTab(tabLayout.newTab().setText("Medication"));

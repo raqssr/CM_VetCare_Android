@@ -22,8 +22,6 @@ public class Animal implements Serializable {
     public String coat;
     public String owner_name;
 
-    public String fields;
-
     //required for calls to getValue
     public Animal(){
 
@@ -38,6 +36,81 @@ public class Animal implements Serializable {
         this.dateOfBirth = dateOfBirth;
         this.breed = breed;
         this.coat = coat;
+        this.owner_name = owner_name;
+    }
+
+    public Animal(String name, String dateOfBirth, String sex, String specie, String breed, String coat, String weight, String owner_name){
+        this.name = name;
+        this.sex = sex;
+        this.weight = weight;
+        this.specie = specie;
+        this.dateOfBirth = dateOfBirth;
+        this.breed = breed;
+        this.coat = coat;
+        this.owner_name = owner_name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getSpecie() {
+        return specie;
+    }
+
+    public void setSpecie(String specie) {
+        this.specie = specie;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public String getCoat() {
+        return coat;
+    }
+
+    public void setCoat(String coat) {
+        this.coat = coat;
+    }
+
+    public String getOwner_name() {
+        return owner_name;
+    }
+
+    public void setOwner_name(String owner_name) {
         this.owner_name = owner_name;
     }
 }

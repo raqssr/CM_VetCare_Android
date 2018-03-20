@@ -69,7 +69,7 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
         AnimalViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
-            animalName = (TextView)itemView.findViewById(R.id.animal_name);
+            animalName = (TextView)itemView.findViewById(R.id.g_name);
             animalDateOfBirth = (TextView) itemView.findViewById(R.id.animal_date);
             animalOwner = (TextView) itemView.findViewById(R.id.animal_ownerName);
             animalPhoto = (ImageView)itemView.findViewById(R.id.animal_photo);
