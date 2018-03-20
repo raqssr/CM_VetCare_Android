@@ -7,13 +7,11 @@ package com.example.ritasantiago.vetcare.db.entity;
 public class Procedure {
     public String name;
     public String date;
+    public String doctor;
 
-    public Procedure(){
-
-    }
-
-    public Procedure(String name, String date){
+    public Procedure(String name, String date, String doctor){
         this.name = name;
         this.date = date;
+        this.doctor = doctor;
     }
 }

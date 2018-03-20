@@ -58,12 +58,10 @@ public class MedicineTabFragment extends Fragment {
                     List<DocumentSnapshot> data = query.getDocuments();
                     for (int i = 0; i < data.size(); i++) {
                         if(data.get(i).get("Animal Associated").toString().equals(animalName)){
-                            Log.d("MedicineTab", "encontrei um animal");
                             medicines.add(new Medicine(data.get(i).get(MEDICINE_KEY).toString(),
                                           data.get(i).get(DOSAGE_KEY).toString(),
-                                          data.get(i).get(FREQUENCY_KEY).toString()));;
+                                          data.get(i).get(FREQUENCY_KEY).toString()));
                             //medicines.add(data.get(i).get(TOTALDAYS_KEY).toString());
-                            Log.d("Medicine Tab", String.valueOf(medicines.get(i)));
                         }
                     }
                     mAdapter = new MedicineAdapter(medicines);
@@ -95,10 +93,6 @@ public class MedicineTabFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         initData("Kiko");
-
-        Log.d("Medicine Fragment", "depois do kiko");
-
-
 
         return rootView;
     }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ritasantiago.vetcare.R;
+import com.example.ritasantiago.vetcare.db.entity.Procedure;
 import com.example.ritasantiago.vetcare.petlist.hospitalisation.adapters.ProcedureAdapter;
 import com.example.ritasantiago.vetcare.db.entity.Animal;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,10 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.DOSAGE_KEY;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.FREQUENCY_KEY;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.NAME;
 import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.PROCEDURE_DATE_KEY;
+import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.PROCEDURE_DOCTOR_KEY;
 import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.PROCEDURE_KEY;
 
 /**
@@ -43,7 +42,7 @@ public class ProceduresTabFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private FirebaseFirestore db;
-    private List<String> procedures = new ArrayList<>();
+    private List<Procedure> procedures = new ArrayList<>();
     public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
     private Animal animal;
 
@@ -57,10 +56,13 @@ public class ProceduresTabFragment extends Fragment {
                     List<DocumentSnapshot> data = query.getDocuments();
                     for (int i = 0; i < data.size(); i++) {
                         if(data.get(i).get("Animal Associated").toString().equals(animalName)){
-                            procedures.add(data.get(i).get(PROCEDURE_KEY).toString());
-                            procedures.add(data.get(i).get(PROCEDURE_DATE_KEY).toString());
+                            procedures.add(new Procedure(data.get(i).get(PROCEDURE_KEY).toString(),
+                                    data.get(i).get(PROCEDURE_DATE_KEY).toString(),
+                                    data.get(i).get(PROCEDURE_DOCTOR_KEY).toString()));
                         }
                     }
+                    mAdapter = new ProcedureAdapter(procedures);
+                    recyclerView.setAdapter(mAdapter);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -89,8 +91,6 @@ public class ProceduresTabFragment extends Fragment {
 
         getProcedures("Kiko");
 
-        mAdapter = new ProcedureAdapter(procedures);
-        recyclerView.setAdapter(mAdapter);
         return rootView;
     }
 

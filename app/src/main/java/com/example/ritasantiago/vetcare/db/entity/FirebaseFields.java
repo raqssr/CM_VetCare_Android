@@ -27,6 +27,7 @@ public class FirebaseFields {
 
     //procedure's doc keys
     public static final String PROCEDURE_DATE_KEY = "Procedure Date";
+    public static final String PROCEDURE_DOCTOR_KEY = "doctor";
 
     //medicine's doc keys
     public static final String DOSAGE_KEY = "Dosage (mg)";
