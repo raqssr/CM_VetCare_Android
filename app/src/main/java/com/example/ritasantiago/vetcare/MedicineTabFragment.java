@@ -27,7 +27,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by raquelramos on 04-03-2018.
@@ -40,22 +42,24 @@ public class MedicineTabFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
     private FirebaseFirestore db;
-    private ArrayList<String> medicines = new ArrayList<>();
+    private List<String> medicines = new ArrayList<>();
+    private Animal animal;
 
-    private ArrayList<String> getMedicines (){
+    private void initData (final String animalName){
         db = FirebaseFirestore.getInstance();
-        medicines.add(db.collection("Medicines").document().getId());
         db.collection("Medicines").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     QuerySnapshot query = task.getResult();
                     List<DocumentSnapshot> data = query.getDocuments();
-                    for (int i = 0; i < data.size(); i++)
-                    {
-                        medicines.add(data.get(i).get(DOSAGE_KEY).toString());
-                        medicines.add(data.get(i).get(FREQUENCY_KEY).toString());
-                        //medicines.add(data.get(i).get(TOTALDAYS_KEY).toString());
+                    for (int i = 0; i < data.size(); i++) {
+                        if(data.get(i).get("Animal Associated").toString().equals(animalName)){
+                            medicines.add(data.get(i).get(MEDICINE_KEY).toString());
+                            medicines.add(data.get(i).get(DOSAGE_KEY).toString());
+                            medicines.add(data.get(i).get(FREQUENCY_KEY).toString());
+                            //medicines.add(data.get(i).get(TOTALDAYS_KEY).toString());
+                        }
                     }
                 }
             }
@@ -65,8 +69,6 @@ public class MedicineTabFragment extends Fragment {
                 Log.d("TAG", e.toString());
             }
         });
-
-        return medicines;
     }
 
     @Nullable
@@ -75,6 +77,9 @@ public class MedicineTabFragment extends Fragment {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
         View rootView = inflater.inflate(R.layout.fragment_medicine_tab, container, false);
+        Bundle args = getArguments();
+        this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_medicine);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -82,7 +87,9 @@ public class MedicineTabFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MedicineAdapter(getMedicines());
+        initData("Kiko");
+
+        mAdapter = new MedicineAdapter(medicines);
         recyclerView.setAdapter(mAdapter);
 
         return rootView;

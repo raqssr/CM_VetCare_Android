@@ -234,6 +234,10 @@ public class AddPetFragment extends Fragment {
                 });
 
         Map<String, Object> newMed = new HashMap<>();
+
+        String medicine = randomMedicine();
+
+        newMed.put(MEDICINE_KEY, medicine);
         newMed.put("Animal Associated", animalReference.getId());
         Double dosage = roundDoubles(randomDosage());
         newMed.put(DOSAGE_KEY, dosage);
@@ -242,7 +246,7 @@ public class AddPetFragment extends Fragment {
         int totalDays = randomDays();
         newMed.put(TOTALDAYS_KEY, totalDays);
 
-        String medicine = randomMedicine();
+
 
         db.collection("Medicines").document(medicine).set(newMed)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -259,11 +263,13 @@ public class AddPetFragment extends Fragment {
                 });
 
         Map<String, Object> newProc = new HashMap<>();
+        String procedure = randomProcedure();
+        newProc.put(PROCEDURE_KEY, procedure);
         newProc.put("Animal Associated", animalReference.getId());
         String date = randomDate();
         newProc.put(PROCEDURE_DATE_KEY, date);
 
-        String procedure = randomProcedure();
+
         db.collection("Procedures").document(procedure).set(newProc)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

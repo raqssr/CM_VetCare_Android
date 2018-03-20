@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.ritasantiago.vetcare.firebase.Animal;
+
 import org.w3c.dom.Text;
 
 /**
@@ -22,6 +24,8 @@ import org.w3c.dom.Text;
 public class HospitalisationFragment extends Fragment {
 
     TabLayout tabLayout;
+    public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
+    private Animal animal;
 
     @Nullable
     @Override
@@ -29,6 +33,9 @@ public class HospitalisationFragment extends Fragment {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
         View rootView = inflater.inflate(R.layout.fragment_hospitalisation, container, false);
+        Bundle args = getArguments();
+        this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
+
         tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("General"));
         tabLayout.addTab(tabLayout.newTab().setText("Medication"));
