@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ritasantiago.vetcare.R;
-import com.example.ritasantiago.vetcare.calendar.EventsCalendar;
+import com.example.ritasantiago.vetcare.db.entity.EventsCalendar;
 
 import java.util.List;
 

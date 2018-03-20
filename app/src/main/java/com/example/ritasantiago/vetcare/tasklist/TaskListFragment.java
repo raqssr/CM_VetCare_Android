@@ -19,14 +19,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ritasantiago.vetcare.R;
-import com.example.ritasantiago.vetcare.calendar.EventsCalendar;
-import com.example.ritasantiago.vetcare.calendar.adapters.RVCalendarAdapter;
-import com.github.sundeepk.compactcalendarview.CompactCalendarView;
-import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -42,6 +36,8 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -91,6 +87,8 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                 .setBackOff(new ExponentialBackOff());
 
         getResultsFromApi();
+
+
 
         return rootView;
     }
@@ -383,6 +381,15 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                 for (int i = 0; i < output.size(); i++)
                 {
                     Log.d("Task List Fragment", output.get(i));
+                    String[] s = output.get(i).split("\\(");
+                    String task = s[0].trim();
+                    String[] taskInfo = task.split(":");
+                    String task_animal = taskInfo[0];
+                    String task_description = taskInfo[1].trim();
+                    String eventInfo = s[1].replaceAll("\\)", "");
+                    String[] eventSpliter = eventInfo.split("T");
+                    String eventDate = eventSpliter[0];
+                    String eventTime = eventSpliter[1].replaceAll(".000Z", "");
                     /*String[] s = output.get(i).split("\\(");
                     String eventName = s[0].trim();
                     Log.d("Calendar Fragment Name", eventName);
