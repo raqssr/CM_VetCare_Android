@@ -28,7 +28,7 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
                 parent.getContext());
         View v = inflater.inflate(R.layout.recycler_item_task, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        RVTaskAdapter.TaskViewHolder vh = new RVTaskAdapter.TaskViewHolder(v);
+        TaskViewHolder vh = new TaskViewHolder(v);
         return vh;
     }
 
@@ -60,9 +60,9 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
         TaskViewHolder(View v) {
             super(v);
             //layout = v;
-            task_pet_name = (TextView) v.findViewById(R.id.med_name);
-            task_name = (TextView) v.findViewById(R.id.med_dosage);
-            task_hour = (TextView) v.findViewById(R.id.med_period);
+            task_pet_name = (TextView) v.findViewById(R.id.task_pet_name);
+            task_name = (TextView) v.findViewById(R.id.task_name);
+            task_hour = (TextView) v.findViewById(R.id.task_hour);
         }
     }
 

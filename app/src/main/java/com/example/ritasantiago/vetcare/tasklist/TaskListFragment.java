@@ -15,12 +15,16 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ritasantiago.vetcare.R;
+import com.example.ritasantiago.vetcare.tasklist.adapters.RVTaskAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -56,6 +60,10 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
 
     SharedPreferences sp;
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
     private GoogleAccountCredential mCredential;
     private ProgressDialog mProgress;
 
@@ -78,6 +86,13 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
         View rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_tasks);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
 
         mProgress = new ProgressDialog(getActivity());
         mProgress.setMessage("Loading tasks..");
@@ -377,6 +392,7 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                 Log.d("Task List Fragment", String.valueOf(output));
                 outputString = output.toString();
                 sp.edit().putString(eventsKey, outputString).apply();
+                List<Task> tasks = new ArrayList<>();
                 //mOutputText.setText(TextUtils.join("\n", output));
                 for (int i = 0; i < output.size(); i++)
                 {
@@ -390,6 +406,9 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                     String[] eventSpliter = eventInfo.split("T");
                     String eventDate = eventSpliter[0];
                     String eventTime = eventSpliter[1].replaceAll(".000Z", "");
+                    tasks.add(new Task(task_animal, task_description, eventTime));
+                    mAdapter = new RVTaskAdapter(tasks);
+                    recyclerView.setAdapter(mAdapter);
                     /*String[] s = output.get(i).split("\\(");
                     String eventName = s[0].trim();
                     Log.d("Calendar Fragment Name", eventName);
