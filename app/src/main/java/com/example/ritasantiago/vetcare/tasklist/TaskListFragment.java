@@ -41,8 +41,12 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -391,6 +395,9 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                 outputString = output.toString();
                 sp.edit().putString(eventsKey, outputString).apply();
                 List<Task> tasks = new ArrayList<>();
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, 1);
+                SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
                 //mOutputText.setText(TextUtils.join("\n", output));
                 for (int i = 0; i < output.size(); i++)
                 {
@@ -404,48 +411,14 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                     String[] eventSpliter = eventInfo.split("T");
                     String eventDate = eventSpliter[0];
                     String eventTime = eventSpliter[1].replaceAll(".000Z", "");
-                    tasks.add(new Task(task_animal, task_description, eventTime));
-                    mAdapter = new RVTaskAdapter(tasks);
-                    recyclerView.setAdapter(mAdapter);
-                    /*String[] s = output.get(i).split("\\(");
-                    String eventName = s[0].trim();
-                    Log.d("Calendar Fragment Name", eventName);
-                    String eventInfo = s[1].replaceAll("\\)", "");
-                    String[] eventSpliter = eventInfo.split("T");
-                    String eventDate = eventSpliter[0];
-                    String eventTime = eventSpliter[1].replaceAll(".000Z", "");
-                    final String eventDateTime = eventDate + " " + eventTime;
-                    Log.d("Calendar Fragment DT", eventDateTime);
-                    final long dateToTimestamp = convertDateToTimestamp(eventDateTime);
-                    Event ev1 = new Event(R.color.colorAccent, dateToTimestamp, eventName);
-                    calendar.addEvent(ev1);
-                    calendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
-                        @Override
-                        public void onDayClick(Date dateClicked) {
-
-                            List<Event> eventsCalendar = calendar.getEvents(dateClicked);
-                            List<EventsCalendar> eventItens = new ArrayList<>();
-                            for (int i = 0; i < eventsCalendar.size(); i++)
-                            {
-                                Log.d("EventsCalendar", eventsCalendar.get(i).getData().toString());
-                                String name = eventsCalendar.get(i).getData().toString();
-                                String date = convertToDate(eventsCalendar.get(i).getTimeInMillis());
-                                String[] dateInfo = date.split(" ");
-                                eventItens.add(new EventsCalendar(name, dateInfo[1]));
-
-                            }
-
-                            mAdapter = new RVCalendarAdapter(eventItens);
-                            recyclerView.setAdapter(mAdapter);
-
-                            Log.d("Calendar clicked: ", "Day was clicked: " + dateClicked + " with events " + eventsCalendar);
-                        }
-
-                        @Override
-                        public void onMonthScroll(Date firstDayOfNewMonth) {
-                            //Log.d(TAG, "Month was scrolled to: " + firstDayOfNewMonth);
-                        }
-                    });*/
+                    String formatted = formatDate.format(cal.getTime());
+                    Log.d("Current date", String.valueOf(formatted));
+                    /*if (dateFormat.format(cal).toString().equals(eventDate))
+                    {
+                        tasks.add(new Task(task_animal, task_description, eventTime));
+                        mAdapter = new RVTaskAdapter(tasks);
+                        recyclerView.setAdapter(mAdapter);
+                    }*/
                 }
             }
         }
