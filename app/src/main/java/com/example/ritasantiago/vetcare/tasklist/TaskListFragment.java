@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.RelativeDateTimeFormatter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -42,12 +43,14 @@ import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -391,17 +394,14 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
             if (output == null || output.size() == 0) {
                 //mOutputText.setText("No results returned.");
             } else {
-                Log.d("Task List Fragment", String.valueOf(output));
                 outputString = output.toString();
                 sp.edit().putString(eventsKey, outputString).apply();
                 List<Task> tasks = new ArrayList<>();
-                Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.DATE, 1);
+                Calendar cal = Calendar.getInstance(Locale.UK);
+                cal.add(Calendar.DATE, 0);
                 SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-                //mOutputText.setText(TextUtils.join("\n", output));
                 for (int i = 0; i < output.size(); i++)
                 {
-                    Log.d("Task List Fragment", output.get(i));
                     String[] s = output.get(i).split("\\(");
                     String task = s[0].trim();
                     String[] taskInfo = task.split(":");
@@ -412,13 +412,12 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                     String eventDate = eventSpliter[0];
                     String eventTime = eventSpliter[1].replaceAll(".000Z", "");
                     String formatted = formatDate.format(cal.getTime());
-                    Log.d("Current date", String.valueOf(formatted));
-                    /*if (dateFormat.format(cal).toString().equals(eventDate))
+                    if (formatted.equals(eventDate))
                     {
                         tasks.add(new Task(task_animal, task_description, eventTime));
                         mAdapter = new RVTaskAdapter(tasks);
                         recyclerView.setAdapter(mAdapter);
-                    }*/
+                    }
                 }
             }
         }
