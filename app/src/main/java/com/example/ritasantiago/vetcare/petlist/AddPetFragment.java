@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.db.DatabaseActions;
+import com.example.ritasantiago.vetcare.petlist.profile.ProfilePetFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +36,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.ByteArrayOutputStream;
 import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
@@ -50,6 +53,7 @@ import java.util.Random;
 public class AddPetFragment extends Fragment {
 
     public static final String DEBUG_TAG = "AddPetFragment";
+    public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
     DatabaseActions database;
     FirebaseFirestore db;
     TextView txtDisplay;
@@ -100,8 +104,7 @@ public class AddPetFragment extends Fragment {
             }
         });
 
-
-        FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.btn_saveAnimal);
+        FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.btn_nextFrag);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -211,30 +214,6 @@ public class AddPetFragment extends Fragment {
 
         DocumentReference animalReference = db.collection("Animals").document(nameText);
 
-        Map<String, Object> newInter = new HashMap<>();
-        Date dateIn = Calendar.getInstance().getTime();
-        newInter.put(DATE_IN_KEY,dateIn);
-        String motive = randomMotive();
-        newInter.put(REASON_KEY, motive);
-        String doctor = randomDoctor();
-        newInter.put(DOCTOR_KEY, doctor);
-        String observation = randomObservation();
-        newInter.put(COMMENTS_KEY, observation);
-
-        db.collection("Internments").document(animalReference.getId()).set(newInter)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Internment Registered");
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", e.toString());
-                    }
-                });
-
         Map<String, Object> newMed = new HashMap<>();
 
         String medicine = randomMedicine();
@@ -247,8 +226,6 @@ public class AddPetFragment extends Fragment {
         newMed.put(FREQUENCY_KEY, frequency);
         int totalDays = randomDays();
         newMed.put(TOTALDAYS_KEY, totalDays);
-
-
 
         db.collection("Medicines").document(medicine).set(newMed)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -288,11 +265,13 @@ public class AddPetFragment extends Fragment {
 
 
 
-        Context context = getActivity().getApplicationContext();
+        //Context context = getActivity().getApplicationContext();
 
-        Toast.makeText(context,"Pet added with success!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context,"Pet added with success!", Toast.LENGTH_SHORT).show();
 
-        getFragmentManager().popBackStackImmediate();
+        //getFragmentManager().popBackStackImmediate();
+        goToNextFragment();
+
     }
 
     private void dispatchTakePictureIntent() {
@@ -301,29 +280,6 @@ public class AddPetFragment extends Fragment {
             Log.i("dispatch", "fez o dispatch");
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
-    }
-
-    private String randomMotive(){
-        String [] motives = {"Cólicas", "Falta de Apetite", "Urina", "Emagrecimento", "Vómitos", "Diarreia", "Perda de Pêlo"};
-        Random r = new Random();
-        int idx = r.nextInt(motives.length);
-        return motives[idx];
-
-    }
-
-    private String randomDoctor(){
-        String [] doctors = {"Rita Santiago", "Raquel Ramos"};
-        Random r = new Random();
-        int idx = r.nextInt(doctors.length);
-        return doctors[idx];
-
-    }
-
-    private String randomObservation(){
-        String [] observations = {"Morde", "Brincalhão", "Lambidelas"};
-        Random r = new Random();
-        int idx = r.nextInt(observations.length);
-        return observations[idx];
     }
 
     private Double randomDosage(){
@@ -367,6 +323,18 @@ public class AddPetFragment extends Fragment {
         Random r = new Random();
         int idx = r.nextInt(procedures.length);
         return procedures[idx];
+    }
+
+    public void goToNextFragment(){
+        Fragment fragment = new AddHospitalisationFragment();
+        Bundle bundle = new Bundle();
+        String nameText = nameView.getText().toString();
+        bundle.putSerializable(ANIMAL_BUNDLE_KEY, nameText);
+        fragment.setArguments(bundle);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
 }
