@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ritasantiago.vetcare.R;
-import com.example.ritasantiago.vetcare.tasklist.Task;
+import com.example.ritasantiago.vetcare.db.entity.Task;
 
 import java.util.ArrayList;
 import java.util.List;

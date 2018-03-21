@@ -1,4 +1,4 @@
-package com.example.ritasantiago.vetcare.tasklist;
+package com.example.ritasantiago.vetcare.db.entity;
 
 import java.io.Serializable;
 
