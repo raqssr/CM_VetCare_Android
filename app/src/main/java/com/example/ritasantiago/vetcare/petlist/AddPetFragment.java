@@ -1,6 +1,5 @@
 package com.example.ritasantiago.vetcare.petlist;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,7 +24,7 @@ import android.widget.Toast;
 
 import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.db.DatabaseActions;
-import com.example.ritasantiago.vetcare.petlist.profile.ProfilePetFragment;
+import com.example.ritasantiago.vetcare.petlist.hospitalisation.AddHospitalisationFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -36,11 +35,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.ByteArrayOutputStream;
 import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.*;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;

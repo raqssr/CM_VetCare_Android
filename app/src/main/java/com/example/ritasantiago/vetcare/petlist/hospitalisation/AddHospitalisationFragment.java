@@ -1,4 +1,4 @@
-package com.example.ritasantiago.vetcare.petlist;
+package com.example.ritasantiago.vetcare.petlist.hospitalisation;
 
 import android.support.v4.app.Fragment;
 import android.content.Context;

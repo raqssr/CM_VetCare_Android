@@ -7,8 +7,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.ritasantiago.vetcare.petlist.DischargeFragment;
 import com.example.ritasantiago.vetcare.petlist.info.GeneralInfoPetFragment;
 import com.example.ritasantiago.vetcare.petlist.hospitalisation.HospitalisationFragment;
 import com.example.ritasantiago.vetcare.petlist.record.PetRecordFragment;
@@ -29,6 +31,7 @@ public class ProfilePetFragment extends Fragment {
     private Animal animal;
     private CircleImageView photo;
     private TextView name, dob, owner;
+    private Button discharge;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,6 +49,18 @@ public class ProfilePetFragment extends Fragment {
         dob.setText(animal.dateOfBirth);
         owner.setText(animal.owner_name);
         photo.setImageBitmap(animal.image);
+
+        discharge = (Button) rootView.findViewById(R.id.btn_discharge);
+        discharge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new DischargeFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
         return rootView;
     }
