@@ -57,11 +57,9 @@ public class MedicineTabFragment extends Fragment {
                     QuerySnapshot query = task.getResult();
                     List<DocumentSnapshot> data = query.getDocuments();
                     for (int i = 0; i < data.size(); i++) {
-                        if(data.get(i).get("Animal Associated").toString().equals(animalName)){
-                            medicines.add(new Medicine(data.get(i).get(MEDICINE_KEY).toString(),
-                                          data.get(i).get(DOSAGE_KEY).toString(),
-                                          data.get(i).get(FREQUENCY_KEY).toString()));
-                            //medicines.add(data.get(i).get(TOTALDAYS_KEY).toString());
+                        DocumentSnapshot doc = data.get(i);
+                        if(doc.contains(animalName)){
+                            medicines.add(new Medicine(doc.get(animalName).toString()));
                         }
                     }
                     mAdapter = new MedicineAdapter(medicines);

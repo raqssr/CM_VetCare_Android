@@ -211,17 +211,17 @@ public class AddPetFragment extends Fragment {
         DocumentReference animalReference = db.collection("Animals").document(nameText);
 
         Map<String, Object> newMed = new HashMap<>();
-
         String medicine = randomMedicine();
-
-        newMed.put(MEDICINE_KEY, medicine);
-        newMed.put("Animal Associated", animalReference.getId());
+        Map<String, Object> medicines = new HashMap<>();
         Double dosage = roundDoubles(randomDosage());
-        newMed.put(DOSAGE_KEY, dosage);
         int frequency = randomFrequency();
-        newMed.put(FREQUENCY_KEY, frequency);
         int totalDays = randomDays();
-        newMed.put(TOTALDAYS_KEY, totalDays);
+        medicines.put(DOSAGE_KEY, dosage);
+        medicines.put(FREQUENCY_KEY, frequency);
+        medicines.put(TOTALDAYS_KEY, totalDays);
+        Map<String, Map<String, Object>> animalMedicines = new HashMap<>();
+        animalMedicines.put(MEDICINE_KEY,medicines);
+        newMed.put(animalReference.getId(), animalMedicines);
 
         db.collection("Medicines").document(medicine).set(newMed)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -238,20 +238,45 @@ public class AddPetFragment extends Fragment {
                 });
 
 
-        for(int i = 1; i <= randomNumbers(); i++) {
-
+        for(int i = 1; i <= numberProcedures(); i++) {
             Map<String, Object> newProc = new HashMap<>();
             String procedure = randomProcedure();
-            newProc.put(PROCEDURE_KEY, procedure);
-            newProc.put("Animal Associated", animalReference.getId());
+            Map<String, String> procedures = new HashMap<>();
             String date = randomDate();
-            newProc.put(PROCEDURE_DATE_KEY, date);
+            procedures.put(PROCEDURE_KEY, procedure);
+            procedures.put(PROCEDURE_DATE_KEY, date);
+            Map<String,Map<String,String>> animalProcedures = new HashMap<>();
+            animalProcedures.put(PROCEDURE_KEY,procedures);
+            newProc.put(animalReference.getId(), animalProcedures);
 
             db.collection("Procedures").document(procedure).set(newProc)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d("TAG", "Procedure Registered");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("TAG", e.toString());
+                        }
+                    });
+        }
+
+        for(int i = 1; i<= numberRegulars(); i++){
+            Map<String, Object> newHist = new HashMap<>();
+            String regularProcedure = randomRegular();
+            String date = randomDate();
+            Map<String,String> procedures = new HashMap<>();
+            procedures.put(regularProcedure,date);
+            newHist.put(PROCEDURE_KEY,procedures);
+
+            db.collection("Historics").document(animalReference.getId()).set(newHist)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("TAG", "Historic Registered");
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -318,16 +343,29 @@ public class AddPetFragment extends Fragment {
     }
 
     private String randomProcedure(){
-        String [] procedures = {"Desparasitação", "Castração", "Tosquia", "Consulta Rotina", "Esterilização", "Tratamento Acupuntura", "Ecocardiograma", "Ecografia Abdominal", "Microchip", "Raio-x", "Vacina Parvovirose", "Vacina Raiva", "Vacina Tosse", "Vacina Leucemia"};
+        String [] procedures = {"Análises", "Tratamento Acupuntura", "Ecocardiograma", "Ecografia Abdominal", "Raio-x", "Vacina Parvovirose", "Vacina Tosse", "Vacina Leucemia"};
         Random r = new Random();
         int idx = r.nextInt(procedures.length);
         return procedures[idx];
     }
 
-    private int randomNumbers(){
-        String [] procedures = {"Desparasitação", "Castração", "Tosquia", "Consulta Rotina", "Esterilização", "Tratamento Acupuntura", "Ecocardiograma", "Ecografia Abdominal", "Microchip", "Raio-x", "Vacina Parvovirose", "Vacina Raiva", "Vacina Tosse", "Vacina Leucemia"};
+    private int numberProcedures(){
+        String [] procedures = {"Análises", "Tratamento Acupuntura", "Ecocardiograma", "Ecografia Abdominal", "Raio-x", "Vacina Parvovirose", "Vacina Tosse", "Vacina Leucemia"};
         Random r = new Random();
         return r.nextInt(procedures.length-1)+1;
+    }
+
+    private String randomRegular(){
+        String [] regular = {"Desparasitação", "Castração", "Tosquia", "Consulta Rotina", "Esterilização", "Microchip", "Vacina Raiva"};
+        Random r = new Random();
+        int idx = r.nextInt(regular.length);
+        return regular[idx];
+    }
+
+    private int numberRegulars(){
+        String [] regular = {"Desparasitação", "Castração", "Tosquia", "Consulta Rotina", "Esterilização", "Microchip", "Vacina Raiva"};
+        Random r = new Random();
+        return r.nextInt(regular.length-1)+1;
     }
 
     public void goToNextFragment(){

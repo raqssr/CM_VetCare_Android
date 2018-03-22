@@ -35,10 +35,23 @@ public class ProcedureAdapter extends RecyclerView.Adapter<ProcedureAdapter.Proc
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ProcedureViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.proc_name.setText(proc.get(position).name);
-        holder.proc_date.setText(proc.get(position).date);
+        final String map = proc.get(position).name;
+        String[] parts = map.split(",");
+        String tmp00 = parts[0];
+        String tmp01 = parts[1];
+        String parts00 = tmp00.replace("{", "");
+        String tmp10 = parts00.replace("Procedure", "");
+        String tmp010 = tmp10.replace("=", "");
+        String[] parts01 = tmp01.split("=");
+        String tmp11 = parts01[1];
+        String[] parts010 = tmp11.split("=");
+        String tmp011 = parts010[0];
+
+        final String name = tmp011.replace("}", "");
+        final String date = tmp010.replace("Date", "");
+
+        holder.proc_name.setText(name);
+        holder.proc_date.setText(date);
     }
 
     //Return the size of your dataset (invoked by the layout manager)

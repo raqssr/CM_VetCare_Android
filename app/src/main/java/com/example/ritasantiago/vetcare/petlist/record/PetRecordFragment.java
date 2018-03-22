@@ -44,22 +44,15 @@ public class PetRecordFragment extends Fragment {
 
     private void getProcedures (final String animalName){
         db = FirebaseFirestore.getInstance();
-        db.collection("Procedures").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Historics").document(animalName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    QuerySnapshot query = task.getResult();
-                    List<DocumentSnapshot> data = query.getDocuments();
-                    for (int i = 0; i < data.size(); i++) {
-                        if(data.get(i).get("Animal Associated").toString().equals(animalName)){
-                            procedures.add(new Procedure(data.get(i).get(PROCEDURE_KEY).toString(),
-                                    data.get(i).get(PROCEDURE_DATE_KEY).toString(),
-                                    data.get(i).get(PROCEDURE_DOCTOR_KEY).toString()));
-                        }
-                    }
-                    mAdapter = new PetRecordAdapter(procedures);
-                    recyclerView.setAdapter(mAdapter);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    procedures.add(new Procedure(doc.get(PROCEDURE_KEY).toString()));
                 }
+                mAdapter = new PetRecordAdapter(procedures);
+                recyclerView.setAdapter(mAdapter);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -82,7 +75,7 @@ public class PetRecordFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        getProcedures("f");
+        getProcedures(animal.name);
         return rootView;
     }
 

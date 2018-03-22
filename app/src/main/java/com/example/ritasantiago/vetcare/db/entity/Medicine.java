@@ -13,17 +13,14 @@ public class Medicine {
 
     }
 
-    /*public Medicine(String name, String dosage, String frequency, String totalDays){
-        this.name = name;
-        this.dosage = dosage;
-        this.frequency = frequency;
-        this.totalDays = totalDays;
-    }*/
-
     public Medicine(String name, String dosage, String frequency){
         this.name = name;
         this.dosage = dosage;
         this.frequency = frequency;
         this.totalDays = totalDays;
+    }
+
+    public Medicine(String name){
+        this.name = name;
     }
 }

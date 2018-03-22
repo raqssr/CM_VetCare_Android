@@ -34,11 +34,21 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(MedicineViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.med_name.setText(meds.get(position).name);
-        holder.med_dosage.setText(meds.get(position).dosage);
-        holder.med_period.setText(meds.get(position).frequency);
+        final String map = meds.get(position).name;
+        String tmp0010 = map.replace("Frequency per day", "");
+        String tmp0011 = tmp0010.replace("Dosage (mg)", "");
+        String tmp0100 = tmp0011.replace("Total Days", "");
+        String tmp0001 = tmp0100.replace("=", "");
+        String[] parts0 = tmp0001.split(",");
+        String tmp0101 = parts0[0];
+
+        final String dosage = parts0[1];
+        final String period = tmp0101.replaceAll("[^0-9]", "");
+        final String name = tmp0101.replaceAll("[^a-zA-Z]", "");
+
+        holder.med_name.setText(name);
+        holder.med_dosage.setText(dosage);
+        holder.med_period.setText(period);
     }
 
     @Override

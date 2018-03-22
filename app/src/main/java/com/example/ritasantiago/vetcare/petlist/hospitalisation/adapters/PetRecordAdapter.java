@@ -67,11 +67,15 @@ public class PetRecordAdapter extends RecyclerView.Adapter<PetRecordAdapter.View
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(PetRecordAdapter.ViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        final String name = values.get(position).name;
+        final String map = values.get(position).name;
+        String[] parts = map.split("=");
+        String tmp0 = parts[0];
+        String tmp1 = parts[1];
+
+        final String name = tmp0.replace("{", "");
+        final String date = tmp1.replace("}","");
         holder.date.setText(name);
-        holder.proc_name.setText(name);
+        holder.proc_name.setText(date);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

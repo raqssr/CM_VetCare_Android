@@ -64,6 +64,12 @@ public class DischargeFragment extends Fragment {
                 Log.d("TAG", "Animal deleted!");
             }
         });
+        db.collection("Historics").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("TAG", "Animal deleted!");
+            }
+        });
     }
 
     @Nullable

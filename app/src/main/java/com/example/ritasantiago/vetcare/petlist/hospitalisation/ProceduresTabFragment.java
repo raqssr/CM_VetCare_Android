@@ -55,10 +55,9 @@ public class ProceduresTabFragment extends Fragment {
                     QuerySnapshot query = task.getResult();
                     List<DocumentSnapshot> data = query.getDocuments();
                     for (int i = 0; i < data.size(); i++) {
-                        if(data.get(i).get("Animal Associated").toString().equals(animalName)){
-                            procedures.add(new Procedure(data.get(i).get(PROCEDURE_KEY).toString(),
-                                    data.get(i).get(PROCEDURE_DATE_KEY).toString()));
-                                    //data.get(i).get(PROCEDURE_KEY).toString()));
+                        DocumentSnapshot doc = data.get(i);
+                        if(doc.contains(animalName)){
+                            procedures.add(new Procedure(doc.get(animalName).toString()));
                         }
                     }
                     mAdapter = new ProcedureAdapter(procedures);

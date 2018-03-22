@@ -19,4 +19,8 @@ public class Procedure {
         this.name = name;
         this.date = date;
     }
+
+    public Procedure(String name){
+        this.name = name;
+    }
 }
