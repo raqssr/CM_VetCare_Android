@@ -53,7 +53,7 @@
                 android:layout_marginTop="4dp"
                 android:ems="10"
                 android:hint="@string/doctor"
-                android:inputType="numberDecimal"
+                android:inputType="textPersonName"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
