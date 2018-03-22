@@ -389,7 +389,7 @@ public class DatabaseActions {
     }
 
     public void deleteInternment(String name){
-        db.collection("Animals").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Internments").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Animal deleted!");
