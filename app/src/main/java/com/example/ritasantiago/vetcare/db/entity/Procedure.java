@@ -14,4 +14,9 @@ public class Procedure {
         this.date = date;
         this.doctor = doctor;
     }
+
+    public Procedure(String name, String date){
+        this.name = name;
+        this.date = date;
+    }
 }

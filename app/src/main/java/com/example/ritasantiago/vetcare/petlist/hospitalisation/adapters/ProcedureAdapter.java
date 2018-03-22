@@ -39,7 +39,6 @@ public class ProcedureAdapter extends RecyclerView.Adapter<ProcedureAdapter.Proc
         // - replace the contents of the view with that element
         holder.proc_name.setText(proc.get(position).name);
         holder.proc_date.setText(proc.get(position).date);
-        holder.proc_doctor.setText(proc.get(position).doctor);
     }
 
     //Return the size of your dataset (invoked by the layout manager)
@@ -55,7 +54,6 @@ public class ProcedureAdapter extends RecyclerView.Adapter<ProcedureAdapter.Proc
         // each data item is just a string in this case
         public TextView proc_name;
         public TextView proc_date;
-        public TextView proc_doctor;
         public View layout;
 
         ProcedureViewHolder(View v) {
@@ -63,7 +61,6 @@ public class ProcedureAdapter extends RecyclerView.Adapter<ProcedureAdapter.Proc
             //layout = v;
             proc_name = (TextView) v.findViewById(R.id.proc_name);
             proc_date = (TextView) v.findViewById(R.id.proc_date);
-            proc_doctor = (TextView) v.findViewById(R.id.proc_doctor);
         }
     }
 

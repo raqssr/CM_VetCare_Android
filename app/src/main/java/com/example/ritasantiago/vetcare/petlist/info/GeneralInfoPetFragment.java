@@ -76,6 +76,7 @@ public class GeneralInfoPetFragment extends Fragment {
 
         String owner = animal.getOwner_name();
 
+        //ownerPhone.setText(owner);
         //initializeOwnerInfos(owner);
 
         return rootView;

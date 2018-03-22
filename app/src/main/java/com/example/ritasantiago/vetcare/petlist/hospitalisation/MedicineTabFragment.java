@@ -92,7 +92,7 @@ public class MedicineTabFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        initData("Kiko");
+        initData("f");
 
         return rootView;
     }

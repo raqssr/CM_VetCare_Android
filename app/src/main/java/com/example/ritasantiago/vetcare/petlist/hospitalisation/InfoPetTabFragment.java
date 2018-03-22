@@ -75,8 +75,7 @@ public class InfoPetTabFragment extends Fragment {
         doctor = (TextView) rootView.findViewById(R.id.doctor_tv);
 
         //String animalName = animal.getName();
-
-        initializeData("Kiko");
+        initializeData("f");
 
         return rootView;
     }

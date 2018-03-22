@@ -57,8 +57,8 @@ public class ProceduresTabFragment extends Fragment {
                     for (int i = 0; i < data.size(); i++) {
                         if(data.get(i).get("Animal Associated").toString().equals(animalName)){
                             procedures.add(new Procedure(data.get(i).get(PROCEDURE_KEY).toString(),
-                                    data.get(i).get(PROCEDURE_DATE_KEY).toString(),
-                                    data.get(i).get(PROCEDURE_DOCTOR_KEY).toString()));
+                                    data.get(i).get(PROCEDURE_DATE_KEY).toString()));
+                                    //data.get(i).get(PROCEDURE_KEY).toString()));
                         }
                     }
                     mAdapter = new ProcedureAdapter(procedures);
@@ -89,7 +89,7 @@ public class ProceduresTabFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        getProcedures("Kiko");
+        getProcedures("f");
 
         return rootView;
     }

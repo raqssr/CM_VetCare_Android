@@ -237,27 +237,30 @@ public class AddPetFragment extends Fragment {
                     }
                 });
 
-        Map<String, Object> newProc = new HashMap<>();
-        String procedure = randomProcedure();
-        newProc.put(PROCEDURE_KEY, procedure);
-        newProc.put("Animal Associated", animalReference.getId());
-        String date = randomDate();
-        newProc.put(PROCEDURE_DATE_KEY, date);
 
+        for(int i = 1; i <= randomNumbers(); i++) {
 
-        db.collection("Procedures").document(procedure).set(newProc)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "Procedure Registered");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", e.toString());
-                    }
-                });
+            Map<String, Object> newProc = new HashMap<>();
+            String procedure = randomProcedure();
+            newProc.put(PROCEDURE_KEY, procedure);
+            newProc.put("Animal Associated", animalReference.getId());
+            String date = randomDate();
+            newProc.put(PROCEDURE_DATE_KEY, date);
+
+            db.collection("Procedures").document(procedure).set(newProc)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("TAG", "Procedure Registered");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("TAG", e.toString());
+                        }
+                    });
+        }
 
 
 
@@ -319,6 +322,11 @@ public class AddPetFragment extends Fragment {
         Random r = new Random();
         int idx = r.nextInt(procedures.length);
         return procedures[idx];
+    }
+
+    private int randomNumbers(){
+        Random r = new Random();
+        return r.nextInt(5-1)+1;
     }
 
     public void goToNextFragment(){
