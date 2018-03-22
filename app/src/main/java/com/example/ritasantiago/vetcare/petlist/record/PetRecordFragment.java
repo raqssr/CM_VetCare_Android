@@ -57,8 +57,8 @@ public class PetRecordFragment extends Fragment {
                                     data.get(i).get(PROCEDURE_DOCTOR_KEY).toString()));
                         }
                     }
-                    //mAdapter = new PetRecordAdapter(procedures);
-                    //recyclerView.setAdapter(mAdapter);
+                    mAdapter = new PetRecordAdapter(procedures);
+                    recyclerView.setAdapter(mAdapter);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -81,14 +81,8 @@ public class PetRecordFragment extends Fragment {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        List<String> input = new ArrayList<>();
-        for(int i = 0 ; i<10; i++){
-            input.add("teste " +i);
-        }
-        mAdapter = new PetRecordAdapter(input);
-        recyclerView.setAdapter(mAdapter);
 
-        //getProcedures("f");
+        getProcedures("f");
         return rootView;
     }
 

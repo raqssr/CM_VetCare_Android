@@ -311,22 +311,23 @@ public class AddPetFragment extends Fragment {
     }
 
     private String randomDate(){
-        String [] dates = {"23/03/2018", "24/03/2018", "30/03/2018", "02/04/2018", "05/04/2018", "04/04/2018"};
+        String [] dates = {"23/03/2018", "24/03/2018", "27/03/2018", "26/03/2018", "30/03/2018", "02/04/2018", "05/04/2018", "03/04/2018", "04/04/2018"};
         Random r = new Random();
         int idx = r.nextInt(dates.length);
         return dates[idx];
     }
 
     private String randomProcedure(){
-        String [] procedures = {"Desparasitação", "Ecografia Abdominal", "Microchip", "Raio-x", "Vacina Parvovirose", "Vacina Raiva", "Vacina Tosse"};
+        String [] procedures = {"Desparasitação", "Castração", "Tosquia", "Consulta Rotina", "Esterilização", "Tratamento Acupuntura", "Ecocardiograma", "Ecografia Abdominal", "Microchip", "Raio-x", "Vacina Parvovirose", "Vacina Raiva", "Vacina Tosse", "Vacina Leucemia"};
         Random r = new Random();
         int idx = r.nextInt(procedures.length);
         return procedures[idx];
     }
 
     private int randomNumbers(){
+        String [] procedures = {"Desparasitação", "Castração", "Tosquia", "Consulta Rotina", "Esterilização", "Tratamento Acupuntura", "Ecocardiograma", "Ecografia Abdominal", "Microchip", "Raio-x", "Vacina Parvovirose", "Vacina Raiva", "Vacina Tosse", "Vacina Leucemia"};
         Random r = new Random();
-        return r.nextInt(5-1)+1;
+        return r.nextInt(procedures.length-1)+1;
     }
 
     public void goToNextFragment(){

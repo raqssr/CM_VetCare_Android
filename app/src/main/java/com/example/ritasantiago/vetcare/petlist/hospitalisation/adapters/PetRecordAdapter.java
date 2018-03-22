@@ -1,5 +1,6 @@
 package com.example.ritasantiago.vetcare.petlist.hospitalisation.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ritasantiago.vetcare.R;
+import com.example.ritasantiago.vetcare.db.entity.Procedure;
 
 /**
  * Created by raquelramos on 19-03-2018.
@@ -15,7 +17,7 @@ import com.example.ritasantiago.vetcare.R;
 
 public class PetRecordAdapter extends RecyclerView.Adapter<PetRecordAdapter.ViewHolder>{
 
-    private List<String> values;
+    private List<Procedure> values = new ArrayList<>();
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -23,20 +25,20 @@ public class PetRecordAdapter extends RecyclerView.Adapter<PetRecordAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView date;
-        public TextView proc_consult;
+        public TextView proc_name;
         public View layout;
 
         public ViewHolder(View v) {
             super(v);
             layout = v;
             date = (TextView) v.findViewById(R.id.date);
-            proc_consult = (TextView) v.findViewById(R.id.proc_consult);
+            proc_name = (TextView) v.findViewById(R.id.proc_consult);
         }
     }
 
-    public void add(int position, String item) {
-        values.add(position, item);
-        notifyItemInserted(position);
+    public void add(Procedure p) {
+        values.add(p);
+        notifyDataSetChanged();
     }
 
     public void remove(int position) {
@@ -45,7 +47,7 @@ public class PetRecordAdapter extends RecyclerView.Adapter<PetRecordAdapter.View
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public PetRecordAdapter(List<String> myDataset) {
+    public PetRecordAdapter(List<Procedure> myDataset) {
         values = myDataset;
     }
 
@@ -67,9 +69,9 @@ public class PetRecordAdapter extends RecyclerView.Adapter<PetRecordAdapter.View
     public void onBindViewHolder(PetRecordAdapter.ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final String name = values.get(position);
+        final String name = values.get(position).name;
         holder.date.setText(name);
-        holder.proc_consult.setText(name);
+        holder.proc_name.setText(name);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
