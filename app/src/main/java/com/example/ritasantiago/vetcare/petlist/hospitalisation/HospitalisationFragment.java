@@ -21,7 +21,7 @@ public class HospitalisationFragment extends Fragment {
 
     TabLayout tabLayout;
     public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
-    private Animal animal;
+    public Animal animal;
 
     @Nullable
     @Override
@@ -40,7 +40,7 @@ public class HospitalisationFragment extends Fragment {
 
         final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter
-                (getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+                (getActivity().getSupportFragmentManager(), tabLayout.getTabCount(), animal);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

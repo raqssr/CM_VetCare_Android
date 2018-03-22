@@ -37,7 +37,7 @@ public class InfoPetTabFragment extends Fragment {
 
     private FirebaseFirestore db;
     public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
-    private Animal animal;
+    public Animal animal;
 
     TextView dateEntry, motive, observations, doctor;
 
@@ -68,14 +68,14 @@ public class InfoPetTabFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_info_pet_tab, container, false);
         Bundle args = getArguments();
         this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
-
+        Log.d("Bundle aqui", animal.name);
         dateEntry = (TextView) rootView.findViewById(R.id.entry_date_tv);
         motive = (TextView) rootView.findViewById(R.id.motive_tv);
         observations = (TextView) rootView.findViewById(R.id.observations_tv);
         doctor = (TextView) rootView.findViewById(R.id.doctor_tv);
 
         //String animalName = animal.getName();
-        initializeData("f");
+        initializeData(animal.name);
 
         return rootView;
     }

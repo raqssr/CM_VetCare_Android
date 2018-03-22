@@ -89,7 +89,7 @@ public class ProceduresTabFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        getProcedures("f");
+        getProcedures(animal.name);
 
         return rootView;
     }

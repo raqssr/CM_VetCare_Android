@@ -28,7 +28,7 @@ public class ProfilePetFragment extends Fragment {
     private TextView generalInfo;
     private TextView hosp;
     private TextView recordInfo;
-    private Animal animal;
+    public Animal animal;
     private CircleImageView photo;
     private TextView name, dob, owner;
     private Button discharge;
@@ -122,4 +122,6 @@ public class ProfilePetFragment extends Fragment {
             }
         });
     }
+
+
 }
