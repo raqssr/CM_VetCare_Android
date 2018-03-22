@@ -42,11 +42,13 @@ import java.util.List;
 public class DischargeFragment extends Fragment {
 
     private static final String TAG = "PdfCreatorActivity";
-    private EditText mContentEditText;
-    private Button mCreateButton;
+    private EditText name, weight, doctor, obs;
+    private Button generatePdf;
     private File pdfFile;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
     private FirebaseFirestore db;
+    public static final String vetClinicName = "Vet Clinic X";
+    private String finalText;
 
     private void deleteAnimal(String name){
         db.collection("Animals").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -70,15 +72,33 @@ public class DischargeFragment extends Fragment {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
         View rootView = inflater.inflate(R.layout.fragment_discharge, container, false);
-
-        mContentEditText = (EditText) rootView.findViewById(R.id.tv_teste);
-        mCreateButton = (Button) rootView.findViewById(R.id.gera);
-        mCreateButton.setOnClickListener(new View.OnClickListener() {
+        db = FirebaseFirestore.getInstance();
+        name = (EditText) rootView.findViewById(R.id.et_nameAnimal);
+        weight = (EditText) rootView.findViewById(R.id.et_weight);
+        doctor = (EditText) rootView.findViewById(R.id.et_doctor);
+        obs = (EditText) rootView.findViewById(R.id.et_observations);
+        generatePdf = (Button) rootView.findViewById(R.id.btn_generatePdf);
+        generatePdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mContentEditText.getText().toString().isEmpty()){
-                    mContentEditText.setError("Body is empty");
-                    mContentEditText.requestFocus();
+                if (name.getText().toString().isEmpty()){
+                    name.setError("Animal name is empty!");
+                    name.requestFocus();
+                    return;
+                }
+                if (weight.getText().toString().isEmpty()){
+                    weight.setError("Weight field is empty!");
+                    weight.requestFocus();
+                    return;
+                }
+                if (doctor.getText().toString().isEmpty()){
+                    doctor.setError("Doctor field is empty!");
+                    doctor.requestFocus();
+                    return;
+                }
+                if (obs.getText().toString().isEmpty()){
+                    obs.setError("Observations field is empty!");
+                    obs.requestFocus();
                     return;
                 }
                 try {
@@ -111,15 +131,15 @@ public class DischargeFragment extends Fragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CONTACTS)) {
                     showMessageOKCancel("You need to allow access to Storage",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                                REQUEST_CODE_ASK_PERMISSIONS);
-                                    }
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                            REQUEST_CODE_ASK_PERMISSIONS);
                                 }
-                            });
+                            }
+                        });
                     return;
                 }
 
@@ -131,6 +151,7 @@ public class DischargeFragment extends Fragment {
             createPdf();
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -146,7 +167,7 @@ public class DischargeFragment extends Fragment {
                     }
                 } else {
                     // Permission Denied
-                    Toast.makeText(getActivity().getApplicationContext(), "WRITE_EXTERNAL Permission Denied", Toast.LENGTH_SHORT)
+                    Toast.makeText(getActivity().getApplicationContext(), "WRITE_EXTERNAL: Permission Denied", Toast.LENGTH_SHORT)
                             .show();
                 }
                 break;
@@ -154,6 +175,7 @@ public class DischargeFragment extends Fragment {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getActivity())
                 .setMessage(message)
@@ -171,34 +193,44 @@ public class DischargeFragment extends Fragment {
             Log.i(TAG, "Created a new directory for PDF");
         }
 
-        pdfFile = new File(docsFolder.getAbsolutePath(),"HelloWorld.pdf");
+        String fileName = name.getText().toString() + ".pdf";
+        pdfFile = new File(docsFolder.getAbsolutePath(), fileName);
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document();
         PdfWriter.getInstance(document, output);
         document.open();
-        document.add(new Paragraph(mContentEditText.getText().toString()));
-
+        document.add(new Paragraph(vetClinicName));
+        document.add(new Paragraph("\n"));
+        document.add(new Paragraph("Animal name: " + name.getText().toString()));
+        document.add(new Paragraph("Weight: " + weight.getText().toString()));
+        document.add(new Paragraph("Veterinarian: " + doctor.getText().toString()));
+        document.add(new Paragraph("Observations: " + obs.getText().toString()));
         document.close();
-        previewPdf();
+        Toast.makeText(getActivity().getApplicationContext(),"Discharge document generated with success!",Toast.LENGTH_SHORT).show();
+        String s = name.getText().toString();
+        deleteAnimal(s);
+        getFragmentManager().popBackStack();
+        getFragmentManager().popBackStack();
+        //previewPdf();
 
     }
 
-    private void previewPdf() {
+    /*private void previewPdf() {
 
         PackageManager packageManager = getActivity().getPackageManager();
         Intent testIntent = new Intent(Intent.ACTION_VIEW);
-        testIntent.setType("/storage/emulated/0/Download");
+        testIntent.setType("/storage/emulated/0/Documents");
         List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
         if (list.size() > 0) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             Uri uri = Uri.fromFile(pdfFile);
-            intent.setDataAndType(uri, "/storage/emulated/0/Download");
+            intent.setDataAndType(uri, "/storage/emulated/0/Documents");
 
             startActivity(intent);
         }else{
             Toast.makeText(getActivity().getApplicationContext(),"Download a PDF Viewer to see the generated PDF",Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
 }
