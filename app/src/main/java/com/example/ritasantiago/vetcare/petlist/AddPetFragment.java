@@ -220,7 +220,7 @@ public class AddPetFragment extends Fragment {
         medicines.put(FREQUENCY_KEY, frequency);
         medicines.put(TOTALDAYS_KEY, totalDays);
         Map<String, Map<String, Object>> animalMedicines = new HashMap<>();
-        animalMedicines.put(MEDICINE_KEY,medicines);
+        animalMedicines.put(medicine,medicines);
         newMed.put(animalReference.getId(), animalMedicines);
 
         db.collection("Medicines").document(medicine).set(newMed)
@@ -331,7 +331,7 @@ public class AddPetFragment extends Fragment {
     private String randomMedicine(){
         String [] medicines = {"Banacep", "Dermocanis Alercaps", "Fortekor", "Ecuphar", "Omnipharm", "Intervet International", "Sogeval"};
         Random r = new Random();
-        int idx = r.nextInt(medicines.length);
+        int idx = r.nextInt(medicines.length-1)+1;
         return medicines[idx];
     }
 
@@ -345,7 +345,7 @@ public class AddPetFragment extends Fragment {
     private String randomProcedure(){
         String [] procedures = {"Análises", "Tratamento Acupuntura", "Ecocardiograma", "Ecografia Abdominal", "Raio-x", "Vacina Parvovirose", "Vacina Tosse", "Vacina Leucemia"};
         Random r = new Random();
-        int idx = r.nextInt(procedures.length);
+        int idx = r.nextInt(procedures.length-1)+1;
         return procedures[idx];
     }
 
@@ -358,7 +358,7 @@ public class AddPetFragment extends Fragment {
     private String randomRegular(){
         String [] regular = {"Desparasitação", "Castração", "Tosquia", "Consulta Rotina", "Esterilização", "Microchip", "Vacina Raiva"};
         Random r = new Random();
-        int idx = r.nextInt(regular.length);
+        int idx = r.nextInt(regular.length-1)+1;
         return regular[idx];
     }
 
