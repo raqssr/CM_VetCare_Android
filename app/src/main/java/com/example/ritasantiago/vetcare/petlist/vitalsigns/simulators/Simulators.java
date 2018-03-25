@@ -16,13 +16,13 @@ public class Simulators {
     int temperature = calcTemperature(TEMPERATURE_MIN,TEMPERATURE_MAX);
     int bat = calcBat(BAT_MIN, BAT_MAX);
 
-    private static int calcTemperature(int min, int max){
+    public int calcTemperature(int min, int max){
         Random r = new Random();
         int difference = r.nextInt(max-min)+min;
         return difference;
     }
 
-    private static int calcBat(int min, int max){
+    public int calcBat(int min, int max){
         Random r = new Random();
         int difference = r.nextInt(max-min)+min;
         return difference;
