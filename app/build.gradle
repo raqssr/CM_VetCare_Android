@@ -74,6 +74,7 @@ dependencies {
     }
     compile 'com.github.sundeepk:compact-calendar-view:2.0.2.3'
     compile 'com.itextpdf:itextg:5.5.10'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 
 

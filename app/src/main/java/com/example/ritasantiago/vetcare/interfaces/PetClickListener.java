@@ -9,5 +9,5 @@ import com.example.ritasantiago.vetcare.db.entity.Animal;
 public interface PetClickListener {
 
     void onPetClick(Animal animal);
-
+    void onPetSignalClick(Animal animal);
 }

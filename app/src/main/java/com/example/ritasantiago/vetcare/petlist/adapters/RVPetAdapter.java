@@ -1,16 +1,21 @@
 package com.example.ritasantiago.vetcare.petlist.adapters;
 
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.db.entity.Animal;
 import com.example.ritasantiago.vetcare.interfaces.PetClickListener;
+import com.example.ritasantiago.vetcare.petlist.vitalsigns.VitalSignsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +52,14 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
                 clickListener.onPetClick(animals.get(position));
             }
         });
+        holder.btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                clickListener.onPetSignalClick(animals.get(position));
+            }
+        });
     }
 
     @Override
@@ -65,6 +78,7 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
         TextView animalDateOfBirth;
         TextView animalOwner;
         ImageView animalPhoto;
+        ImageView btn;
 
         AnimalViewHolder(View itemView) {
             super(itemView);
@@ -73,6 +87,7 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
             animalDateOfBirth = (TextView) itemView.findViewById(R.id.animal_date);
             animalOwner = (TextView) itemView.findViewById(R.id.animal_ownerName);
             animalPhoto = (ImageView)itemView.findViewById(R.id.animal_photo);
+            btn = (ImageView) itemView.findViewById(R.id.btn_vitalSigns);
         }
     }
 

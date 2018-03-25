@@ -21,6 +21,7 @@ import com.example.ritasantiago.vetcare.db.entity.Animal;
 import com.example.ritasantiago.vetcare.interfaces.PetClickListener;
 import com.example.ritasantiago.vetcare.petlist.adapters.RVPetAdapter;
 import com.example.ritasantiago.vetcare.petlist.profile.ProfilePetFragment;
+import com.example.ritasantiago.vetcare.petlist.vitalsigns.VitalSignsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -52,7 +53,6 @@ public class PetsFragment extends Fragment implements PetClickListener {
                 List<DocumentSnapshot> data = query.getDocuments();
                 for (int i = 0; i < data.size(); i++)
                 {
-                    Log.i("PetsFragment", data.get(i).get(IMAGE_ID).toString());
                     byte imagem[] = Base64.decode(data.get(i).get(IMAGE_ID).toString(),Base64.NO_WRAP | Base64.URL_SAFE);
                     Bitmap bmp = BitmapFactory.decodeByteArray(imagem, 0, imagem.length);
                     adapter.addAnimal(new Animal(data.get(i).get(NAME).toString(),
@@ -89,6 +89,7 @@ public class PetsFragment extends Fragment implements PetClickListener {
 
         initializeData();
 
+
         FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.button_addPet);
         button.setOnClickListener(new View.OnClickListener()
         {
@@ -116,6 +117,19 @@ public class PetsFragment extends Fragment implements PetClickListener {
     @Override
     public void onPetClick(Animal animal) {
         Fragment fragment = new ProfilePetFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+        fragment.setArguments(bundle);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    @Override
+    public void onPetSignalClick(Animal animal)
+    {
+        Fragment fragment = new VitalSignsFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
         fragment.setArguments(bundle);

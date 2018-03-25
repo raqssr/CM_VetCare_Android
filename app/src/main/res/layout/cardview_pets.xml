@@ -58,13 +58,23 @@
                 android:id="@+id/animal_ownerName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/animal_photo"
                 app:layout_constraintTop_toBottomOf="@+id/animal_date"
                 tools:text="OWnerName" />
+
+            <ImageView
+                android:id="@+id/btn_vitalSigns"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:adjustViewBounds="false"
+                android:scaleType="centerInside"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_heart_pulse" />
 
 
         </android.support.constraint.ConstraintLayout>
