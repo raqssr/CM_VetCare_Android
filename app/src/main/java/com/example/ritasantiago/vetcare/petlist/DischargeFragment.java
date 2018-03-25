@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -22,8 +23,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ritasantiago.vetcare.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -33,6 +40,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -50,7 +58,7 @@ public class DischargeFragment extends Fragment {
     public static final String vetClinicName = "Vet Clinic X";
     private String finalText;
 
-    private void deleteAnimal(String name){
+    private void deleteAnimal(final String name){
         db.collection("Animals").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -68,6 +76,46 @@ public class DischargeFragment extends Fragment {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "Animal deleted!");
+            }
+        });
+
+        db.collection("Medicines").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                QuerySnapshot query = task.getResult();
+                List<DocumentSnapshot> data = query.getDocuments();
+                for(int i = 0; i < data.size(); i++){
+                    DocumentSnapshot doc = data.get(i);
+                    if(doc.contains(name)){
+                        DocumentReference reference = doc.getDocumentReference(name);
+                        reference.delete();
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("TAG", e.toString());
+            }
+        });
+
+        db.collection("Procedures").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                QuerySnapshot query = task.getResult();
+                List<DocumentSnapshot> data = query.getDocuments();
+                for(int i = 0; i < data.size(); i++){
+                    DocumentSnapshot doc = data.get(i);
+                    if(doc.contains(name)){
+                        DocumentReference reference = doc.getDocumentReference(name);
+                        reference.delete();
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("TAG", e.toString());
             }
         });
     }

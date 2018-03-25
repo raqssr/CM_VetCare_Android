@@ -25,12 +25,17 @@ import android.widget.Toast;
 import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.db.DatabaseActions;
 import com.example.ritasantiago.vetcare.petlist.hospitalisation.AddHospitalisationFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayOutputStream;
 import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.*;
@@ -38,6 +43,7 @@ import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -148,7 +154,7 @@ public class AddPetFragment extends Fragment {
         int ownerPhoneText = Integer.parseInt(ownerPhoneView.getText().toString());
         String ownerAddrText = ownerAddrView.getText().toString();
 
-        Map<String, Object> newAnimal = new HashMap<>();
+        final Map<String, Object> newAnimal = new HashMap<>();
         newAnimal.put(NAME, nameText);
         newAnimal.put(SEX, sexText);
         newAnimal.put(WEIGHT, weightText);
@@ -208,18 +214,18 @@ public class AddPetFragment extends Fragment {
                     }
                 });
 
-        DocumentReference animalReference = db.collection("Animals").document(nameText);
+        final DocumentReference animalReference = db.collection("Animals").document(nameText);
 
-        Map<String, Object> newMed = new HashMap<>();
-        String medicine = randomMedicine();
-        Map<String, Object> medicines = new HashMap<>();
+        final Map<String, Object> newMed = new HashMap<>();
+        final String medicine = randomMedicine();
+        final Map<String, Object> medicines = new HashMap<>();
         Double dosage = roundDoubles(randomDosage());
         int frequency = randomFrequency();
         int totalDays = randomDays();
         medicines.put(DOSAGE_KEY, dosage);
         medicines.put(FREQUENCY_KEY, frequency);
         medicines.put(TOTALDAYS_KEY, totalDays);
-        Map<String, Map<String, Object>> animalMedicines = new HashMap<>();
+        final Map<String, Map<String, Object>> animalMedicines = new HashMap<>();
         animalMedicines.put(medicine,medicines);
         newMed.put(animalReference.getId(), animalMedicines);
 
