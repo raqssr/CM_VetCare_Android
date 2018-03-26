@@ -36,6 +36,7 @@ dependencies {
     compile 'com.google.firebase:firebase-firestore:11.8.0'
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-storage:11.8.0'
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:support-v4:25.4.0'
     implementation 'com.android.support:recyclerview-v7:25.4.0'
@@ -76,13 +77,5 @@ dependencies {
     compile 'com.itextpdf:itextg:5.5.10'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
-
-
-
-
-
-
-
-
 
 apply plugin: 'com.google.gms.google-services'

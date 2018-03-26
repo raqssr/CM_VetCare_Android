@@ -29,6 +29,7 @@ import com.example.ritasantiago.vetcare.db.entity.Task;
 import com.example.ritasantiago.vetcare.tasklist.adapters.RVTaskAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.wallet.MaskedWalletRequest;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -107,8 +108,6 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                 .setBackOff(new ExponentialBackOff());
 
         getResultsFromApi();
-
-
 
         return rootView;
     }
@@ -411,10 +410,12 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                     String[] eventSpliter = eventInfo.split("T");
                     String eventDate = eventSpliter[0];
                     String eventTime = eventSpliter[1].replaceAll(".000Z", "");
+                    String[] timeInfo = eventTime.split("\\.");
+                    String eventStartHour = timeInfo[0];
                     String formatted = formatDate.format(cal.getTime());
                     if (formatted.equals(eventDate))
                     {
-                        tasks.add(new Task(task_animal, task_description, eventTime));
+                        tasks.add(new Task(task_animal, task_description, eventStartHour));
                         mAdapter = new RVTaskAdapter(tasks);
                         recyclerView.setAdapter(mAdapter);
                     }
@@ -443,5 +444,4 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
             }
         }
     }
-
 }
