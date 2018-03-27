@@ -590,14 +590,4 @@ public class MainActivity extends AppCompatActivity
             return null;
         }
     }
-
-    /*private void updateCalendar() throws IOException {
-        // Retrieve a calendar
-        com.google.api.services.calendar.model.Calendar calendar =
-                mService.calendars().get("primary").execute();
-        calendar.setSummary("calendarSummary");
-        // Update the altered calendar
-        com.google.api.services.calendar.model.Calendar updatedCalendar =
-                mService.calendars().update(calendar.getId(), calendar).execute();
-    }*/
 }
