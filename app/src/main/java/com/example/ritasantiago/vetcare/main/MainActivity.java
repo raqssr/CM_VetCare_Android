@@ -187,13 +187,14 @@ public class MainActivity extends AppCompatActivity
                             break;
                         }
                     }
+                    //updateCalendar();
                     /*Iterator iter = currentTasks.keySet().iterator();
                     while (iter.hasNext()) {
                         Object key = iter.next();
                         Log.d("Iterator", String.valueOf(key));
 
                     }*/
-                    Alerter.create(this).setTitle("This animal is: ").setText(String.valueOf(obj)).
+                    Alerter.create(this).setTitle("The task was completed with success!").
                             setBackgroundColorRes(R.color.colorSucess).show();
 
                 } catch (Exception e) {
@@ -589,4 +590,14 @@ public class MainActivity extends AppCompatActivity
             return null;
         }
     }
+
+    /*private void updateCalendar() throws IOException {
+        // Retrieve a calendar
+        com.google.api.services.calendar.model.Calendar calendar =
+                mService.calendars().get("primary").execute();
+        calendar.setSummary("calendarSummary");
+        // Update the altered calendar
+        com.google.api.services.calendar.model.Calendar updatedCalendar =
+                mService.calendars().update(calendar.getId(), calendar).execute();
+    }*/
 }
