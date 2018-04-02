@@ -18,16 +18,12 @@
             android:title="@string/calendar" />
         <item
             android:id="@+id/documents"
-            android:icon="@drawable/ic_menu_doc"
+            android:icon="@drawable/ic_menu_drive"
             android:title="@string/docs" />
     </group>
 
     <item android:title="@string/others">
         <menu>
-            <item
-                android:id="@+id/settings"
-                android:icon="@drawable/ic_menu_settings"
-                android:title="@string/action_settings" />
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_menu_logout"

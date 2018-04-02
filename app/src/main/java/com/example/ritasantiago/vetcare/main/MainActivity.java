@@ -6,9 +6,11 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
@@ -17,6 +19,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ShareCompat;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -37,6 +40,7 @@ import com.example.ritasantiago.vetcare.tasklist.TaskListFragment;
 import com.example.ritasantiago.vetcare.tasklist.adapters.RVTaskAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.drive.Drive;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -304,12 +308,15 @@ public class MainActivity extends AppCompatActivity
                 fragment = new CalendarFragment();
                 break;
             case R.id.documents:
-                fragment = new DocsFragment();
+                //shareIntent = new Intent("com.google.android.apps.docs.DRIVE_OPEN");
+                goToDrive();
                 break;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 intent = new Intent(this, LoginActivity.class);
         }
+
+        Log.d("Intent", String.valueOf(intent));
 
         if (intent != null)
         {
@@ -544,7 +551,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             //mOutputText.setText("");
-            mProgress.show();
+            mProgress.hide();
         }
 
         @Override
@@ -612,6 +619,21 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
             return null;
+        }
+    }
+
+    private void goToDrive(){
+        String url = "https://drive.google.com/drive/folders/1VI1pDe1ZtxyxczlQKw_Gl-cyF6WwS9xh?usp=sharing";
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        if (i != null)
+        {
+            //i.setData(Uri.parse(url));
+            // Create intent to show the chooser dialog
+            Intent chooser = Intent.createChooser(i, "Choose here");
+            // Verify the original intent will resolve to at least one activity
+            if (i.resolveActivity(getPackageManager()) != null) {
+                startActivity(chooser);
+            }
         }
     }
 }

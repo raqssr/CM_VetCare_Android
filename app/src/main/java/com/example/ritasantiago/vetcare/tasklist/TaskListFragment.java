@@ -384,7 +384,7 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
         @Override
         protected void onPreExecute() {
             //mOutputText.setText("");
-            mProgress.show();
+            mProgress.hide();
         }
 
         @Override

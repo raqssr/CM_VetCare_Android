@@ -34,7 +34,6 @@
     <string name="generatePdf">Generate PDF</string>
     <string name="heartBeats">Heart Beats</string>
     <string name="temperature">Temperature</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="clinic_name">Vet Care Clinic</string>
+    <string name="clinic_mail">vetcareclinic2018@gmail.com</string>
 </resources>
