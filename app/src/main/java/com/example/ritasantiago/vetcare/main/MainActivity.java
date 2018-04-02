@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -210,6 +213,27 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            Parcelable[] rawMessages = intent.getParcelableArrayExtra(
+                    NfcAdapter.EXTRA_NDEF_MESSAGES);
+
+            NdefMessage message = (NdefMessage) rawMessages[0]; // only one message transferred
+            Alerter.create(this).setTitle("The animal is:").
+                    setText(new String(message.getRecords()[0].getPayload())).
+                    setBackgroundColorRes(R.color.colorSucess).show();
+
+        }
+        /*else
+        {
+            Alerter.create(this).setTitle("Waiting for NDEF Message").
+                    setBackgroundColorRes(R.color.colorError).show();
+        }*/
     }
 
     @Override
