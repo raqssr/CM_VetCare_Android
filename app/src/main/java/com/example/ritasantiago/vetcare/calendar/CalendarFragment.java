@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,21 +52,28 @@ public class CalendarFragment extends Fragment {
     private static final String eventsKey = "Events";
     private String events;
 
+    private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
+
     @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        /*c = android.icu.util.Calendar.getInstance();
-        String[]monthName={"January","February","March", "April", "May", "June", "July",
-                "August", "September", "October", "November",
-                "December"};
-        String month = monthName[c.get(android.icu.util.Calendar.MONTH)];*/
-        tv_month = (TextView) rootView.findViewById(R.id.tv_month);
-        tv_month.setText("Calendar");
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Calendar");
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                getActivity(), drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
         calendar = (CompactCalendarView) rootView.findViewById(R.id.compactcalendar_view);
+
+        tv_month = (TextView) rootView.findViewById(R.id.tv_month);
+        tv_month.setText(dateFormatForMonth.format(calendar.getFirstDayOfCurrentMonth()));
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_events);
         recyclerView.setHasFixedSize(true);
@@ -115,7 +126,7 @@ public class CalendarFragment extends Fragment {
 
                 @Override
                 public void onMonthScroll(Date firstDayOfNewMonth) {
-                    //Log.d(TAG, "Month was scrolled to: " + firstDayOfNewMonth);
+                    tv_month.setText(dateFormatForMonth.format(firstDayOfNewMonth));
                 }
             });
         }

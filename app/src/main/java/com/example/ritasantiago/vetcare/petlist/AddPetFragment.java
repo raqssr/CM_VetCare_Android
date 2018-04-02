@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,6 +80,14 @@ public class AddPetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //returning our layout file
         View rootView = inflater.inflate(R.layout.fragment_add_pet, container, false);
+
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Add Animal");
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back_button));
+
         db = FirebaseFirestore.getInstance();
         sexOption = (RadioGroup) rootView.findViewById(R.id.radio_group);
         nameView = (EditText) rootView.findViewById(R.id.g_name);
@@ -115,6 +125,7 @@ public class AddPetFragment extends Fragment {
                 createAnimal(v);
             }
         });
+
         return rootView;
     }
 
