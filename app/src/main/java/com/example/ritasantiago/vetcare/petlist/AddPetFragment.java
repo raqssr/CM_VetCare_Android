@@ -58,11 +58,7 @@ public class AddPetFragment extends Fragment {
 
     public static final String DEBUG_TAG = "AddPetFragment";
     public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
-    DatabaseActions database;
     FirebaseFirestore db;
-    TextView txtDisplay;
-    TextView message;
-    Button save;
     RadioGroup sexOption;
     View radioButtonSelected;
     RadioButton rb;

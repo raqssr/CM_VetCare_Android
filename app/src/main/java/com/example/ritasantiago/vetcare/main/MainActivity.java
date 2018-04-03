@@ -93,12 +93,15 @@ public class MainActivity extends AppCompatActivity
     private com.google.api.services.calendar.Calendar mService = null;
     private List<String> eventIDs = new ArrayList<>();
     private Map<String, Task> currentTasks = new HashMap<>();
+    int counter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        counter = 0;
+        Log.d("Main Activity", String.valueOf(counter));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("VetCare");
         setSupportActionBar(toolbar);
@@ -201,8 +204,12 @@ public class MainActivity extends AppCompatActivity
                         Log.d("Iterator", String.valueOf(key));
 
                     }*/
+                    Log.d("onActivityResult", "vou fazer o alert");
                     Alerter.create(this).setTitle("The task was completed with success!").
                             setBackgroundColorRes(R.color.colorSucess).show();
+                    Log.d("After qr code", String.valueOf(counter));
+                    counter++;
+                    Log.d("After increment", String.valueOf(counter));
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -221,17 +228,29 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-        super.onResume();
-        Intent intent = getIntent();
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
-            Parcelable[] rawMessages = intent.getParcelableArrayExtra(
-                    NfcAdapter.EXTRA_NDEF_MESSAGES);
+        Log.d("On Resume", String.valueOf(counter));
+        if (counter == 1){
+            Log.d("onResume", "o counter estava a 1");
+            //
+        }
+        else if (counter == 2) {
+            counter = 0;
+            super.onResume();
+        }
+        else{
+            Log.d("onResume", "entrei no nfc");
+            super.onResume();
+            Intent intent = getIntent();
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+                Parcelable[] rawMessages = intent.getParcelableArrayExtra(
+                        NfcAdapter.EXTRA_NDEF_MESSAGES);
 
-            NdefMessage message = (NdefMessage) rawMessages[0]; // only one message transferred
-            Alerter.create(this).setTitle("The animal is:").
-                    setText(new String(message.getRecords()[0].getPayload())).
-                    setBackgroundColorRes(R.color.colorSucess).show();
+                NdefMessage message = (NdefMessage) rawMessages[0]; // only one message transferred
+                Alerter.create(this).setTitle("The animal is:").
+                        setText(new String(message.getRecords()[0].getPayload())).
+                        setBackgroundColorRes(R.color.colorSucess).show();
 
+            }
         }
         /*else
         {
@@ -242,7 +261,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Log.d("MainActivity", "back");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -281,6 +299,8 @@ public class MainActivity extends AppCompatActivity
 
     public void readQrCode(MenuItem item)
     {
+        counter++;
+        Log.d("Read Qr Code", String.valueOf(counter));
         qrScan = new IntentIntegrator(this);
         qrScan.initiateScan();
         //Toast.makeText(this, "QRCode selected", Toast.LENGTH_SHORT).show();
@@ -321,8 +341,6 @@ public class MainActivity extends AppCompatActivity
                 FirebaseAuth.getInstance().signOut();
                 intent = new Intent(this, LoginActivity.class);
         }
-
-        Log.d("Intent", String.valueOf(intent));
 
         if (intent != null)
         {
