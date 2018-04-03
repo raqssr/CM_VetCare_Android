@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,7 +18,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ShareCompat;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -32,15 +30,12 @@ import android.view.MenuItem;
 
 import com.example.ritasantiago.vetcare.calendar.CalendarFragment;
 import com.example.ritasantiago.vetcare.db.entity.Task;
-import com.example.ritasantiago.vetcare.docs.DocsFragment;
 import com.example.ritasantiago.vetcare.petlist.PetsFragment;
 import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.login.LoginActivity;
 import com.example.ritasantiago.vetcare.tasklist.TaskListFragment;
-import com.example.ritasantiago.vetcare.tasklist.adapters.RVTaskAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.drive.Drive;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -57,14 +52,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tapadoo.alerter.Alerter;
-import com.google.api.services.calendar.Calendar;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -75,8 +68,6 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, EasyPermissions.PermissionCallbacks {
 
-    //qr code scanner object
-    private IntentIntegrator qrScan;
     private GoogleAccountCredential mCredential;
     private ProgressDialog mProgress;
 
@@ -89,7 +80,6 @@ public class MainActivity extends AppCompatActivity
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
 
     public static final String eventsKey = "Events";
-    private String outputString;
     private com.google.api.services.calendar.Calendar mService = null;
     private List<String> eventIDs = new ArrayList<>();
     private Map<String, Task> currentTasks = new HashMap<>();
@@ -101,7 +91,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         counter = 0;
-        Log.d("Main Activity", String.valueOf(counter));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("VetCare");
         setSupportActionBar(toolbar);
@@ -184,32 +173,18 @@ public class MainActivity extends AppCompatActivity
                 try {
                     //converting the data
                     String obj = result.getContents();
-                    Log.d("Object", obj);
                     for (Object o: currentTasks.keySet())
                     {
-                        Log.d("Event ID", String.valueOf(o));
-                        Log.d("Animal name", currentTasks.get(o).animal_name);
                         if (currentTasks.get(o).animal_name.equals(obj))
                         {
-                            Log.d("Event to string", o.toString());
-                            Log.d("Calendar", String.valueOf(mService));
                             new CalendarDeleteTask().execute(o.toString());
                             break;
                         }
                     }
-                    //updateCalendar();
-                    /*Iterator iter = currentTasks.keySet().iterator();
-                    while (iter.hasNext()) {
-                        Object key = iter.next();
-                        Log.d("Iterator", String.valueOf(key));
 
-                    }*/
-                    Log.d("onActivityResult", "vou fazer o alert");
                     Alerter.create(this).setTitle("The task was completed with success!").
                             setBackgroundColorRes(R.color.colorSucess).show();
-                    Log.d("After qr code", String.valueOf(counter));
                     counter++;
-                    Log.d("After increment", String.valueOf(counter));
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -228,9 +203,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-        Log.d("On Resume", String.valueOf(counter));
         if (counter == 1){
-            Log.d("onResume", "o counter estava a 1");
             //
         }
         else if (counter == 2) {
@@ -238,7 +211,6 @@ public class MainActivity extends AppCompatActivity
             super.onResume();
         }
         else{
-            Log.d("onResume", "entrei no nfc");
             super.onResume();
             Intent intent = getIntent();
             if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
@@ -300,8 +272,7 @@ public class MainActivity extends AppCompatActivity
     public void readQrCode(MenuItem item)
     {
         counter++;
-        Log.d("Read Qr Code", String.valueOf(counter));
-        qrScan = new IntentIntegrator(this);
+        IntentIntegrator qrScan = new IntentIntegrator(this);
         qrScan.initiateScan();
         //Toast.makeText(this, "QRCode selected", Toast.LENGTH_SHORT).show();
     }
@@ -548,7 +519,7 @@ public class MainActivity extends AppCompatActivity
         private List<String> getDataFromApi() throws IOException {
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
-            List<String> eventStrings = new ArrayList<String>();
+            List<String> eventStrings = new ArrayList<>();
             Events events = mService.events().list("primary")
                     .setMaxResults(10)
                     .setTimeMin(now)
@@ -584,7 +555,7 @@ public class MainActivity extends AppCompatActivity
             if (output == null || output.size() == 0) {
                 //mOutputText.setText("No results returned.");
             } else {
-                outputString = output.toString();
+                String outputString = output.toString();
                 java.util.Calendar cal = java.util.Calendar.getInstance(Locale.UK);
                 cal.add(java.util.Calendar.DATE, 0);
                 SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");

@@ -70,18 +70,8 @@ public class DatabaseActions {
         newAnimal.put(OWNER_NAME, ownerText);
 
         db.collection("Animals").document(nameText).set(newAnimal)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "Animal Registered");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", e.toString());
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.d("TAG", "Animal Registered"))
+                .addOnFailureListener(e -> Log.d("TAG", e.toString()));
     }
 
     public void createOwner(String ownerText, int ownerPhoneText, String ownerAddrText){
@@ -92,17 +82,7 @@ public class DatabaseActions {
         newOwner.put(ADDRESS_KEY, ownerAddrText);
 
         db.collection("Owners").document(ownerText).set(newOwner)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Owner Registered");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+                .addOnSuccessListener(aVoid -> Log.d("TAG", "Owner Registered")).addOnFailureListener(e -> Log.d("TAG", e.toString()));
     }
 
     public void createInternment(String name, String comments, String reason, String doctor, String procedure, String medicine){
@@ -117,17 +97,7 @@ public class DatabaseActions {
         newInter.put(DATE_IN_KEY,dateIn);
 
         db.collection("Internments").document(name).set(newInter)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                    Log.d("TAG", "Internment Created!");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+                .addOnSuccessListener(aVoid -> Log.d("TAG", "Internment Created!")).addOnFailureListener(e -> Log.d("TAG", e.toString()));
     }
 
     public void createHistoric(String name, List<String> procedures){
@@ -135,17 +105,7 @@ public class DatabaseActions {
         newHist.put(NAME_KEY,name);
         newHist.put(PROCEDURE_KEY,procedures);
 
-        db.collection("Historic").document(name).set(newHist).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Internment Created!");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        db.collection("Historic").document(name).set(newHist).addOnSuccessListener(aVoid -> Log.d("TAG", "Internment Created!")).addOnFailureListener(e -> Log.d("TAG", e.toString()));
     }
 
     public void createProcedure(String procedure, String date){
@@ -153,17 +113,7 @@ public class DatabaseActions {
         newProc.put(PROCEDURE_KEY,procedure);
         newProc.put(PROCEDURE_DATE_KEY,date);
 
-        db.collection("Procedures").document(procedure).set(newProc).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Internment Created!");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        db.collection("Procedures").document(procedure).set(newProc).addOnSuccessListener(aVoid -> Log.d("TAG", "Internment Created!")).addOnFailureListener(e -> Log.d("TAG", e.toString()));
     }
 
     public void createMedicine(String medicine, double dosage, int frequency, int totalDays){
@@ -173,227 +123,131 @@ public class DatabaseActions {
         newMed.put(FREQUENCY_KEY,frequency);
         newMed.put(TOTALDAYS_KEY,totalDays);
 
-        db.collection("Medicines").document(medicine).set(newMed).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Internment Created!");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        db.collection("Medicines").document(medicine).set(newMed).addOnSuccessListener(aVoid -> Log.d("TAG", "Internment Created!")).addOnFailureListener(e -> Log.d("TAG", e.toString()));
     }
 
     //read functions
     public List<String> readAllAnimals(){
         final List<String> infos = new ArrayList<>();
-        db.collection("Animals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    QuerySnapshot query = task.getResult();
-                    List<DocumentSnapshot> data = query.getDocuments();
-                    infos.add(data.toString());
-                }
+        db.collection("Animals").get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                QuerySnapshot query = task.getResult();
+                List<DocumentSnapshot> data = query.getDocuments();
+                infos.add(data.toString());
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
         return infos;
     }
     public String readSingleAnimal(String name){
         final StringBuilder fields = new StringBuilder("");
-        db.collection("Animals").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    fields.append("\nName: ").append(doc.get(NAME_KEY));
-                    fields.append("\nSex: ").append(doc.get(SEX_KEY));
-                    fields.append("\nWeight: ").append(doc.get(WEIGHT_KEY));
-                    fields.append("\nSpecie: ").append(doc.get(SPECIE_KEY));
-                    fields.append("\nDate of Birth: ").append(doc.get(DATE_KEY));
-                    fields.append("\nBreed: ").append(doc.get(BREED_KEY));
-                    fields.append("\nCoat: ").append(doc.get(COAT_KEY));
-                    fields.append("\nOwner's Name: ").append(doc.get(OWNER_NAME));
-                }
+        db.collection("Animals").document(name).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot doc = task.getResult();
+                fields.append("\nName: ").append(doc.get(NAME_KEY));
+                fields.append("\nSex: ").append(doc.get(SEX_KEY));
+                fields.append("\nWeight: ").append(doc.get(WEIGHT_KEY));
+                fields.append("\nSpecie: ").append(doc.get(SPECIE_KEY));
+                fields.append("\nDate of Birth: ").append(doc.get(DATE_KEY));
+                fields.append("\nBreed: ").append(doc.get(BREED_KEY));
+                fields.append("\nCoat: ").append(doc.get(COAT_KEY));
+                fields.append("\nOwner's Name: ").append(doc.get(OWNER_NAME));
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
         return fields.toString();
     }
 
     public String readSingleOwner(String name){
         final StringBuilder fields = new StringBuilder("");
-        db.collection("Owners").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    fields.append("\nName: ").append(doc.get(OWNER_NAME));
-                    fields.append("\nPhone: ").append(doc.get(PHONE_KEY));
-                    fields.append("\nAddress: ").append(doc.get(ADDRESS_KEY));
-                }
+        db.collection("Owners").document(name).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot doc = task.getResult();
+                fields.append("\nName: ").append(doc.get(OWNER_NAME));
+                fields.append("\nPhone: ").append(doc.get(PHONE_KEY));
+                fields.append("\nAddress: ").append(doc.get(ADDRESS_KEY));
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
         return fields.toString();
     }
 
     public String readInternment(String name){
         final StringBuilder fields = new StringBuilder("");
-        db.collection("Internments").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    fields.append("\nName: ").append(doc.get(NAME_KEY));
-                    fields.append("\nComments: ").append(doc.get(COMMENTS_KEY));
-                    fields.append("\nReason of Internment: ").append(doc.get(REASON_KEY));
-                    fields.append("\nDoctor: ").append(doc.get(DOCTOR_KEY));
-                    fields.append("\nProcedure: ").append(doc.get(PROCEDURE_KEY));
-                    fields.append("\nMedicine: ").append(doc.get(MEDICINE_KEY));
-                    fields.append("\nDate In: ").append(doc.get(DATE_IN_KEY));
-                }
+        db.collection("Internments").document(name).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot doc = task.getResult();
+                fields.append("\nName: ").append(doc.get(NAME_KEY));
+                fields.append("\nComments: ").append(doc.get(COMMENTS_KEY));
+                fields.append("\nReason of Internment: ").append(doc.get(REASON_KEY));
+                fields.append("\nDoctor: ").append(doc.get(DOCTOR_KEY));
+                fields.append("\nProcedure: ").append(doc.get(PROCEDURE_KEY));
+                fields.append("\nMedicine: ").append(doc.get(MEDICINE_KEY));
+                fields.append("\nDate In: ").append(doc.get(DATE_IN_KEY));
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
         return fields.toString();
     }
 
     public String readHistoric(String name){
         final StringBuilder fields = new StringBuilder("");
-        db.collection("Historic").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-            if(task.isSuccessful()){
-                DocumentSnapshot doc = task.getResult();
-                fields.append("\nName: ").append(doc.get(NAME_KEY));
-                fields.append("\nProcedure: ").append(doc.get(PROCEDURE_KEY));
-            }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        db.collection("Historic").document(name).get().addOnCompleteListener(task -> {
+        if(task.isSuccessful()){
+            DocumentSnapshot doc = task.getResult();
+            fields.append("\nName: ").append(doc.get(NAME_KEY));
+            fields.append("\nProcedure: ").append(doc.get(PROCEDURE_KEY));
+        }
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
         return fields.toString();
     }
 
     public String readProcedure(String name){
         final StringBuilder fields = new StringBuilder("");
-        db.collection("Procedures").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    fields.append("\nName: ").append(doc.get(PROCEDURE_KEY));
-                    fields.append("\nDate: ").append(doc.get(PROCEDURE_DATE_KEY));
-                }
+        db.collection("Procedures").document(name).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot doc = task.getResult();
+                fields.append("\nName: ").append(doc.get(PROCEDURE_KEY));
+                fields.append("\nDate: ").append(doc.get(PROCEDURE_DATE_KEY));
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
         return fields.toString();
     }
 
     public String readMedicine(String name){
         final StringBuilder fields = new StringBuilder("");
-        db.collection("Medicines").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    fields.append("\nName: ").append(doc.get(MEDICINE_KEY));
-                    fields.append("\nDosage: ").append(doc.get(DOSAGE_KEY));
-                }
+        db.collection("Medicines").document(name).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot doc = task.getResult();
+                fields.append("\nName: ").append(doc.get(MEDICINE_KEY));
+                fields.append("\nDosage: ").append(doc.get(DOSAGE_KEY));
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
         return fields.toString();
     }
 
     //update functions
     public void updateAnimalWeight(String name, double weight){
-        db.collection("Animals").document(name).update(WEIGHT_KEY, weight).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Animal Updated!");
-            }
-        });
+        db.collection("Animals").document(name).update(WEIGHT_KEY, weight).addOnSuccessListener(aVoid -> Log.d("TAG", "Animal Updated!"));
     }
 
     public void updateOwnersInfo(String name, int phone, String address){
         db.collection("Owners").document(name).update(PHONE_KEY,phone);
-        db.collection("Owners").document(name).update(ADDRESS_KEY,address).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Owner Updated!");
-            }
-        });
+        db.collection("Owners").document(name).update(ADDRESS_KEY,address).addOnSuccessListener(aVoid -> Log.d("TAG", "Owner Updated!"));
     }
 
     public void updateInternment(String name, String procedure, String medicine){
         db.collection("Internments").document(name).update(PROCEDURE_KEY,procedure);
-        db.collection("Internments").document(name).update(MEDICINE_KEY,medicine).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG","Internment Updated");
-            }
-        });
+        db.collection("Internments").document(name).update(MEDICINE_KEY,medicine).addOnSuccessListener(aVoid -> Log.d("TAG","Internment Updated"));
     }
 
     public void updateMedicine(String name, int frequency, int totalDays){
         db.collection("Medicines").document(name).update(FREQUENCY_KEY, frequency);
-        db.collection("Medicines").document(name).update(TOTALDAYS_KEY, totalDays).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Dosage Updated!");
-            }
-        });
+        db.collection("Medicines").document(name).update(TOTALDAYS_KEY, totalDays).addOnSuccessListener(aVoid -> Log.d("TAG", "Dosage Updated!"));
     }
 
     //delete functions
     public void deleteAnimal(String name){
-        db.collection("Animals").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Animal deleted!");
-            }
-        });
+        db.collection("Animals").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
     }
 
     public void deleteInternment(String name){
-        db.collection("Internments").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Animal deleted!");
-            }
-        });
+        db.collection("Internments").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
     }
 }

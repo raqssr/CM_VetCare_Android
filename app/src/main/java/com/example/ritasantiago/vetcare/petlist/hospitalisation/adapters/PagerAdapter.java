@@ -4,11 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 
 import com.example.ritasantiago.vetcare.db.entity.Animal;
-
-import static com.example.ritasantiago.vetcare.petlist.PetsFragment.ANIMAL_BUNDLE_KEY;
 
 import com.example.ritasantiago.vetcare.petlist.hospitalisation.InfoPetTabFragment;
 import com.example.ritasantiago.vetcare.petlist.hospitalisation.MedicineTabFragment;

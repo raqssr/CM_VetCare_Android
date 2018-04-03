@@ -1,21 +1,16 @@
 package com.example.ritasantiago.vetcare.petlist.adapters;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.db.entity.Animal;
 import com.example.ritasantiago.vetcare.interfaces.PetClickListener;
-import com.example.ritasantiago.vetcare.petlist.vitalsigns.VitalSignsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +31,7 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
     @Override
     public AnimalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_pets, parent, false);
-        AnimalViewHolder pvh = new AnimalViewHolder(v);
-        return pvh;
+        return new AnimalViewHolder(v);
     }
 
     @Override
@@ -46,20 +40,8 @@ public class RVPetAdapter extends RecyclerView.Adapter<RVPetAdapter.AnimalViewHo
         holder.animalDateOfBirth.setText(animals.get(position).dateOfBirth);
         holder.animalOwner.setText(animals.get(position).owner_name);
         holder.animalPhoto.setImageBitmap(animals.get(position).image);
-        holder.cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickListener.onPetClick(animals.get(position));
-            }
-        });
-        holder.btn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                clickListener.onPetSignalClick(animals.get(position));
-            }
-        });
+        holder.cv.setOnClickListener(view -> clickListener.onPetClick(animals.get(position)));
+        holder.btn.setOnClickListener(view -> clickListener.onPetSignalClick(animals.get(position)));
     }
 
     @Override

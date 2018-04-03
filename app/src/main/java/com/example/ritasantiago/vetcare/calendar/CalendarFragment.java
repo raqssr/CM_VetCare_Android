@@ -1,7 +1,6 @@
 package com.example.ritasantiago.vetcare.calendar;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -27,7 +26,6 @@ import com.example.ritasantiago.vetcare.db.entity.EventsCalendar;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,10 +45,8 @@ public class CalendarFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     private static final String eventsKey = "Events";
-    private String events;
 
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
 
@@ -61,7 +57,7 @@ public class CalendarFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Calendar");
+        toolbar.setTitle(R.string.calendar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -79,17 +75,15 @@ public class CalendarFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         // use a linear layout manager
-        layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        events = sharedPref.getString(eventsKey, "coco");
-        Log.d("Calendar Fragment", events);
+        String events = sharedPref.getString(eventsKey, "coco");
 
         String[] eventItem = events.split(",");
-        for(int i = 0; i < eventItem.length; i++)
-        {
-            String[] s = eventItem[i].split("\\(");
+        for (String anEventItem : eventItem) {
+            String[] s = anEventItem.split("\\(");
             String task = s[0].trim().replaceAll("\\[", "");
             String[] taskInfo = task.split(":");
             String task_animal = taskInfo[0];
@@ -108,9 +102,7 @@ public class CalendarFragment extends Fragment {
 
                     List<Event> eventsCalendar = calendar.getEvents(dateClicked);
                     List<EventsCalendar> eventItens = new ArrayList<>();
-                    for (int i = 0; i < eventsCalendar.size(); i++)
-                    {
-                        Log.d("EventsCalendar", eventsCalendar.get(i).getData().toString());
+                    for (int i = 0; i < eventsCalendar.size(); i++) {
                         String name = eventsCalendar.get(i).getData().toString();
                         String date = convertToDate(eventsCalendar.get(i).getTimeInMillis());
                         String[] dateInfo = date.split(" ");
@@ -121,7 +113,6 @@ public class CalendarFragment extends Fragment {
                     mAdapter = new RVCalendarAdapter(eventItens);
                     recyclerView.setAdapter(mAdapter);
 
-                    Log.d("Calendar clicked: ", "Day was clicked: " + dateClicked + " with events " + eventsCalendar);
                 }
 
                 @Override
@@ -159,7 +150,6 @@ public class CalendarFragment extends Fragment {
         java.util.Calendar cal = java.util.Calendar.getInstance(Locale.getDefault());
         cal.setTimeInMillis(time);
         String date = DateFormat.format("yyyy-MM-dd HH:mm:ss", cal).toString();
-        Log.d("getDate", date);
         return date;
     }
 }

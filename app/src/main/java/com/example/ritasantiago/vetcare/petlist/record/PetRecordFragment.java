@@ -18,19 +18,15 @@ import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.db.entity.Animal;
 import com.example.ritasantiago.vetcare.db.entity.Procedure;
 import com.example.ritasantiago.vetcare.petlist.hospitalisation.adapters.PetRecordAdapter;
-import com.example.ritasantiago.vetcare.petlist.hospitalisation.adapters.ProcedureAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.PROCEDURE_DATE_KEY;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.PROCEDURE_DOCTOR_KEY;
 import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.PROCEDURE_KEY;
 
 
@@ -38,30 +34,19 @@ public class PetRecordFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private FirebaseFirestore db;
     private List<Procedure> procedures = new ArrayList<>();
     public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
-    private Animal animal;
 
     private void getProcedures (final String animalName){
-        db = FirebaseFirestore.getInstance();
-        db.collection("Historics").document(animalName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    procedures.add(new Procedure(doc.get(PROCEDURE_KEY).toString()));
-                }
-                mAdapter = new PetRecordAdapter(procedures);
-                recyclerView.setAdapter(mAdapter);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Historics").document(animalName).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                DocumentSnapshot doc = task.getResult();
+                procedures.add(new Procedure(doc.get(PROCEDURE_KEY).toString()));
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+            mAdapter = new PetRecordAdapter(procedures);
+            recyclerView.setAdapter(mAdapter);
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
     }
 
     @Override
@@ -76,13 +61,13 @@ public class PetRecordFragment extends Fragment {
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back_button));
 
         Bundle args = getArguments();
-        this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
+        Animal animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_historic);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         // use a linear layout manager
-        layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
         getProcedures(animal.name);

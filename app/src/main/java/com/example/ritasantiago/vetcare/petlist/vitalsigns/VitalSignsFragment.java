@@ -2,7 +2,6 @@ package com.example.ritasantiago.vetcare.petlist.vitalsigns;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,11 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.petlist.vitalsigns.custom.MyMarkerView;
@@ -31,7 +28,6 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by raquelramos on 23-03-2018.
@@ -73,7 +69,7 @@ public class VitalSignsFragment extends Fragment {
         temp_chart.setDragEnabled(true);
         temp_chart.setScaleEnabled(true);
 
-        MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
+        MyMarkerView mv = new MyMarkerView(getActivity());
         mv.setChartView(heart_chart); // For bounds control
         heart_chart.setMarker(mv); // Set the marker to the chart
         mv.setChartView(temp_chart); // For bounds control
@@ -156,8 +152,8 @@ public class VitalSignsFragment extends Fragment {
         //mChart.getViewPortHandler().setMaximumScaleX(2f);
 
         //add data
-        setDataHeart(24);
-        setDataTemperature(24);
+        setDataHeart();
+        setDataTemperature();
 
         heart_chart.animateX(1500);
         temp_chart.animateX(1500);
@@ -183,13 +179,13 @@ public class VitalSignsFragment extends Fragment {
         getActivity().setTitle("Vital Signs");
     }
 
-    private void setDataHeart(int count) {
+    private void setDataHeart() {
 
-        ArrayList<Entry> valuesHeart = new ArrayList<Entry>();
+        ArrayList<Entry> valuesHeart = new ArrayList<>();
         LineDataSet set1;
         Simulators s = new Simulators();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < 24; i++) {
             float val = (float) s.calcBat(60,100);
             valuesHeart.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
         }
@@ -229,7 +225,7 @@ public class VitalSignsFragment extends Fragment {
                 set1.setFillColor(Color.BLACK);
             }
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1); // add the datasets
 
             // create a data object with the datasets
@@ -240,13 +236,13 @@ public class VitalSignsFragment extends Fragment {
         }
     }
 
-    private void setDataTemperature(int count)
+    private void setDataTemperature()
     {
-        ArrayList<Entry> valuesTemp = new ArrayList<Entry>();
+        ArrayList<Entry> valuesTemp = new ArrayList<>();
         LineDataSet set2;
         Simulators s = new Simulators();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < 24; i++) {
             float val = (float) s.calcTemperature(20,40);
             valuesTemp.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
         }
@@ -286,7 +282,7 @@ public class VitalSignsFragment extends Fragment {
                 set2.setFillColor(Color.BLACK);
             }
 
-            ArrayList<ILineDataSet> dataSets2 = new ArrayList<ILineDataSet>();
+            ArrayList<ILineDataSet> dataSets2 = new ArrayList<>();
             dataSets2.add(set2); // add the datasets
 
             // create a data object with the datasets

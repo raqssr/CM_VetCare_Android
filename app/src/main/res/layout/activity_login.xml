@@ -19,7 +19,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/logo_transp" />
+        app:srcCompat="@mipmap/logo_transp"
+        android:contentDescription="TODO" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"

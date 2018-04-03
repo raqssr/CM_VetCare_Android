@@ -60,8 +60,7 @@ public class PetRecordAdapter extends RecyclerView.Adapter<PetRecordAdapter.View
                 parent.getContext());
         View v = inflater.inflate(R.layout.recycler_item_record, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        PetRecordAdapter.ViewHolder vh = new PetRecordAdapter.ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

@@ -248,7 +248,8 @@
         app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_next" />
+        app:srcCompat="@drawable/ic_next"
+        android:focusable="true" />
 
     <Button
         android:id="@+id/upload_photo"

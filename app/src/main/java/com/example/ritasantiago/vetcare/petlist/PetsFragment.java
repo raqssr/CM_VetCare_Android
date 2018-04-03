@@ -45,39 +45,30 @@ public class PetsFragment extends Fragment implements PetClickListener {
 
     public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
     private RVPetAdapter adapter;
-    private FirebaseFirestore db;
 
     private void initializeData(){
-        db = FirebaseFirestore.getInstance();
-        db.collection("Animals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-            if(task.isSuccessful()){
-                QuerySnapshot query = task.getResult();
-                List<DocumentSnapshot> data = query.getDocuments();
-                for (int i = 0; i < data.size(); i++)
-                {
-                    byte imagem[] = Base64.decode(data.get(i).get(IMAGE_ID).toString(),Base64.NO_WRAP | Base64.URL_SAFE);
-                    Bitmap bmp = BitmapFactory.decodeByteArray(imagem, 0, imagem.length);
-                    adapter.addAnimal(new Animal(data.get(i).get(NAME).toString(),
-                                                 data.get(i).get(SEX).toString(),
-                                                 bmp,
-                                                 data.get(i).get(WEIGHT).toString(),
-                                                 data.get(i).get(SPECIE).toString(),
-                                                 data.get(i).get(DOB).toString(),
-                                                 data.get(i).get(BREED).toString(),
-                                                 data.get(i).get(COAT).toString(),
-                                                 data.get(i).get(OWNER_NAME).toString()));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Animals").get().addOnCompleteListener(task -> {
+        if(task.isSuccessful()){
+            QuerySnapshot query = task.getResult();
+            List<DocumentSnapshot> data = query.getDocuments();
+            for (int i = 0; i < data.size(); i++)
+            {
+                byte imagem[] = Base64.decode(data.get(i).get(IMAGE_ID).toString(),Base64.NO_WRAP | Base64.URL_SAFE);
+                Bitmap bmp = BitmapFactory.decodeByteArray(imagem, 0, imagem.length);
+                adapter.addAnimal(new Animal(data.get(i).get(NAME).toString(),
+                                             data.get(i).get(SEX).toString(),
+                                             bmp,
+                                             data.get(i).get(WEIGHT).toString(),
+                                             data.get(i).get(SPECIE).toString(),
+                                             data.get(i).get(DOB).toString(),
+                                             data.get(i).get(BREED).toString(),
+                                             data.get(i).get(COAT).toString(),
+                                             data.get(i).get(OWNER_NAME).toString()));
 
-                }
             }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        }
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
     }
 
     @Override
@@ -87,7 +78,7 @@ public class PetsFragment extends Fragment implements PetClickListener {
         View rootView = inflater.inflate(R.layout.fragment_pets, container, false);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Animals");
+        toolbar.setTitle(R.string.animals);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -105,17 +96,12 @@ public class PetsFragment extends Fragment implements PetClickListener {
         initializeData();
 
         FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.button_addPet);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Fragment fragment = new AddPetFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
+        button.setOnClickListener(v -> {
+            Fragment fragment = new AddPetFragment();
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
         });
 
         return rootView;

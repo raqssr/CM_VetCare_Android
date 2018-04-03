@@ -60,8 +60,7 @@ public class RVCalendarAdapter extends RecyclerView.Adapter<RVCalendarAdapter.Vi
                 parent.getContext());
         View v = inflater.inflate(R.layout.recycler_item_events, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        RVCalendarAdapter.ViewHolder vh = new RVCalendarAdapter.ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

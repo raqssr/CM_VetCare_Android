@@ -28,8 +28,7 @@ public class ProcedureAdapter extends RecyclerView.Adapter<ProcedureAdapter.Proc
                 parent.getContext());
         View v = inflater.inflate(R.layout.recycler_item_procedure, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ProcedureViewHolder vh = new ProcedureViewHolder(v);
-        return vh;
+        return new ProcedureViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

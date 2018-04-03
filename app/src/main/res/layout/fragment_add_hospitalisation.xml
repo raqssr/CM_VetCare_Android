@@ -88,6 +88,7 @@
         app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_save" />
+        app:srcCompat="@drawable/ic_save"
+        android:focusable="true" />
 
 </android.support.constraint.ConstraintLayout>

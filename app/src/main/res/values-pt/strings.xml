@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">VetCare</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="name">Nome</string>
+    <string name="sex">Sexo</string>
+    <string name="male">Masculino</string>
+    <string name="female">Feminino</string>
+    <string name="weight">Peso (Kg)</string>
+    <string name="specie">Espécie</string>
+    <string name="dob">DD/MM/YYYY</string>
+    <string name="breed">Raça</string>
+    <string name="coat">Pelagem</string>
+    <string name="ownerName">Nome do Dono</string>
+    <string name="ownerAddress">Endereço do Dono</string>
+    <string name="ownerPhone">Telemóvel do Dono</string>
+    <string name="upload_photo">Tirar Foto</string>
+    <string name="taskList">Tarefas</string>
+    <string name="animals">Animais</string>
+    <string name="calendar">Calendário</string>
+    <string name="docs">Documentos</string>
+    <string name="others">Outros</string>
+    <string name="logout">Log Out</string>
+    <string name="entry_date">Data de Entrada</string>
+    <string name="motive">Motivo</string>
+    <string name="doctor">Veterinário</string>
+    <string name="observations">Observações</string>
+    <string name="generatePdf">Gerar PDF</string>
+    <string name="heartBeats">Batimentos Cardíacos</string>
+    <string name="temperature">Temperatura</string>
+    <string name="clinic_name">Vet Care Clinic</string>
+    <string name="clinic_mail">vetcareclinic2018@gmail.com</string>
+    <string name="discharge">Dar Alta</string>
+    <string name="addAnimal">Novo Animal</string>
+    <string name="errorCamera">Dispositivo sem câmara</string>
+</resources>

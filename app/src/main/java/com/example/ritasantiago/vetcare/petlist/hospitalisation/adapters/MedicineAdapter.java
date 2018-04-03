@@ -27,8 +27,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
                 parent.getContext());
         View v = inflater.inflate(R.layout.recycler_item_medicine, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        MedicineViewHolder vh = new MedicineViewHolder(v);
-        return vh;
+        return new MedicineViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

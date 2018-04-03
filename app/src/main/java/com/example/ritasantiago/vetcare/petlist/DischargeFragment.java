@@ -1,39 +1,26 @@
 package com.example.ritasantiago.vetcare.petlist;
 
 import android.Manifest;
-import android.accounts.AccountManager;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ritasantiago.vetcare.R;
@@ -47,19 +34,12 @@ import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -68,10 +48,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
@@ -83,7 +60,6 @@ import static android.app.Activity.RESULT_OK;
 public class DischargeFragment extends Fragment {
 
     private EditText name, weight, doctor, obs;
-    private Button generatePdf;
     public File pdfFile;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
     private FirebaseFirestore db;
@@ -99,29 +75,13 @@ public class DischargeFragment extends Fragment {
     private DriveResourceClient mDriveResourceClient;
     private Bitmap mBitmapToSave;
     private ArrayList<String> dischargeInfo = new ArrayList<>();
-    private String fileName;
     private String s;
 
     private void deleteAnimal(final String name){
-        db.collection("Animals").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Animal deleted!");
-            }
-        });
+        db.collection("Animals").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
 
-        db.collection("Internments").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Animal deleted!");
-            }
-        });
-        db.collection("Historics").document(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Animal deleted!");
-            }
-        });
+        db.collection("Internments").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
+        db.collection("Historics").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
 
         /*db.collection("Medicines").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -172,7 +132,7 @@ public class DischargeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_discharge, container, false);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Discharge Animal");
+        toolbar.setTitle(R.string.discharge);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -183,37 +143,34 @@ public class DischargeFragment extends Fragment {
         weight = (EditText) rootView.findViewById(R.id.et_weight);
         doctor = (EditText) rootView.findViewById(R.id.et_doctor);
         obs = (EditText) rootView.findViewById(R.id.et_observations);
-        generatePdf = (Button) rootView.findViewById(R.id.btn_generatePdf);
-        generatePdf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (name.getText().toString().isEmpty()){
-                    name.setError("Animal name is empty!");
-                    name.requestFocus();
-                    return;
-                }
-                if (weight.getText().toString().isEmpty()){
-                    weight.setError("Weight field is empty!");
-                    weight.requestFocus();
-                    return;
-                }
-                if (doctor.getText().toString().isEmpty()){
-                    doctor.setError("Doctor field is empty!");
-                    doctor.requestFocus();
-                    return;
-                }
-                if (obs.getText().toString().isEmpty()){
-                    obs.setError("Observations field is empty!");
-                    obs.requestFocus();
-                    return;
-                }
-                try {
-                    createPdfWrapper();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (DocumentException e) {
-                    e.printStackTrace();
-                }
+        Button generatePdf = (Button) rootView.findViewById(R.id.btn_generatePdf);
+        generatePdf.setOnClickListener(v -> {
+            if (name.getText().toString().isEmpty()){
+                name.setError("Animal name is empty!");
+                name.requestFocus();
+                return;
+            }
+            if (weight.getText().toString().isEmpty()){
+                weight.setError("Weight field is empty!");
+                weight.requestFocus();
+                return;
+            }
+            if (doctor.getText().toString().isEmpty()){
+                doctor.setError("Doctor field is empty!");
+                doctor.requestFocus();
+                return;
+            }
+            if (obs.getText().toString().isEmpty()){
+                obs.setError("Observations field is empty!");
+                obs.requestFocus();
+                return;
+            }
+            try {
+                createPdfWrapper();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (DocumentException e) {
+                e.printStackTrace();
             }
         });
 
@@ -237,14 +194,11 @@ public class DischargeFragment extends Fragment {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CONTACTS)) {
-                    showMessageOKCancel("You need to allow access to Storage",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                                REQUEST_CODE_ASK_PERMISSIONS);
-                                    }
+                    showMessageOKCancel(
+                            (dialog, which) -> {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                            REQUEST_CODE_ASK_PERMISSIONS);
                                 }
                             });
                     return;
@@ -253,7 +207,6 @@ public class DischargeFragment extends Fragment {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         REQUEST_CODE_ASK_PERMISSIONS);
             }
-            return;
         }else {
             createPdf();
         }
@@ -274,9 +227,9 @@ public class DischargeFragment extends Fragment {
                 requestCode, permissions, grantResults, this);
     }
 
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+    private void showMessageOKCancel(DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getActivity())
-                .setMessage(message)
+                .setMessage("You need to allow access to Storage")
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", null)
                 .create()
@@ -288,10 +241,9 @@ public class DischargeFragment extends Fragment {
         File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Documents");
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
-            Log.i(TAG, "Created a new directory for PDF");
         }
 
-        fileName = name.getText().toString() + ".pdf";
+        String fileName = name.getText().toString() + ".pdf";
         pdfFile = new File(docsFolder.getAbsolutePath(), fileName);
         final OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document();
@@ -318,7 +270,6 @@ public class DischargeFragment extends Fragment {
 
     /** Start sign in activity. */
     private void signIn() {
-        Log.i(TAG, "Start sign in");
         GoogleSignInClient GoogleSignInClient = buildGoogleSignInClient();
         startActivityForResult(GoogleSignInClient.getSignInIntent(), REQUEST_CODE_SIGN_IN);
     }
@@ -335,9 +286,6 @@ public class DischargeFragment extends Fragment {
     /** Create a new file and save it to Drive. */
     private void saveFileToDrive() {
         // Start by creating a new contents, and setting a callback.
-        Log.i(TAG, "Creating new contents.");
-
-
         mDriveResourceClient
                 .createContents()
                 .continueWithTask(
@@ -351,7 +299,6 @@ public class DischargeFragment extends Fragment {
      * CreateFileActivityOptions} for user to create a new photo in Drive.
      */
     private Task<Void> createFileIntentSender(DriveContents driveContents, ArrayList<String> a) {
-        Log.i(TAG, "New contents created.");
         // Get an output stream for the contents.
         OutputStream outputStream = driveContents.getOutputStream();
 
@@ -393,10 +340,8 @@ public class DischargeFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE_SIGN_IN:
-                Log.i(TAG, "Sign in request code");
                 // Called after user is signed in.
                 if (resultCode == RESULT_OK) {
-                    Log.i(TAG, "Signed in successfully.");
                     // Use the last signed in account here since it already have a Drive scope.
                     mDriveClient = Drive.getDriveClient(getActivity(), GoogleSignIn.getLastSignedInAccount(getActivity()));
                     // Build a drive resource client.
@@ -408,20 +353,16 @@ public class DischargeFragment extends Fragment {
                 }
                 break;
             case REQUEST_CODE_CAPTURE_IMAGE:
-                Log.i(TAG, "capture image request code");
                 // Called after a photo has been taken.
                 if (resultCode == RESULT_OK) {
-                    Log.i(TAG, "Image captured successfully.");
                     // Store the image data as a bitmap for writing later.
                     //mBitmapToSave = (Bitmap) data.getExtras().get("data");
                     //saveFileToDrive();
                 }
                 break;
             case REQUEST_CODE_CREATOR:
-                Log.i(TAG, "creator request code");
                 // Called after a file is saved to Drive.
                 if (resultCode == RESULT_OK) {
-                    Log.i(TAG, "Image successfully saved.");
                     deleteAnimal(s);
                     getFragmentManager().popBackStack();
                     getFragmentManager().popBackStack();

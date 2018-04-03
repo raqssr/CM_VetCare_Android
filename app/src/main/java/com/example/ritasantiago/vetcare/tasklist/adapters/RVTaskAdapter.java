@@ -28,8 +28,7 @@ public class RVTaskAdapter extends RecyclerView.Adapter<RVTaskAdapter.TaskViewHo
                 parent.getContext());
         View v = inflater.inflate(R.layout.recycler_item_task, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        TaskViewHolder vh = new TaskViewHolder(v);
-        return vh;
+        return new TaskViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

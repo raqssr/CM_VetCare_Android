@@ -18,13 +18,11 @@ public class Simulators {
 
     public int calcTemperature(int min, int max){
         Random r = new Random();
-        int difference = r.nextInt(max-min)+min;
-        return difference;
+        return r.nextInt(max-min)+min;
     }
 
     public int calcBat(int min, int max){
         Random r = new Random();
-        int difference = r.nextInt(max-min)+min;
-        return difference;
+        return r.nextInt(max-min)+min;
     }
 }

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.db.DatabaseActions;
-import com.example.ritasantiago.vetcare.petlist.profile.ProfilePetFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,7 +37,7 @@ public class AddHospitalisationFragment extends Fragment {
 
     public static final String DEBUG_TAG = "AddHospitalisationFragment";
     DatabaseActions database;
-    FirebaseFirestore db;;
+    FirebaseFirestore db;
     EditText entry_motive, entry_vet, entry_observations;
     private String nameAnimal;
 
@@ -67,14 +64,7 @@ public class AddHospitalisationFragment extends Fragment {
         entry_observations = (EditText) rootView.findViewById(R.id.entry_obs);
 
         FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.btn_saveAnimal);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                createHospitalisation(v);
-            }
-        });
+        button.setOnClickListener(v -> createHospitalisation(v));
         return rootView;
     }
 
@@ -100,18 +90,8 @@ public class AddHospitalisationFragment extends Fragment {
         newInter.put(COMMENTS_KEY, obs);
 
         db.collection("Internments").document(animalReference.getId()).set(newInter)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "Internment Registered");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", e.toString());
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.d("TAG", "Internment Registered"))
+                .addOnFailureListener(e -> Log.d("TAG", e.toString()));
 
         Context context = getActivity().getApplicationContext();
 

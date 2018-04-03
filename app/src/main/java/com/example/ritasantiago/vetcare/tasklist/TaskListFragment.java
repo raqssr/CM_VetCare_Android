@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.RelativeDateTimeFormatter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -24,7 +23,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +32,6 @@ import com.example.ritasantiago.vetcare.db.entity.Task;
 import com.example.ritasantiago.vetcare.tasklist.adapters.RVTaskAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.wallet.MaskedWalletRequest;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -48,13 +45,10 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -72,8 +66,6 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
     SharedPreferences sp;
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     private GoogleAccountCredential mCredential;
     private ProgressDialog mProgress;
@@ -87,7 +79,6 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
     private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
 
     public static final String eventsKey = "Events";
-    private String outputString;
     private SwipeRefreshLayout mySwipeRefreshLayout;
 
     @Nullable
@@ -98,7 +89,7 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
         View rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Task List");
+        toolbar.setTitle(R.string.taskList);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -113,16 +104,13 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
          * performs a swipe-to-refresh gesture.
          */
             mySwipeRefreshLayout.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
+                    () -> {
                         //Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout");
 
                         // This method performs the actual data-refresh operation.
                         // The method calls setRefreshing(false) when it's finished.
                         getResultsFromApi();
                     }
-                }
             );
 
 
@@ -132,7 +120,7 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         // use a linear layout manager
-        layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
         mProgress = new ProgressDialog(getActivity());
@@ -393,7 +381,7 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
         private List<String> getDataFromApi() throws IOException {
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
-            List<String> eventStrings = new ArrayList<String>();
+            List<String> eventStrings = new ArrayList<>();
             Events events = mService.events().list("primary")
                     .setMaxResults(10)
                     .setTimeMin(now)
@@ -428,7 +416,7 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
             if (output == null || output.size() == 0) {
                 //mOutputText.setText("No results returned.");
             } else {
-                outputString = output.toString();
+                String outputString = output.toString();
                 sp.edit().putString(eventsKey, outputString).apply();
                 List<Task> tasks = new ArrayList<>();
                 Calendar cal = Calendar.getInstance(Locale.UK);
@@ -451,7 +439,7 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                     if (formatted.equals(eventDate))
                     {
                         tasks.add(new Task(task_animal, task_description, eventStartHour));
-                        mAdapter = new RVTaskAdapter(tasks);
+                        RecyclerView.Adapter mAdapter = new RVTaskAdapter(tasks);
                         recyclerView.setAdapter(mAdapter);
                     }
                 }

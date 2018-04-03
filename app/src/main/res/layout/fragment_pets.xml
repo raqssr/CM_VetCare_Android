@@ -28,7 +28,8 @@
         app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_add" />
+        app:srcCompat="@drawable/ic_add"
+        android:focusable="true" />
 
 
 </android.support.constraint.ConstraintLayout>

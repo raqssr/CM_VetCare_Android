@@ -3,11 +3,6 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello">Hello World!</string>
     <string name="name">Name</string>
     <string name="sex">Sex</string>
     <string name="male">Male</string>
@@ -36,4 +31,7 @@
     <string name="temperature">Temperature</string>
     <string name="clinic_name">Vet Care Clinic</string>
     <string name="clinic_mail">vetcareclinic2018@gmail.com</string>
+    <string name="discharge">Discharge</string>
+    <string name="addAnimal">Add Animal</string>
+    <string name="errorCamera">No camera on this device</string>
 </resources>

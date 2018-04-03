@@ -28,7 +28,8 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/g_name"
@@ -74,7 +75,8 @@
                 android:scaleType="centerInside"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_heart_pulse" />
+                app:srcCompat="@drawable/ic_heart_pulse"
+                android:contentDescription="TODO" />
 
 
         </android.support.constraint.ConstraintLayout>

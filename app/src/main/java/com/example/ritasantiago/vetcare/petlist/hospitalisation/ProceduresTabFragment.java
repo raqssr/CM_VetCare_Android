@@ -24,13 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.PROCEDURE_DATE_KEY;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.PROCEDURE_DOCTOR_KEY;
-import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.PROCEDURE_KEY;
 
 /**
  * Created by raquelramos on 04-03-2018.
@@ -40,36 +34,25 @@ public class ProceduresTabFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private FirebaseFirestore db;
     private List<Procedure> procedures = new ArrayList<>();
     public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
-    private Animal animal;
 
     private void getProcedures (final String animalName){
-        db = FirebaseFirestore.getInstance();
-        db.collection("Procedures").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    QuerySnapshot query = task.getResult();
-                    List<DocumentSnapshot> data = query.getDocuments();
-                    for (int i = 0; i < data.size(); i++) {
-                        DocumentSnapshot doc = data.get(i);
-                        if(doc.contains(animalName)){
-                            procedures.add(new Procedure(doc.get(animalName).toString()));
-                        }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Procedures").get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                QuerySnapshot query = task.getResult();
+                List<DocumentSnapshot> data = query.getDocuments();
+                for (int i = 0; i < data.size(); i++) {
+                    DocumentSnapshot doc = data.get(i);
+                    if(doc.contains(animalName)){
+                        procedures.add(new Procedure(doc.get(animalName).toString()));
                     }
-                    mAdapter = new ProcedureAdapter(procedures);
-                    recyclerView.setAdapter(mAdapter);
                 }
+                mAdapter = new ProcedureAdapter(procedures);
+                recyclerView.setAdapter(mAdapter);
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
     }
 
     @Nullable
@@ -79,13 +62,13 @@ public class ProceduresTabFragment extends Fragment {
         //change R.layout.yourlayoutfilename for each of your fragments
         View rootView = inflater.inflate(R.layout.fragment_procedures_tab, container, false);
         Bundle args = getArguments();
-        this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
+        Animal animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_procedures);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         // use a linear layout manager
-        layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
         getProcedures(animal.name);

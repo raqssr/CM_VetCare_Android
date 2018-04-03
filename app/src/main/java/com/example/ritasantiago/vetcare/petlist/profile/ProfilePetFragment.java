@@ -27,13 +27,7 @@ import static com.example.ritasantiago.vetcare.petlist.PetsFragment.ANIMAL_BUNDL
 public class ProfilePetFragment extends Fragment {
 
     private FirebaseFirestore db;
-    private TextView generalInfo;
-    private TextView hosp;
-    private TextView recordInfo;
     public Animal animal;
-    private CircleImageView photo;
-    private TextView name, dob, owner;
-    private Button discharge;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,26 +44,23 @@ public class ProfilePetFragment extends Fragment {
 
         Bundle args = getArguments();
         this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
-        photo = (CircleImageView) rootView.findViewById(R.id.profile_photo);
-        name = (TextView) rootView.findViewById(R.id.g_name);
-        dob = (TextView) rootView.findViewById(R.id.animal_dob);
-        owner = (TextView) rootView.findViewById(R.id.animal_owner);
+        CircleImageView photo = (CircleImageView) rootView.findViewById(R.id.profile_photo);
+        TextView name = (TextView) rootView.findViewById(R.id.g_name);
+        TextView dob = (TextView) rootView.findViewById(R.id.animal_dob);
+        TextView owner = (TextView) rootView.findViewById(R.id.animal_owner);
 
         name.setText(animal.name);
         dob.setText(animal.dateOfBirth);
         owner.setText(animal.owner_name);
         photo.setImageBitmap(animal.image);
 
-        discharge = (Button) rootView.findViewById(R.id.btn_discharge);
-        discharge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = new DischargeFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
+        Button discharge = (Button) rootView.findViewById(R.id.btn_discharge);
+        discharge.setOnClickListener(view -> {
+            Fragment fragment = new DischargeFragment();
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
         });
 
         return rootView;
@@ -81,55 +72,40 @@ public class ProfilePetFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("ProfilePets");
-        generalInfo = (TextView) getActivity().findViewById(R.id.tv_generalInfo);
-        generalInfo.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Fragment fragment = new GeneralInfoPetFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
-                fragment.setArguments(bundle);
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
+        TextView generalInfo = (TextView) getActivity().findViewById(R.id.tv_generalInfo);
+        generalInfo.setOnClickListener(v -> {
+            Fragment fragment = new GeneralInfoPetFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
         });
 
-        hosp = (TextView) getActivity().findViewById(R.id.tv_hospitalisation);
-        hosp.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Fragment fragment = new HospitalisationFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
-                fragment.setArguments(bundle);
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
+        TextView hosp = (TextView) getActivity().findViewById(R.id.tv_hospitalisation);
+        hosp.setOnClickListener(v -> {
+            Fragment fragment = new HospitalisationFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
         });
 
-        recordInfo = (TextView) getActivity().findViewById(R.id.tv_animalrecords);
-        recordInfo.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Fragment fragment = new PetRecordFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
-                fragment.setArguments(bundle);
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
+        TextView recordInfo = (TextView) getActivity().findViewById(R.id.tv_animalrecords);
+        recordInfo.setOnClickListener(v -> {
+            Fragment fragment = new PetRecordFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
         });
     }
 

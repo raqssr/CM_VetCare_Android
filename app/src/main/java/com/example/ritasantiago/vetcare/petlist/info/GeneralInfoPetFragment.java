@@ -29,25 +29,16 @@ import com.example.ritasantiago.vetcare.R;
 public class GeneralInfoPetFragment extends Fragment {
     private FirebaseFirestore db;
     public static final String ANIMAL_BUNDLE_KEY = "animal_bundle";
-    private Animal animal;
 
     TextView animalName, animalDateOfBirth, animalSex, animalSpecie, animalBreed, animalCoat, animalWeight, animalOwner, ownerPhone;
 
     private void initializeOwnerInfos(String name){
-        db.collection("Owners").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    ownerPhone.setText(doc.get(PHONE_KEY).toString());
-                }
+        db.collection("Owners").document(name).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot doc = task.getResult();
+                ownerPhone.setText(doc.get(PHONE_KEY).toString());
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
     }
 
     @Nullable
@@ -63,7 +54,7 @@ public class GeneralInfoPetFragment extends Fragment {
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back_button));
 
         Bundle args = getArguments();
-        this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
+        Animal animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
 
         animalName = (TextView) rootView.findViewById(R.id.g_name);
         animalDateOfBirth = (TextView) rootView.findViewById(R.id.g_date);

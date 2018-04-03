@@ -21,23 +21,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ritasantiago.vetcare.R;
-import com.example.ritasantiago.vetcare.db.DatabaseActions;
 import com.example.ritasantiago.vetcare.petlist.hospitalisation.AddHospitalisationFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayOutputStream;
 import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.*;
@@ -45,7 +38,6 @@ import static com.example.ritasantiago.vetcare.db.entity.FirebaseFields.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -78,7 +70,7 @@ public class AddPetFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_add_pet, container, false);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Add Animal");
+        toolbar.setTitle(R.string.addAnimal);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -100,27 +92,13 @@ public class AddPetFragment extends Fragment {
         Button uploadButton = (Button) rootView.findViewById(R.id.upload_photo);
         if (!getActivity().getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            Toast.makeText(getActivity().getApplicationContext(), "No camera on this device", Toast.LENGTH_LONG)
+            Toast.makeText(getActivity().getApplicationContext(), R.string.errorCamera, Toast.LENGTH_LONG)
                     .show();
         }
-        uploadButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                dispatchTakePictureIntent();
-            }
-        });
+        uploadButton.setOnClickListener(v -> dispatchTakePictureIntent());
 
         FloatingActionButton button = (FloatingActionButton) rootView.findViewById(R.id.btn_nextFrag);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                createAnimal(v);
-            }
-        });
+        button.setOnClickListener(v -> createAnimal(v));
 
         return rootView;
     }
@@ -173,15 +151,12 @@ public class AddPetFragment extends Fragment {
 
         if (imageBitmap != null)
         {
-            Log.i("AddPetFragment", "entrei no if do bitmap");
             final DatabaseReference log = mDatabase.getReference("Animals").push();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream .toByteArray();
             imageStr = Base64.encodeToString(byteArray, Base64.NO_WRAP | Base64.URL_SAFE);
-            Log.i("imageStr", imageStr);
-            //log.child("image").setValue(imageStr);
-            Toast.makeText(getActivity().getApplicationContext(),"Photo uploaded with success.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity().getApplicationContext(),"Photo uploaded with success.", Toast.LENGTH_SHORT).show();
         }
 
         newAnimal.put(IMAGE_ID, imageStr);
@@ -191,35 +166,15 @@ public class AddPetFragment extends Fragment {
         newOwner.put(PHONE_KEY, ownerPhoneText);
         newOwner.put(ADDRESS_KEY, ownerAddrText);
 
-        db.collection("Owners").document(ownerText).set(newOwner).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Owner Registered");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
+        db.collection("Owners").document(ownerText).set(newOwner).addOnSuccessListener(aVoid -> Log.d("TAG", "Owner Registered")).addOnFailureListener(e -> Log.d("TAG", e.toString()));
 
         DocumentReference ownerReference = db.collection("Owners").document(ownerText);
         newAnimal.put(OWNER_NAME, ownerReference.getId());
 
 
         db.collection("Animals").document(nameText).set(newAnimal)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "Animal Registered");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", e.toString());
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.d("TAG", "Animal Registered"))
+                .addOnFailureListener(e -> Log.d("TAG", e.toString()));
 
         final DocumentReference animalReference = db.collection("Animals").document(nameText);
 
@@ -237,18 +192,8 @@ public class AddPetFragment extends Fragment {
         newMed.put(animalReference.getId(), animalMedicines);
 
         db.collection("Medicines").document(medicine).set(newMed)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "Medicine Registered");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", e.toString());
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.d("TAG", "Medicine Registered"))
+                .addOnFailureListener(e -> Log.d("TAG", e.toString()));
 
 
         for(int i = 1; i <= numberProcedures(); i++) {
@@ -263,18 +208,8 @@ public class AddPetFragment extends Fragment {
             newProc.put(animalReference.getId(), animalProcedures);
 
             db.collection("Procedures").document(procedure).set(newProc)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d("TAG", "Procedure Registered");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("TAG", e.toString());
-                        }
-                    });
+                    .addOnSuccessListener(aVoid -> Log.d("TAG", "Procedure Registered"))
+                    .addOnFailureListener(e -> Log.d("TAG", e.toString()));
         }
 
         for(int i = 1; i<= numberRegulars(); i++){
@@ -286,18 +221,8 @@ public class AddPetFragment extends Fragment {
             newHist.put(PROCEDURE_KEY,procedures);
 
             db.collection("Historics").document(animalReference.getId()).set(newHist)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d("TAG", "Historic Registered");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("TAG", e.toString());
-                        }
-                    });
+                    .addOnSuccessListener(aVoid -> Log.d("TAG", "Historic Registered"))
+                    .addOnFailureListener(e -> Log.d("TAG", e.toString()));
         }
 
 
@@ -314,7 +239,6 @@ public class AddPetFragment extends Fragment {
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            Log.i("dispatch", "fez o dispatch");
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }

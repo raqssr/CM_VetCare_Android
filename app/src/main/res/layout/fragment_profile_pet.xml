@@ -20,7 +20,8 @@
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="TODO" />
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
 
@@ -39,7 +40,8 @@
             app:civ_border_width="3dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView2" />
+            app:layout_constraintTop_toTopOf="@+id/imageView2"
+            android:focusable="true" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline2"
@@ -104,7 +106,8 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline2" />
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
+            android:focusable="true" />
 
         <TextView
             android:id="@+id/tv_hospitalisation"
@@ -124,7 +127,8 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_generalInfo" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_generalInfo"
+            android:focusable="true" />
 
         <TextView
             android:id="@+id/tv_animalrecords"
@@ -143,7 +147,8 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_hospitalisation" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_hospitalisation"
+            android:focusable="true" />
 
         <Button
             android:id="@+id/btn_discharge"
