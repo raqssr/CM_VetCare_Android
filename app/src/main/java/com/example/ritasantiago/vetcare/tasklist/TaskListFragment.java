@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -87,6 +88,7 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
 
     public static final String eventsKey = "Events";
     private String outputString;
+    private SwipeRefreshLayout mySwipeRefreshLayout;
 
     @Nullable
     @Override
@@ -104,6 +106,25 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                 R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        mySwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+        /*
+         * Sets up a SwipeRefreshLayout.OnRefreshListener that is invoked when the user
+         * performs a swipe-to-refresh gesture.
+         */
+            mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        //Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout");
+
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        getResultsFromApi();
+                    }
+                }
+            );
+
 
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
@@ -435,6 +456,7 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
                     }
                 }
             }
+            mySwipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
