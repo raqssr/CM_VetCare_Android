@@ -21,13 +21,14 @@ public class Animal implements Serializable {
     public String breed;
     public String coat;
     public String owner_name;
+    public String owner_phone;
 
     //required for calls to getValue
     public Animal(){
 
     }
 
-    public Animal(String name, String sex, Bitmap image, String weight, String specie, String dateOfBirth, String breed, String coat, String owner_name ){
+    public Animal(String name, String sex, Bitmap image, String weight, String specie, String dateOfBirth, String breed, String coat, String owner_name, String owner_phone){
         this.name = name;
         this.sex = sex;
         this.image = image;
@@ -37,6 +38,7 @@ public class Animal implements Serializable {
         this.breed = breed;
         this.coat = coat;
         this.owner_name = owner_name;
+        this.owner_phone = owner_phone;
     }
 
     public Animal(String name, String dateOfBirth, String sex, String specie, String breed, String coat, String weight, String owner_name){
@@ -112,5 +114,13 @@ public class Animal implements Serializable {
 
     public void setOwner_name(String owner_name) {
         this.owner_name = owner_name;
+    }
+
+    public String getOwner_phone() {
+        return owner_phone;
+    }
+
+    public void setOwner_phone(String owner_phone) {
+        this.owner_phone = owner_phone;
     }
 }

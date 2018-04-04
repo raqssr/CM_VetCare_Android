@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">VetCare</string>
+    <string name="title_activity_main">Main Activity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Definições</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -34,4 +38,8 @@
     <string name="discharge">Dar Alta</string>
     <string name="addAnimal">Novo Animal</string>
     <string name="errorCamera">Dispositivo sem câmara</string>
+    <string name="sendText">Enviar Mensagem</string>
+    <string name="send">Enviar</string>
+    <string name="writeHere">Escreva aqui a mensagem:</string>
+    <string name="message">Mensagem</string>
 </resources>

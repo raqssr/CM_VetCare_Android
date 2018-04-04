@@ -18,7 +18,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -30,7 +29,7 @@ import android.view.MenuItem;
 
 import com.example.ritasantiago.vetcare.calendar.CalendarFragment;
 import com.example.ritasantiago.vetcare.db.entity.Task;
-import com.example.ritasantiago.vetcare.petlist.PetsFragment;
+import com.example.ritasantiago.vetcare.pets.PetsFragment;
 import com.example.ritasantiago.vetcare.R;
 import com.example.ritasantiago.vetcare.login.LoginActivity;
 import com.example.ritasantiago.vetcare.tasklist.TaskListFragment;
