@@ -223,13 +223,6 @@ public class AddPetFragment extends Fragment {
                     .addOnFailureListener(e -> Log.d("TAG", e.toString()));
         }
 
-
-
-        //Context context = getActivity().getApplicationContext();
-
-        //Toast.makeText(context,"Pet added with success!", Toast.LENGTH_SHORT).show();
-
-        //getFragmentManager().popBackStackImmediate();
         goToNextFragment();
 
     }
