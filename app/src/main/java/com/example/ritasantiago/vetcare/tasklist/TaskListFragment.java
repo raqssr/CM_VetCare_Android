@@ -104,13 +104,13 @@ public class TaskListFragment extends Fragment implements EasyPermissions.Permis
          * performs a swipe-to-refresh gesture.
          */
             mySwipeRefreshLayout.setOnRefreshListener(
-                    () -> {
-                        //Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout");
+                () -> {
+                    //Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout");
 
-                        // This method performs the actual data-refresh operation.
-                        // The method calls setRefreshing(false) when it's finished.
-                        getResultsFromApi();
-                    }
+                    // This method performs the actual data-refresh operation.
+                    // The method calls setRefreshing(false) when it's finished.
+                    getResultsFromApi();
+                }
             );
 
 
