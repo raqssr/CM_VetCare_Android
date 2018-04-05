@@ -114,7 +114,9 @@ public class SendTextFragment extends Fragment {
     {
         SmsManager sm = SmsManager.getDefault();
         String number = animal.getOwner_phone();
+        Log.d("Send Text", number);
         String msg = message.getText().toString();
+        Log.d("Send Text", msg);
         sm.sendTextMessage(number, null, msg, null, null);
         Toast.makeText(getActivity().getApplicationContext(),"Message sent with success!", Toast.LENGTH_SHORT).show();
         getFragmentManager().popBackStackImmediate();

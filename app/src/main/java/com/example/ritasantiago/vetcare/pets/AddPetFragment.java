@@ -167,7 +167,7 @@ public class AddPetFragment extends Fragment {
 
         DocumentReference ownerReference = db.collection("Owners").document(ownerText);
         newAnimal.put(OWNER_NAME, ownerReference.getId());
-        newAnimal.put(PHONE_KEY, ownerReference.getId());
+        newAnimal.put(PHONE_KEY, ownerPhoneText);
 
 
         db.collection("Animals").document(nameText).set(newAnimal)

@@ -116,9 +116,7 @@ public class Animal implements Serializable {
         this.owner_name = owner_name;
     }
 
-    public String getOwner_phone() {
-        return owner_phone;
-    }
+    public String getOwner_phone() { return owner_phone; }
 
     public void setOwner_phone(String owner_phone) {
         this.owner_phone = owner_phone;

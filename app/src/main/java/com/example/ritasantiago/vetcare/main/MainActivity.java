@@ -24,6 +24,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -82,7 +83,8 @@ public class MainActivity extends AppCompatActivity
     private com.google.api.services.calendar.Calendar mService = null;
     private List<String> eventIDs = new ArrayList<>();
     private Map<String, Task> currentTasks = new HashMap<>();
-    int counter;
+    private int counter;
+    private boolean nfc_read = false;
 
 
     @Override
@@ -174,8 +176,10 @@ public class MainActivity extends AppCompatActivity
                     String obj = result.getContents();
                     for (Object o: currentTasks.keySet())
                     {
+                        Log.d("Main Activity", currentTasks.get(o).animal_name);
                         if (currentTasks.get(o).animal_name.equals(obj))
                         {
+                            Log.d("Main Activity", "Vai ser apagado evento");
                             new CalendarDeleteTask().execute(o.toString());
                             break;
                         }
@@ -202,6 +206,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
+        Parcelable[] rawMessages = {};
+        Intent intent = getIntent();
+        super.onResume();
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            rawMessages = intent.getParcelableArrayExtra(
+                    NfcAdapter.EXTRA_NDEF_MESSAGES);
+            nfc_read = true;
+        }
+
         if (counter == 1){
             //
         }
@@ -209,25 +222,17 @@ public class MainActivity extends AppCompatActivity
             counter = 0;
             super.onResume();
         }
+        else if (nfc_read)
+        {
+            NdefMessage message = (NdefMessage) rawMessages[0]; // only one message transferred
+            Alerter.create(this).setTitle("The animal is:").
+                    setText(new String(message.getRecords()[0].getPayload())).
+                    setBackgroundColorRes(R.color.colorSucess).show();
+            nfc_read = false;
+        }
         else{
             super.onResume();
-            Intent intent = getIntent();
-            if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
-                Parcelable[] rawMessages = intent.getParcelableArrayExtra(
-                        NfcAdapter.EXTRA_NDEF_MESSAGES);
-
-                NdefMessage message = (NdefMessage) rawMessages[0]; // only one message transferred
-                Alerter.create(this).setTitle("The animal is:").
-                        setText(new String(message.getRecords()[0].getPayload())).
-                        setBackgroundColorRes(R.color.colorSucess).show();
-
-            }
         }
-        /*else
-        {
-            Alerter.create(this).setTitle("Waiting for NDEF Message").
-                    setBackgroundColorRes(R.color.colorError).show();
-        }*/
     }
 
     @Override
