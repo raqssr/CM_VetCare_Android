@@ -25,6 +25,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ritasantiago.vetcare.R;
+import com.example.ritasantiago.vetcare.db.entity.Animal;
+import com.example.ritasantiago.vetcare.db.entity.Medicine;
+import com.example.ritasantiago.vetcare.db.entity.Procedure;
+import com.example.ritasantiago.vetcare.pets.hospitalisation.adapters.MedicineAdapter;
+import com.example.ritasantiago.vetcare.pets.hospitalisation.adapters.ProcedureAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -59,6 +64,7 @@ import java.util.List;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.ritasantiago.vetcare.pets.PetsFragment.ANIMAL_BUNDLE_KEY;
 
 /**
  * Created by raquelramos on 21-03-2018.
@@ -66,12 +72,11 @@ import static android.app.Activity.RESULT_OK;
 
 public class DischargeFragment extends Fragment {
 
-    private EditText name, weight, doctor, obs;
+    private EditText weight, doctor, obs;
     public File pdfFile;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
     private FirebaseFirestore db;
     public static final String vetClinicName = "Vet Clinic X";
-    private String finalText;
 
     private static final String TAG = "drive-quickstart";
     private static final int REQUEST_CODE_SIGN_IN = 0;
@@ -80,9 +85,11 @@ public class DischargeFragment extends Fragment {
 
     private DriveClient mDriveClient;
     private DriveResourceClient mDriveResourceClient;
-    private Bitmap mBitmapToSave;
     private ArrayList<String> dischargeInfo = new ArrayList<>();
-    private String s;
+    private List<Medicine> medicines = new ArrayList<>();
+    private List<Procedure> procedures = new ArrayList<>();
+    private String filename;
+    public Animal animal;
 
     private void deleteAnimal(final String name){
         db.collection("Animals").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
@@ -132,6 +139,44 @@ public class DischargeFragment extends Fragment {
         });*/
     }
 
+    private void medicinesList(final String name){
+        db = FirebaseFirestore.getInstance();
+        db.collection("Medicines").get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                Log.d("Medicines", "sucesso");
+                QuerySnapshot query = task.getResult();
+                Log.d("Query", query.toString());
+                List<DocumentSnapshot> data = query.getDocuments();
+                Log.d("List DocumentSnapshot", data.toString());
+                for (int i = 0; i < data.size(); i++) {
+                    DocumentSnapshot doc = data.get(i);
+                    Log.d("DocumentSnapshot", doc.toString());
+                    if(doc.contains(name)){
+                        Log.d("Medicines Animal Name", name);
+                        medicines.add(new Medicine(doc.get(name).toString()));
+                        Log.d("Medicines Add", Integer.valueOf(medicines.size()).toString());
+                    }
+                }
+            }
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
+    }
+
+    private void proceduresList(final String name){
+        db = FirebaseFirestore.getInstance();
+        db.collection("Procedures").get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                QuerySnapshot query = task.getResult();
+                List<DocumentSnapshot> data = query.getDocuments();
+                for (int i = 0; i < data.size(); i++) {
+                    DocumentSnapshot doc = data.get(i);
+                    if(doc.contains(name)){
+                        procedures.add(new Procedure(doc.get(name).toString()));
+                    }
+                }
+            }
+        }).addOnFailureListener(e -> Log.d("TAG", e.toString()));
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -146,18 +191,18 @@ public class DischargeFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back_button));
 
-        db = FirebaseFirestore.getInstance();
-        name = (EditText) rootView.findViewById(R.id.et_nameAnimal);
+        Bundle args = getArguments();
+        this.animal = (Animal) args.getSerializable(ANIMAL_BUNDLE_KEY);
+        filename = animal.name + ".pdf";
+
+        medicinesList(animal.name);
+        proceduresList(animal.name);
+
         weight = (EditText) rootView.findViewById(R.id.et_weight);
         doctor = (EditText) rootView.findViewById(R.id.et_doctor);
         obs = (EditText) rootView.findViewById(R.id.et_observations);
         Button generatePdf = (Button) rootView.findViewById(R.id.btn_generatePdf);
         generatePdf.setOnClickListener(v -> {
-            if (name.getText().toString().isEmpty()){
-                name.setError("Animal name is empty!");
-                name.requestFocus();
-                return;
-            }
             if (weight.getText().toString().isEmpty()){
                 weight.setError("Weight field is empty!");
                 weight.requestFocus();
@@ -251,8 +296,7 @@ public class DischargeFragment extends Fragment {
             docsFolder.mkdir();
         }
 
-        String fileName = name.getText().toString() + ".pdf";
-        pdfFile = new File(docsFolder.getAbsolutePath(), fileName);
+        pdfFile = new File(docsFolder.getAbsolutePath(), filename);
         final OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document();
         PdfWriter.getInstance(document, output);
@@ -261,18 +305,75 @@ public class DischargeFragment extends Fragment {
         dischargeInfo.add(vetClinicName);
         document.add(new Paragraph("\n"));
         dischargeInfo.add("\n");
-        document.add(new Paragraph("Animal name: " + name.getText().toString()));
-        dischargeInfo.add("Animal name: " + name.getText().toString());
+        document.add(new Paragraph("Animal name: " + animal.name));
+        dischargeInfo.add("Animal name: " + animal.name);
         document.add(new Paragraph("Weight: " + weight.getText().toString()));
         dischargeInfo.add("Weight: " + weight.getText().toString());
         document.add(new Paragraph("Veterinarian: " + doctor.getText().toString()));
         dischargeInfo.add("Veterinarian: " + doctor.getText().toString());
         document.add(new Paragraph("Observations: " + obs.getText().toString()));
         dischargeInfo.add("Observations: " + obs.getText().toString());
+        document.add(new Paragraph("\n"));
+        dischargeInfo.add("\n");
+
+
+        if (medicines.size() != 0){
+            document.add(new Paragraph("Medicines"));
+            dischargeInfo.add("Medicines");
+            for (int i = 0; i < medicines.size(); i++){
+                final String map = medicines.get(i).name;
+                String tmp0010 = map.replace("Frequency per day", "");
+                String tmp0011 = tmp0010.replace("Dosage (mg)", "");
+                String tmp0100 = tmp0011.replace("Total Days", "");
+                String tmp0001 = tmp0100.replace("=", "");
+                String[] parts0 = tmp0001.split(",");
+                String tmp0101 = parts0[0];
+
+                final String dosage = parts0[1];
+                final String period = tmp0101.replaceAll("[^0-9]", "");
+                final String name = tmp0101.replaceAll("[^a-zA-Z]", "");
+                dischargeInfo.add("- " + name + "( Period: " + period + ", Dosage: " + dosage + ")");
+                document.add(new Paragraph("- " + name + "( Period: " + period + ", Dosage: " + dosage + ")"));
+            }
+        }
+
+        document.add(new Paragraph("\n"));
+        dischargeInfo.add("\n");
+
+        if (procedures.size() != 0){
+            document.add(new Paragraph("Procedures"));
+            dischargeInfo.add("Procedures");
+            for (int i = 0; i < procedures.size(); i++){
+                final String map = procedures.get(i).name;
+                String[] parts = map.split(",");
+                String tmp00 = parts[0];
+                String tmp01 = parts[1];
+                String parts00 = tmp00.replace("{", "");
+                String tmp10 = parts00.replace("Procedure", "");
+                String tmp010 = tmp10.replace("=", "");
+                String[] parts01 = tmp01.split("=");
+                String tmp11 = parts01[1];
+                String[] parts010 = tmp11.split("=");
+                String tmp011 = parts010[0];
+
+                final String name = tmp011.replace("}", "");
+                final String date = tmp010.replace("Date", "");
+                dischargeInfo.add("- " + name + "(Date: " + date + ")");
+                document.add(new Paragraph("- " + name + "(Date: " + date + ")"));
+            }
+        }
+
+        document.add(new Paragraph("\n"));
+        dischargeInfo.add("\n");
+
+        for (int i = 0; i < dischargeInfo.size(); i++)
+        {
+            Log.d("Discharge Fragment", dischargeInfo.get(i));
+        }
+
         document.close();
         Toast.makeText(getActivity().getApplicationContext(),"Discharge document generated with success!",Toast.LENGTH_SHORT).show();
         saveFileToDrive();
-        s = name.getText().toString();
         //previewPdf();
     }
 
@@ -325,7 +426,7 @@ public class DischargeFragment extends Fragment {
         MetadataChangeSet metadataChangeSet =
                 new MetadataChangeSet.Builder()
                         .setMimeType("application/pdf")
-                        .setTitle("teste.pdf")
+                        .setTitle(filename)
                         .build();
         // Set up options to configure and display the create file activity.
         CreateFileActivityOptions createFileActivityOptions =
@@ -355,29 +456,19 @@ public class DischargeFragment extends Fragment {
                     // Build a drive resource client.
                     mDriveResourceClient =
                             Drive.getDriveResourceClient(getActivity(), GoogleSignIn.getLastSignedInAccount(getActivity()));
-                    // Start camera.
-                    /*startActivityForResult(
-                            new Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_CODE_CAPTURE_IMAGE);*/
                 }
                 break;
             case REQUEST_CODE_CAPTURE_IMAGE:
                 // Called after a photo has been taken.
                 if (resultCode == RESULT_OK) {
-                    // Store the image data as a bitmap for writing later.
-                    //mBitmapToSave = (Bitmap) data.getExtras().get("data");
-                    //saveFileToDrive();
                 }
                 break;
             case REQUEST_CODE_CREATOR:
                 // Called after a file is saved to Drive.
                 if (resultCode == RESULT_OK) {
-                    deleteAnimal(s);
+                    deleteAnimal(animal.name);
                     getFragmentManager().popBackStack();
                     getFragmentManager().popBackStack();
-                    //mBitmapToSave = null;
-                    // Just start the camera again for another photo.
-                    //startActivityForResult(
-                            //new Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_CODE_CAPTURE_IMAGE);
                 }
                 break;
         }

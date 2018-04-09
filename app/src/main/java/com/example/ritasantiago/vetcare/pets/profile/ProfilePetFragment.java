@@ -64,6 +64,9 @@ public class ProfilePetFragment extends Fragment {
         discharge = (Button) rootView.findViewById(R.id.btn_discharge);
         discharge.setOnClickListener(view -> {
             Fragment fragment = new DischargeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ANIMAL_BUNDLE_KEY, animal);
+            fragment.setArguments(bundle);
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.addToBackStack(null);
@@ -85,8 +88,6 @@ public class ProfilePetFragment extends Fragment {
                 ft.commit();
             }
         });
-
-
 
         return rootView;
     }
