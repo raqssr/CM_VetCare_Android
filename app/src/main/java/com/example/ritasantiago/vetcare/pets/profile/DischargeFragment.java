@@ -92,51 +92,11 @@ public class DischargeFragment extends Fragment {
     public Animal animal;
 
     private void deleteAnimal(final String name){
+
+        db.collection("Historics").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
+        db.collection("Internments").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
         db.collection("Animals").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
 
-        db.collection("Internments").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
-        db.collection("Historics").document(name).delete().addOnSuccessListener(aVoid -> Log.d("TAG", "Animal deleted!"));
-
-        /*db.collection("Medicines").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                QuerySnapshot query = task.getResult();
-                List<DocumentSnapshot> data = query.getDocuments();
-                for(int i = 0; i < data.size(); i++){
-                    DocumentSnapshot doc = data.get(i);
-                    Log.d("Discharge", String.valueOf(data.get(i).getReference()));
-                    if(doc.contains(name)){
-                        DocumentReference reference = doc.getDocumentReference(name);
-                        reference.delete();
-                    }
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });
-
-        db.collection("Procedures").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                QuerySnapshot query = task.getResult();
-                List<DocumentSnapshot> data = query.getDocuments();
-                for(int i = 0; i < data.size(); i++){
-                    DocumentSnapshot doc = data.get(i);
-                    if(doc.contains(name)){
-                        DocumentReference reference = doc.getDocumentReference(name);
-                        reference.delete();
-                    }
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", e.toString());
-            }
-        });*/
     }
 
     private void medicinesList(final String name){
