@@ -25,7 +25,7 @@ An important point is to be able to quickly identify an animal.
 
 * This app was developed during almost two months to the course of Mobile Computing.
 * Credentials will not be provided to anyone.
-* This project's report can be seen here where all the application is described in detail and where it's also present screenshots of the app: 
+* This project's report can be seen here where all the application is described in detail and where it's also present screenshots of the app.
 
 ## Authors
 
