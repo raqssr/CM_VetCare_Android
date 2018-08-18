@@ -13,8 +13,8 @@ An important point is to be able to quickly identify an animal.
 * Task list with all the tasks for the day.
 * Possibility to mark any task as completed by reading the QR Code associated to the animal.
 * Tasks synchronized with Google Calendar.
-* Animal identification with NFC.
-* All important animal's information presented in its profile and also biosignals (simulated) like temperature and heart beating presented in chart.
+* Animal identification with NFC. This feature was tested with another application (developed by the group) to simulate a NFC tag.
+* All important animal's information presented in its profile and also biosignals (simulated) like temperature and heart beatings presented in chart.
 * Possibility to discharge animal and generate a report with important information about the time the animal was hospitalized.
 * Reports directly saved in Google Drive.
 * Possibility to send message to the animal's owner without having to insert his phone number.
@@ -23,7 +23,7 @@ An important point is to be able to quickly identify an animal.
 
 ## Observations
 
-* This app was developed during almost two months to the course of Mobile Computing.
+* This app was developed in Java during almost two months in the course of Mobile Computing. Before this, there was no experience in Android development.
 * Credentials will not be provided to anyone.
 * This project's report can be seen here where all the application is described in detail and where it's also present screenshots of the app.
 
